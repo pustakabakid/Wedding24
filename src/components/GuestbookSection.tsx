@@ -74,7 +74,12 @@ export const GuestbookSection: React.FC<GuestbookSectionProps> = ({
     setWishes((prev) => [newWish, ...prev]);
     setComment('');
 
-    await submitWish(name.trim(), comment.trim(), attendance);
+    const ok = await submitWish(name.trim(), comment.trim(), attendance);
+    if (ok) {
+      fetchWishes().then((data) => {
+        if (data && data.length > 0) setWishes(data);
+      });
+    }
     setIsSubmitting(false);
     onShowToast('Terima kasih atas ucapan & doa Anda!', 'success');
 
