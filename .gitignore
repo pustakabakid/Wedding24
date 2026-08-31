@@ -16,6 +16,7 @@ graphify-out/
 # Editor Dashboard (excluded per user request)
 editor.html
 public/editor.html
+dashboard_repo/
 
 # Editor directories and files
 .vscode/*
