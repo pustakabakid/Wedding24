@@ -104,9 +104,17 @@ export async function saveInvitationSettings(settings: FullInvitationSettings): 
       updated_at: new Date().toISOString()
     };
 
-    const { error } = await supabase
+    let { data: updatedRows, error } = await supabase
       .from('invitation_settings')
-      .upsert(payload, { onConflict: 'id' });
+      .update(payload)
+      .eq('id', 'default')
+      .select();
+
+    if (!error && (!updatedRows || updatedRows.length === 0)) {
+      payload.id = 'default';
+      const insertRes = await supabase.from('invitation_settings').insert(payload);
+      error = insertRes.error;
+    }
 
     if (error) {
       return { success: false, error: error.message };
