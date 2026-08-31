@@ -1,0 +1,192 @@
+[
+  {
+    "original_url": "https://www.wevitation.com/themes/mildness/img/corner-1.png",
+    "local_path": "public/assets/images/corner-top-left.png",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "png",
+    "usage": "Top left corner floral decoration",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://www.wevitation.com/themes/mildness/img/corner-2.png",
+    "local_path": "public/assets/images/corner-bottom-right.png",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "png",
+    "usage": "Bottom right corner floral decoration",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://www.wevitation.com/themes/mildness/img/watercolor-3.png",
+    "local_path": "public/assets/images/watercolor-bottom-left.png",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "png",
+    "usage": "Bottom left watercolor splash",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://www.wevitation.com/themes/mildness/img/watercolor-4.png",
+    "local_path": "public/assets/images/watercolor-top-right.png",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "png",
+    "usage": "Top right watercolor splash",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://www.wevitation.com/themes/mildness/img/flower-1.png",
+    "local_path": "public/assets/images/flower-bg.png",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "png",
+    "usage": "Fixed center floral watermark",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://app.wevitation.com/storage/v2/cover/8aa137bf-32e4-4eb9-a714-864809a57eac_background_1.jpg?time=1762447670",
+    "local_path": "public/assets/images/cover-bg.jpg",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "jpg",
+    "usage": "Cover / Gate screen couple background",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://app.wevitation.com/storage/v2/photos/8aa137bf-32e4-4eb9-a714-864809a57eac_bride1.jpg?time=1762448422",
+    "local_path": "public/assets/images/bride-eviana.jpg",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "jpg",
+    "usage": "Bride portrait - Eviana Saskia",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://app.wevitation.com/storage/v2/photos/8aa137bf-32e4-4eb9-a714-864809a57eac_bride2.jpg?time=1762448954",
+    "local_path": "public/assets/images/groom-andra.jpg",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "jpg",
+    "usage": "Groom portrait - Andra Gunawan",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://app.wevitation.com/storage/v2/story/8aa137bf-32e4-4eb9-a714-864809a57eac_40017.jpg?time=1762450551",
+    "local_path": "public/assets/images/story-first-meet.jpg",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "jpg",
+    "usage": "Love story timeline photo - Pertemuan Pertama",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://app.wevitation.com/storage/v2/story/8aa137bf-32e4-4eb9-a714-864809a57eac_40018.jpg?time=1762450618",
+    "local_path": "public/assets/images/story-proposal.jpg",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "jpg",
+    "usage": "Love story timeline photo - Lamaran",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://app.wevitation.com/storage/v2/galleries/JEoyIxNpRtGSe2K5Hit6BZpdfbxmn9ez5rHMgzdP.jpg?time=1762449459",
+    "local_path": "public/assets/images/gallery-1.jpg",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "jpg",
+    "usage": "Gallery slide 1",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://app.wevitation.com/storage/v2/galleries/FQ4qfFSGAFneppYOimqci0uDdfJ5nRDxLp9Tuqyv.jpg?time=1762449442",
+    "local_path": "public/assets/images/gallery-2.jpg",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "jpg",
+    "usage": "Gallery slide 2",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://app.wevitation.com/storage/v2/galleries/UE4A7HtU6mGzyboJOoDLa9ohKheOVKS4zSOmYGGz.jpg?time=1762449416",
+    "local_path": "public/assets/images/gallery-3.jpg",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "jpg",
+    "usage": "Gallery slide 3",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://app.wevitation.com/storage/v2/galleries/CRqBcw95lJWtdwr1b54ICsfXZXn3PAklhy7yBeFB.jpg?time=1762449394",
+    "local_path": "public/assets/images/gallery-4.jpg",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "jpg",
+    "usage": "Gallery slide 4",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://www.wevitation.com/img/banks/bca.svg",
+    "local_path": "public/assets/svg/bca-logo.svg",
+    "type": "svg",
+    "width": null,
+    "height": null,
+    "format": "svg",
+    "usage": "Bank BCA logo for gift section",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://app.wevitation.com/storage/v2/qris/8aa137bf-32e4-4eb9-a714-864809a57eac_12345678.jpeg?time=1762449198",
+    "local_path": "public/assets/images/qris-bca.jpg",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "jpeg",
+    "usage": "QRIS payment image for digital gift",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://www.wevitation.com/img/wevitation-icon-color.svg",
+    "local_path": "public/assets/svg/wevitation-icon.svg",
+    "type": "svg",
+    "width": null,
+    "height": null,
+    "format": "svg",
+    "usage": "Favicon & Wevitation brand icon",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://cdn.wevitation.com/music/357203-KkI3tFN1.mp3",
+    "local_path": "public/assets/audio/romantic-wedding-soundtrack.mp3",
+    "type": "audio",
+    "width": null,
+    "height": null,
+    "format": "mp3",
+    "usage": "Background romantic wedding soundtrack by Pixabay",
+    "status": "downloaded"
+  },
+  {
+    "original_url": "https://www.wevitation.com/get-asset?url=https%253A%252F%252Fapp.wevitation.com%252Fstorage%252Fv2%252Figstory%252F8aa137bf-32e4-4eb9-a714-864809a57eac.png%253Ftime%253D1762512016",
+    "local_path": "public/assets/images/igstory-background.png",
+    "type": "image",
+    "width": null,
+    "height": null,
+    "format": "png",
+    "usage": "IG Story template couple background",
+    "status": "downloaded"
+  }
+]
