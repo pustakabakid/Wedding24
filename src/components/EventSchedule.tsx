@@ -14,6 +14,32 @@ export const EventSchedule: React.FC<EventScheduleProps> = ({
 }) => {
   const schedules = customSchedules || SCHEDULE_DATA;
   const liveStreamUrl = customLiveStreamUrl || INVITATION_CONFIG.liveStreamUrl;
+
+  const downloadIcsFile = (item: ScheduleItem) => {
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Wevitation//Wedding Invitation//ID',
+      'BEGIN:VEVENT',
+      `SUMMARY:${item.title} - ${INVITATION_CONFIG.couple.combinedTitle}`,
+      `DESCRIPTION:${item.title} Pernikahan ${INVITATION_CONFIG.couple.combinedTitle}\\nWaktu: ${item.time} WIB\\nLokasi: ${item.venue}, ${item.address}`,
+      `LOCATION:${item.venue}, ${item.address}`,
+      'DTSTART:20260921T090000Z',
+      'DTEND:20260921T140000Z',
+      'STATUS:CONFIRMED',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.setAttribute('download', `${item.title.toLowerCase().replace(/\s+/g, '_')}_wedding.ics`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <section id="schedule">
       <div className="card-transparant">
@@ -55,20 +81,45 @@ export const EventSchedule: React.FC<EventScheduleProps> = ({
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-primary btn-sm"
-                    style={{ minWidth: '140px' }}
+                    style={{ minWidth: '130px' }}
+                    title="Simpan ke Google Calendar"
                   >
                     <CalendarCheck size={14} />
-                    <span>Simpan Tanggal</span>
+                    <span>Google Cal</span>
                   </a>
+
+                  <button
+                    onClick={() => downloadIcsFile(item)}
+                    className="btn btn-primary btn-sm"
+                    style={{ minWidth: '110px' }}
+                    title="Download Apple / Outlook Calendar (.ics)"
+                  >
+                    <CalendarCheck size={14} />
+                    <span>Apple / iCal</span>
+                  </button>
+
                   <a
                     href={item.mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-primary btn-sm"
-                    style={{ minWidth: '140px' }}
+                    style={{ minWidth: '130px' }}
+                    title="Buka rute di Google Maps"
                   >
                     <Navigation size={14} />
-                    <span>Navigasi Map</span>
+                    <span>Google Maps</span>
+                  </a>
+
+                  <a
+                    href={`https://waze.com/ul?q=${encodeURIComponent(item.venue + ' ' + item.address)}&navigate=yes`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-primary btn-sm"
+                    style={{ minWidth: '110px' }}
+                    title="Buka rute di Waze"
+                  >
+                    <Navigation size={14} />
+                    <span>Waze</span>
                   </a>
                 </div>
               </div>

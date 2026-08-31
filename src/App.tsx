@@ -76,6 +76,21 @@ export const App: React.FC = () => {
 
   const handleOpenInvitation = () => {
     setIsGateOpen(true);
+    
+    // Auto Fullscreen Trigger
+    try {
+      const elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen().catch(() => {});
+      } else if ((elem as any).webkitRequestFullscreen) {
+        (elem as any).webkitRequestFullscreen();
+      } else if ((elem as any).msRequestFullscreen) {
+        (elem as any).msRequestFullscreen();
+      }
+    } catch (err) {
+      console.warn('Fullscreen trigger ignored:', err);
+    }
+
     if (settings.featureFlags.showMusic) {
       play(); // Start background music
     }

@@ -32,6 +32,8 @@ export interface GuestWish {
   name: string;
   comment: string;
   attending?: boolean;
+  attendance_status?: 'hadir' | 'ragu' | 'tidak';
+  likes_count?: number;
   timestamp?: string;
   created_at?: string;
 }

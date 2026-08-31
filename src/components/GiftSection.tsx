@@ -17,6 +17,7 @@ export const GiftSection: React.FC<GiftSectionProps> = ({
   const bankAccounts = customBanks && customBanks.length > 0 ? customBanks : BANK_ACCOUNTS;
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
   const [showQRModal, setShowQRModal] = useState(false);
+  const [isGiftOpen, setIsGiftOpen] = useState(false);
 
   const handleCopy = (accountNumber: string) => {
     navigator.clipboard
@@ -56,12 +57,29 @@ export const GiftSection: React.FC<GiftSectionProps> = ({
 
         {/* Gift / Kado Header */}
         <h2 className="font-title text-primary text-size-title mb-2">Kado</h2>
-        <p className="text-size-caption text-muted mb-6">
+        <p className="text-size-caption text-muted mb-4">
           Doa restu anda merupakan karunia yang sangat berarti bagi kedua mempelai. Namun jika memberi adalah ungkapan tanda kasih anda, anda dapat menggunakan fitur berikut:
         </p>
 
-        {/* Bank Account Cards */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        {/* Collapsible Toggle Button */}
+        <div style={{ marginBottom: isGiftOpen ? '20px' : '0' }}>
+          <button
+            onClick={() => setIsGiftOpen((prev) => !prev)}
+            className="btn btn-primary"
+            style={{
+              borderRadius: '24px',
+              padding: '10px 24px',
+              fontSize: '14px',
+              boxShadow: '0 4px 14px rgba(75, 107, 153, 0.25)'
+            }}
+          >
+            <span>{isGiftOpen ? 'Tutup Amplop Digital' : 'Kirim Hadiah / Amplop Digital'}</span>
+          </button>
+        </div>
+
+        {/* Collapsible Bank Account Cards */}
+        {isGiftOpen && (
+          <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '16px' }}>
           {BANK_ACCOUNTS.map((bank) => (
             <div
               key={bank.accountNumber}
@@ -150,6 +168,7 @@ export const GiftSection: React.FC<GiftSectionProps> = ({
             </div>
           ))}
         </div>
+        )}
       </div>
 
       {/* QRIS Full Modal */}

@@ -97,6 +97,8 @@ CREATE TABLE IF NOT EXISTS public.invitation_settings (
       "showIGStoryGenerator": true,
       "showMusic": true
     }'::jsonb,
+    invitation_url TEXT,
+    wa_template TEXT,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -126,8 +128,18 @@ CREATE TABLE IF NOT EXISTS public.wishes (
     name TEXT NOT NULL,
     comment TEXT NOT NULL,
     attending BOOLEAN DEFAULT true,
+    attendance_status TEXT DEFAULT 'hadir',
+    likes_count INTEGER DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
+
+-- Migration safety for existing tables
+ALTER TABLE public.invitation_settings ADD COLUMN IF NOT EXISTS invitation_url TEXT;
+ALTER TABLE public.invitation_settings ADD COLUMN IF NOT EXISTS wa_template TEXT;
+ALTER TABLE public.wishes ADD COLUMN IF NOT EXISTS attendance_status TEXT DEFAULT 'hadir';
+ALTER TABLE public.wishes ADD COLUMN IF NOT EXISTS likes_count INTEGER DEFAULT 0;
+ALTER TABLE public.guests ADD COLUMN IF NOT EXISTS is_sent BOOLEAN DEFAULT false;
+ALTER TABLE public.guests ADD COLUMN IF NOT EXISTS sent_at TIMESTAMP WITH TIME ZONE;
 
 -- 4. ATUR ROW LEVEL SECURITY (RLS) AGAR DAPAT DIAKSES DARI WEBSITE
 ALTER TABLE public.invitation_settings ENABLE ROW LEVEL SECURITY;

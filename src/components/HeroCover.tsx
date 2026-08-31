@@ -35,6 +35,46 @@ export const HeroCover: React.FC<HeroCoverProps> = ({ guestName, settings }) => 
         >
           {formattedDateShort}
         </div>
+
+        {/* Live Event Status Badge */}
+        {timeLeft.isExpired ? (
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: '#ecfdf5',
+              color: '#059669',
+              border: '1px solid #a7f3d0',
+              padding: '6px 16px',
+              borderRadius: '20px',
+              fontSize: '12px',
+              fontWeight: 700,
+              marginTop: '14px'
+            }}
+          >
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10b981', display: 'inline-block' }} className="animate-pulse-soft" />
+            <span>Hari Bahagia Sedang Berlangsung</span>
+          </div>
+        ) : (
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: 'var(--bs-primary-light)',
+              color: 'var(--bs-primary-dark)',
+              border: '1px solid rgba(75, 107, 153, 0.2)',
+              padding: '4px 14px',
+              borderRadius: '20px',
+              fontSize: '11.5px',
+              fontWeight: 700,
+              marginTop: '12px'
+            }}
+          >
+            <span>✨ Menuju Hari Bahagia</span>
+          </div>
+        )}
       </div>
 
       {/* Countdown Timer */}

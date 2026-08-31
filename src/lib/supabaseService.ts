@@ -274,6 +274,8 @@ export async function fetchWishes(): Promise<GuestWish[]> {
       name: item.name,
       comment: item.comment,
       attending: item.attending,
+      attendance_status: item.attendance_status || (item.attending ? 'hadir' : 'tidak'),
+      likes_count: item.likes_count || 0,
       timestamp: new Date(item.created_at).toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' })
     }));
   } catch (err) {
@@ -281,13 +283,19 @@ export async function fetchWishes(): Promise<GuestWish[]> {
   }
 }
 
-export async function submitWish(name: string, comment: string, attending = true): Promise<boolean> {
+export async function submitWish(
+  name: string,
+  comment: string,
+  attendanceStatus: 'hadir' | 'ragu' | 'tidak' = 'hadir'
+): Promise<boolean> {
   const supabase = getSupabaseClient();
   const newWish: GuestWish = {
     id: Date.now().toString(),
     name,
     comment,
-    attending,
+    attending: attendanceStatus === 'hadir',
+    attendance_status: attendanceStatus,
+    likes_count: 0,
     timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' })
   };
 
@@ -301,10 +309,35 @@ export async function submitWish(name: string, comment: string, attending = true
     const { error } = await supabase.from('wishes').insert({
       name,
       comment,
-      attending
+      attending: attendanceStatus === 'hadir',
+      attendance_status: attendanceStatus,
+      likes_count: 0
     });
     return !error;
   } catch (err) {
     return false;
   }
+}
+
+export async function likeWish(id: string, currentLikes = 0): Promise<number> {
+  const newLikes = currentLikes + 1;
+  const supabase = getSupabaseClient();
+  
+  // Local storage cache update
+  const local = localStorage.getItem('wedding_guest_wishes');
+  if (local) {
+    try {
+      const list: GuestWish[] = JSON.parse(local);
+      const updated = list.map(w => w.id === id ? { ...w, likes_count: newLikes } : w);
+      localStorage.setItem('wedding_guest_wishes', JSON.stringify(updated));
+    } catch (e) {}
+  }
+
+  if (supabase) {
+    try {
+      await supabase.from('wishes').update({ likes_count: newLikes }).eq('id', id);
+    } catch (e) {}
+  }
+
+  return newLikes;
 }
