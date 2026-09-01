@@ -156,6 +156,44 @@ export const App: React.FC = () => {
         />
       )}
 
+      {/* ─── Desktop Left Cinematic Backdrop (Wevitation Signature Split Screen) ─── */}
+      <div
+        className="desktop-backdrop"
+        style={{
+          backgroundImage: `url(${settings.galleryImages?.[0]?.src || settings.couple?.bride?.avatar || '/assets/images/gallery-1.jpg'})`
+        }}
+      >
+        {/* Floating Firefly Particle Glow */}
+        <div className="firefly-wrapper">
+          <div className="firefly-particle" style={{ top: '20%', left: '30%', animationDelay: '0s' }} />
+          <div className="firefly-particle" style={{ top: '60%', left: '70%', animationDelay: '2s' }} />
+          <div className="firefly-particle" style={{ top: '80%', left: '20%', animationDelay: '4s' }} />
+          <div className="firefly-particle" style={{ top: '35%', left: '85%', animationDelay: '1.5s' }} />
+          <div className="firefly-particle" style={{ top: '50%', left: '45%', animationDelay: '3.5s' }} />
+          <div className="firefly-particle" style={{ top: '15%', left: '60%', animationDelay: '5s' }} />
+        </div>
+
+        <div className="desktop-backdrop-overlay">
+          <div style={{ letterSpacing: '4px', textTransform: 'uppercase', fontSize: '13px', fontWeight: 600, opacity: 0.85, marginBottom: '12px' }}>
+            The Wedding of
+          </div>
+          <h1
+            className="font-title"
+            style={{
+              fontSize: '56px',
+              color: '#FFFFFF',
+              textShadow: '0 4px 20px rgba(0,0,0,0.6)',
+              marginBottom: '16px'
+            }}
+          >
+            {settings.couple?.combinedTitle || INVITATION_CONFIG.couple.combinedTitle}
+          </h1>
+          <div style={{ fontSize: '15px', letterSpacing: '2px', fontWeight: 600, color: 'var(--bs-primary-light)', opacity: 0.9 }}>
+            {settings.formattedDate || INVITATION_CONFIG.formattedDate}
+          </div>
+        </div>
+      </div>
+
       {/* Main Single Page Invitation Flow */}
       <main className="invitation-container">
         <HeroCover guestName={guestName} settings={settings} />

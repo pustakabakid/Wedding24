@@ -59,6 +59,36 @@
   animation: floatGentle 5s ease-in-out infinite;
 }
 
+/* Firefly Ambient Floating Particles */
+.firefly-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.firefly-particle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #FFF2A8;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500;
+  animation: fireflyMove 8s infinite ease-in-out;
+}
+
+@keyframes fireflyMove {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate(25px, -35px) scale(1.5);
+    opacity: 0.95;
+  }
+}
+
 .animate-fade-in-scale {
   animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

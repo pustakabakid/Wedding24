@@ -65,13 +65,67 @@ body {
   z-index: 1;
 }
 
-/* App Container Layout */
+/* App Container Layout & Split Screen Engine */
 .app-viewport {
   position: relative;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   z-index: 2;
+}
+
+.desktop-backdrop {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  .app-viewport {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: stretch;
+    background: #111111;
+  }
+
+  .desktop-backdrop {
+    display: flex !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: calc(100vw - 480px);
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .desktop-backdrop-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.85) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    color: #FFFFFF;
+    backdrop-filter: blur(2px);
+  }
+
+  .invitation-container {
+    width: 480px !important;
+    min-width: 480px !important;
+    max-width: 480px !important;
+    margin-left: auto;
+    background-color: var(--invitation-bg);
+    box-shadow: -12px 0 45px rgba(0, 0, 0, 0.45);
+    z-index: 3;
+    position: relative;
+  }
 }
 
 .invitation-container {
