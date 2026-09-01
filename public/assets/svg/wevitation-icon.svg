@@ -1,39 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Creator: CorelDRAW 2021.5 -->
-<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="1.71208in" height="1.71208in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-viewBox="0 0 239.4 239.4"
- xmlns:xlink="http://www.w3.org/1999/xlink"
- xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
- <defs>
-  <style type="text/css">
-   <![CDATA[
-    .fil0 {fill:none}
-   ]]>
-  </style>
-   <clipPath id="id0">
-    <path d="M-0 0l239.4 0 0 239.4 -239.4 0 0 -239.4z"/>
-   </clipPath>
-    <clipPath id="id1">
-     <path d="M239.4 16.48l0 206.44 -239.4 0 0 -206.44 239.4 0z"/>
-    </clipPath>
-    <clipPath id="id2">
-     <path d="M-0 0l239.4 0 0 239.4 -239.4 0 0 -239.4z"/>
-    </clipPath>
- </defs>
- <g id="Layer_x0020_1">
-  <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g>
-  </g>
-  <g style="clip-path:url(#id0)">
-   <g id="_2290633785664">
-   </g>
-   <g style="clip-path:url(#id1)">
-    <image x="-17.93" y="16.48" width="275.25" height="206.44" xlink:href="wevitation-icon_Images\wevitation-icon_ImgID1.png"/>
-   </g>
-   <g style="clip-path:url(#id2)">
-   </g>
-  </g>
-  <polygon class="fil0" points="-0,0 239.4,0 239.4,239.4 -0,239.4 "/>
- </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="32" fill="#C9A96E"/>
+
+  <!-- Two interlocking wedding rings -->
+  <!-- Left ring -->
+  <circle cx="24" cy="34" r="10" fill="none" stroke="#fff" stroke-width="3.5"/>
+  <!-- Right ring (overlapping) -->
+  <circle cx="40" cy="34" r="10" fill="none" stroke="#fff" stroke-width="3.5"/>
+
+  <!-- Overlap fill to create interlock illusion (left side covers right) -->
+  <path d="M32 25.5 A10 10 0 0 0 32 42.5" fill="none" stroke="#C9A96E" stroke-width="4.5"/>
+
+  <!-- Elegant "W" initial at top -->
+  <text x="32" y="20" font-family="Georgia,serif" font-size="13" font-weight="700"
+        fill="#fff" text-anchor="middle" letter-spacing="0.5">W</text>
+
+  <!-- Small diamond sparkle top-right -->
+  <polygon points="50,10 52,14 56,14 53,17 54,21 50,18 46,21 47,17 44,14 48,14"
+           fill="#fff" opacity="0.9"/>
 </svg>
