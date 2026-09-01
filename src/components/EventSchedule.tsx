@@ -6,16 +6,19 @@ import { ScheduleItem, FeatureFlags } from '../types';
 interface EventScheduleProps {
   schedules?: ScheduleItem[];
   liveStreamUrl?: string;
+  combinedTitle?: string;
   flags?: FeatureFlags;
 }
 
 export const EventSchedule: React.FC<EventScheduleProps> = ({
   schedules: customSchedules,
   liveStreamUrl: customLiveStreamUrl,
+  combinedTitle: customCombinedTitle,
   flags
 }) => {
   const schedules = customSchedules || SCHEDULE_DATA;
   const liveStreamUrl = customLiveStreamUrl || INVITATION_CONFIG.liveStreamUrl;
+  const combinedTitle = customCombinedTitle || INVITATION_CONFIG.couple.combinedTitle;
 
   const showGoogleCal = flags ? flags.showGoogleCal !== false : true;
   const showAppleCal = flags ? flags.showAppleCal !== false : true;
@@ -29,8 +32,8 @@ export const EventSchedule: React.FC<EventScheduleProps> = ({
       'VERSION:2.0',
       'PRODID:-//Wevitation//Wedding Invitation//ID',
       'BEGIN:VEVENT',
-      `SUMMARY:${item.title} - ${INVITATION_CONFIG.couple.combinedTitle}`,
-      `DESCRIPTION:${item.title} Pernikahan ${INVITATION_CONFIG.couple.combinedTitle}\\nWaktu: ${item.time} WIB\\nLokasi: ${item.venue}, ${item.address}`,
+      `SUMMARY:${item.title} - ${combinedTitle}`,
+      `DESCRIPTION:${item.title} Pernikahan ${combinedTitle}\\nWaktu: ${item.time} WIB\\nLokasi: ${item.venue}, ${item.address}`,
       `LOCATION:${item.venue}, ${item.address}`,
       'DTSTART:20260921T090000Z',
       'DTEND:20260921T140000Z',

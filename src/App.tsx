@@ -60,6 +60,9 @@ export const App: React.FC = () => {
     setInvitationId(activeKey);
     fetchInvitationSettings(activeKey).then((loaded) => {
       setSettings(loaded);
+      if (loaded.couple?.combinedTitle) {
+        document.title = `Undangan Pernikahan ${loaded.couple.combinedTitle}`;
+      }
       if (!loaded.featureFlags.showGateCover) {
         setIsGateOpen(true);
       }
@@ -148,11 +151,18 @@ export const App: React.FC = () => {
       <main className="invitation-container">
         <HeroCover guestName={guestName} settings={settings} />
         {flags.showQuote && <QuoteSection />}
-        {flags.showCoupleProfile && <CoupleProfile couple={settings.couple} flags={flags} />}
+        {flags.showCoupleProfile && (
+          <CoupleProfile
+            couple={settings.couple}
+            flags={flags}
+            invitationType={settings.invitation_type || invitationId}
+          />
+        )}
         {flags.showEventSchedule && (
           <EventSchedule
             schedules={settings.schedules}
             liveStreamUrl={settings.liveStreamUrl}
+            combinedTitle={settings.couple.combinedTitle}
             flags={flags}
           />
         )}

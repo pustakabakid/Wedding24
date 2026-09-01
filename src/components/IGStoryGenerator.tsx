@@ -1,4 +1,4 @@
-﻿import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Instagram } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { FullInvitationSettings } from '../types';
@@ -15,9 +15,10 @@ export const IGStoryGenerator: React.FC<IGStoryGeneratorProps> = ({ settings }) 
   const combinedTitle = settings.couple.combinedTitle;
   const dateShort = settings.formattedDateShort;
   const invitationUrl = (settings.invitationUrl || window.location.origin).replace(/^https?:\/\//, '');
-  const igHandle = settings.couple.bride.instagram
-    ? '@' + settings.couple.bride.instagram
-    : '@wevitation';
+  const isGroom = settings.id === 'groom' || settings.invitation_type === 'groom';
+  const igHandle = isGroom && settings.couple.groom.instagram
+    ? '@' + settings.couple.groom.instagram
+    : (settings.couple.bride.instagram ? '@' + settings.couple.bride.instagram : '@wevitation');
 
   const handleDownload = async () => {
     if (!storyRef.current) return;
