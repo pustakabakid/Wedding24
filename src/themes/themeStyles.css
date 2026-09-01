@@ -1,21 +1,28 @@
 /* ═══════════════════════════════════════════════════════════════════
-   WEVITATION 1:1 CLONED MULTI-THEME ENGINE & STYLES
-   Exact CSS Tokens, Fonts, Layouts, & Variables from Official Wevitation Themes
+   WEVITATION 1:1 AUTHENTIC THEME ENGINE
+   CSS Variables & Styles Cloned Precisely from Official Wevitation Sources:
+   - timeless-snapshot: variable.css, styles.css, bg-animation.css
+   - elegant-light: variable.css, styles.css, bg-animation.css
+   - photovit: variable.css, styles.css
    ═══════════════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════════════
-   1. TEMA 1: CLASSIC EMERALD BOTANICAL (Default Wevitation Classic)
+   THEME 1: CLASSIC CARD (Default — Wevitation Classic-Card Style)
    ═══════════════════════════════════════════════════════════════════ */
 .theme-classic-card {
   --bs-primary: #4B6B99;
   --bs-primary-dark: #37537a;
   --bs-primary-light: #EBF1F8;
   --text-dark: #202b38;
+  --text-muted: #888;
   --invitation-bg: #F4F7FB;
   --bg-primary: #F4F7FB;
-  --card-bg-translucent: rgba(255, 255, 255, 0.78);
+  --bg-secondary: rgba(255,255,255,0.72);
   --card-border: rgba(255, 255, 255, 0.85);
   --card-shadow: 0 16px 40px rgba(75, 107, 153, 0.12);
+  --counter-bg: #4B6B99;
+  --counter-color: #FFFFFF;
+  --counter-radius: 12px;
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
@@ -23,50 +30,85 @@
   font-family: 'Philosopher', serif;
 }
 
+.theme-classic-card .card-transparant {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 8px 32px rgba(75, 107, 153, 0.1);
+}
+
 /* ═══════════════════════════════════════════════════════════════════
-   2. TEMA 2: TIMELESS SNAPSHOT (Cloned from Wevitation Timeless Snapshot)
-   Source: https://www.wevitation.com/demo/timeless-snapshot
+   THEME 2: TIMELESS SNAPSHOT
+   Source: https://www.wevitation.com/themes/timeless-snapshot/css/variable.css
+   Key facts:
+   - --invitation-bg: #000 (DARK BLACK)
+   - Firefly animation kunang-kunang (12 elemen li.firefly)
+   - Font: Montserrat body, Philosopher title
+   - Background: pitch-dark with gold accents
+   - counter: bg #E8D9C4 (cream), color #7C151D (dark red)
    ═══════════════════════════════════════════════════════════════════ */
 .theme-timeless-snapshot {
+  /* Exact tokens from variable.css */
+  --transition-counter-bg: #E8D9C4;
+  --counter-bg: #EDEAA1;
+  --counter-color: #7C151D;
+  --counter-radius: 5px;
+  --counter-line-bg: #E8D9C4;
+  --counter-line-size: 0.1px;
+  --invitation-bg: #0D0C0B;
+  --invitation-bg-light: #F5F8FF;
+
+  /* Extended theme vars */
   --bs-primary: #D4AF37;
-  --bs-primary-dark: #8C6D53;
-  --bs-primary-light: #2A2421;
+  --bs-primary-dark: #9B7B28;
+  --bs-primary-light: #1C1917;
+  --bs-secondary: #8C6D53;
+  --bs-text-light: #FFFFFF;
   --text-primary: #FFFFFF;
   --text-secondary: #D4AF37;
+  --text-dark: #F5F0E8;
+  --text-muted: rgba(255, 255, 255, 0.6);
   --tone-color-1: #8C6D53;
   --tone-color-2: #D4AF37;
   --tone-color-3: #FFFFFF;
   --tone-color-4: #4A3E39;
-  --tone-color-5: #1C1917;
-  --invitation-bg: #1C1917;
-  --bg-primary: #1C1917;
-  --bg-secondary: #24201D;
-  --text-dark: #FFFFFF;
-  --card-bg-translucent: rgba(36, 32, 29, 0.85);
-  --card-border: rgba(212, 175, 55, 0.3);
-  --card-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --tone-color-5: #0D0C0B;
+  --bg-primary: #0D0C0B;
+  --bg-secondary: #1C1917;
+  --bg-welcome-color: rgba(13, 12, 11, 0.7);
+  --card-border: rgba(212, 175, 55, 0.25);
+  --card-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+
   font-family: 'Montserrat', sans-serif;
+  background-color: #0D0C0B;
+  color: #FFFFFF;
 }
 
 .theme-timeless-snapshot .font-title {
   font-family: 'Philosopher', serif;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
-.theme-timeless-snapshot .font-content {
-  font-family: 'Montserrat', sans-serif;
+/* Override invitation viewport background to pure black */
+.theme-timeless-snapshot .invitation-container {
+  background-color: #0D0C0B;
 }
 
+/* Override body background for theme */
 .theme-timeless-snapshot .card-transparant {
-  background: var(--card-bg-translucent);
-  border: 1px solid var(--card-border);
-  color: #FFFFFF;
+  background: rgba(28, 25, 23, 0.88);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 .theme-timeless-snapshot .text-muted {
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: rgba(255, 255, 255, 0.6) !important;
 }
 
+.theme-timeless-snapshot .text-primary {
+  color: #D4AF37 !important;
+}
+
+/* Authentic Timeless-snapshot backdrop wrapper with gold hairlines */
 .theme-timeless-snapshot .backdrop-wrapper {
   position: relative;
   display: inline-block;
@@ -77,60 +119,112 @@
 .theme-timeless-snapshot .backdrop-wrapper::after {
   content: "";
   position: absolute;
-  left: 5%;
-  right: 5%;
+  left: 3%;
+  right: 3%;
   height: 2px;
-  background-color: var(--tone-color-2);
+  background-color: #D4AF37;
   z-index: 10;
 }
 
-.theme-timeless-snapshot .backdrop-wrapper::before {
-  top: 15px;
+.theme-timeless-snapshot .backdrop-wrapper::before { top: 15px; }
+.theme-timeless-snapshot .backdrop-wrapper::after { bottom: 15px; }
+
+/* Bride content arch (used in original for couple profile) */
+.theme-timeless-snapshot .bride-content {
+  background-color: #1C1917;
+  border-radius: 500px 500px 0 0;
+  padding-top: 75px;
 }
 
-.theme-timeless-snapshot .backdrop-wrapper::after {
-  bottom: 15px;
+/* Gold divider line with trailing line (from styles.css .text-line) */
+.theme-timeless-snapshot .text-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: #FFFFFF;
 }
 
-.theme-timeless-snapshot .cover-blur-effect {
-  background: rgba(36, 32, 29, 0.75);
+.theme-timeless-snapshot .text-line::after {
+  content: "";
+  flex: 1;
+  margin-left: 10px;
+  border-bottom: 2px solid #D4AF37;
+}
+
+/* Schedule card blur glass effect */
+.theme-timeless-snapshot .schedule-card {
+  background: rgba(28, 25, 23, 0.75);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  border: 1px solid rgba(212, 175, 55, 0.2);
   border-radius: 12px;
+  padding: 20px;
 }
 
+/* Gold stamp badge (Wevitation original "Official Pass" style) */
 .theme-timeless-snapshot .retro-stamp-badge {
   display: inline-block;
-  border: 1.5px solid var(--tone-color-2);
-  color: var(--tone-color-2);
-  padding: 4px 14px;
-  font-size: 11px;
+  border: 1.5px solid #D4AF37;
+  color: #D4AF37;
+  padding: 3px 12px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  border-radius: 4px;
-  margin-bottom: 12px;
+  letter-spacing: 2.5px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+/* Gate screen dark overlay */
+.theme-timeless-snapshot .gate-screen {
+  background: #0D0C0B;
+}
+
+.theme-timeless-snapshot .gate-card-box {
+  background: rgba(28, 25, 23, 0.95);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(212, 175, 55, 0.2);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   3. TEMA 3: ELEGANT LIGHT (Cloned from Wevitation Elegant Light)
-   Source: https://www.wevitation.com/demo/elegant-light
+   THEME 3: ELEGANT LIGHT
+   Source: https://www.wevitation.com/themes/elegant-light/css/variable.css
+   Key facts:
+   - --invitation-bg: #ffffff (PURE WHITE)
+   - counter-bg: #DA6500 (deep orange), color: #000000
+   - Font: "Times New Roman" body, "Pirata One" title, "Pinyon Script" cursive
+   - Has firefly animation
+   - Very light, luxury, clean ivory-white design
    ═══════════════════════════════════════════════════════════════════ */
 .theme-elegant-light {
+  /* Exact tokens from variable.css */
+  --transition-counter-bg: #FF871F;
+  --counter-bg: #DA6500;
+  --counter-color: #000000;
+  --counter-radius: 5px;
+  --counter-line-bg: #FF871F;
+  --counter-line-size: 0.1px;
+  --invitation-bg: #FFFFFF;
+  --invitation-bg-light: #F5F8FF;
+
+  /* Extended theme vars */
   --bs-primary: #B89047;
   --bs-primary-dark: #8F6D30;
-  --bs-primary-light: #FAF6EB;
+  --bs-primary-light: #FAF6F0;
   --bs-secondary: #3B2A2A;
+  --bs-text-light: #FFFFFF;
   --text-primary: #1E1B18;
   --text-secondary: #8F6D30;
-  --invitation-bg: #FAF6F0;
-  --bg-primary: #FAF6F0;
-  --bg-secondary: #FFFFFF;
   --text-dark: #1E1B18;
-  --card-bg-translucent: rgba(255, 255, 255, 0.92);
-  --card-border: rgba(184, 144, 71, 0.35);
-  --card-shadow: 0 16px 45px rgba(184, 144, 71, 0.12);
+  --text-muted: #888;
+  --bg-primary: #FFFFFF;
+  --bg-primary-dark: #FAF6F0;
+  --bg-secondary: #FFFFFF;
+  --card-border: rgba(184, 144, 71, 0.3);
+  --card-shadow: 0 16px 40px rgba(184, 144, 71, 0.1);
+
   font-family: 'Times New Roman', Times, serif;
+  background-color: #FFFFFF;
+  color: #1E1B18;
 }
 
 .theme-elegant-light .font-title {
@@ -143,22 +237,29 @@
 }
 
 .theme-elegant-light .card-transparant {
-  background: var(--card-bg-translucent);
-  border: 1px solid var(--card-border);
-  box-shadow: 0 0 0 3px rgba(184, 144, 71, 0.08), 0 16px 40px rgba(184, 144, 71, 0.12);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(184, 144, 71, 0.25);
+  box-shadow: 0 0 0 3px rgba(184, 144, 71, 0.06), 0 16px 40px rgba(184, 144, 71, 0.1);
   border-radius: 16px;
 }
 
-.theme-elegant-light .countdown-box-outline {
-  border: 1px solid #1E1B18;
-  background: transparent;
-  padding: 10px 6px;
-  border-radius: 6px;
-  font-family: 'Times New Roman', serif;
+/* Countdown boxes: black outline (from styles.css) */
+.theme-elegant-light .countdown-badge {
+  color: #000000 !important;
+  background-color: transparent !important;
+  padding: 10px 8px;
+  border: 1px solid #000000;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
   font-weight: 700;
-  color: #1E1B18;
+  font-family: 'Times New Roman', serif;
 }
 
+/* Avatar frame with gold outline (from styles.css .bg-avatar .symbol) */
 .theme-elegant-light .royal-arch-frame {
   position: relative;
   width: 180px;
@@ -166,57 +267,120 @@
   margin: 0 auto;
   border-radius: 90px 90px 12px 12px;
   padding: 5px;
-  background: linear-gradient(135deg, #F3E5AB 0%, #B89047 50%, #AA771C 100%);
-  box-shadow: 0 12px 35px rgba(184, 144, 71, 0.25);
+  background: linear-gradient(145deg, #F3E5AB 0%, #D4AF37 40%, #AA771C 80%, #F3E5AB 100%);
+  box-shadow: 0 0 20px rgba(184, 144, 71, 0.3), 0 0 0 4px rgba(184, 144, 71, 0.15);
 }
 
 .theme-elegant-light .royal-arch-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top center;
   border-radius: 85px 85px 8px 8px;
   display: block;
 }
 
+.theme-elegant-light .gate-card-box {
+  background: #FFFFFF;
+  border: 1px solid rgba(184, 144, 71, 0.4);
+  box-shadow: 0 0 0 6px rgba(184, 144, 71, 0.08), 0 25px 60px rgba(184, 144, 71, 0.15);
+}
+
 /* ═══════════════════════════════════════════════════════════════════
-   4. TEMA 4: PHOTOVIT (Cloned from Wevitation Photovit)
-   Source: https://www.wevitation.com/demo/photovit
+   THEME 4: PHOTOVIT
+   Source: https://www.wevitation.com/themes/photovit/css/variable.css
+   Key facts:
+   - counter-bg: #5a4835 (dark brown), color: #fff
+   - Font: 'Cabin' body, 'Arizonia' title (48px cover)
+   - bg-invitation: uses /themes/photovit/img/bg-2.png texture
+   - Modal background: --bs-primary
    ═══════════════════════════════════════════════════════════════════ */
 .theme-photovit {
+  /* Exact tokens from variable.css */
+  --transition-counter-bg: #5a4835;
+  --counter-bg: #5a4835;
+  --counter-color: #FFFFFF;
+  --counter-radius: 5px;
+  --counter-line-bg: #5a4835;
+  --counter-line-size: 0.1px;
+  --invitation-bg: #FAF6F4;
+
+  /* Extended theme vars */
   --bs-primary: #2B2829;
   --bs-primary-dark: #1A1819;
   --bs-primary-light: #FDF1EF;
+  --bs-secondary: #D97768;
   --text-primary: #2B2829;
   --text-secondary: #D97768;
-  --invitation-bg: #FAF6F4;
+  --text-dark: #2B2829;
+  --text-muted: #777;
   --bg-primary: #FAF6F4;
   --bg-secondary: #FFFFFF;
-  --text-dark: #2B2829;
-  --card-bg-translucent: rgba(255, 255, 255, 0.9);
-  --card-border: rgba(217, 119, 104, 0.35);
-  --card-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  --card-border: rgba(217, 119, 104, 0.25);
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+
   font-family: 'Cabin', 'Poppins', sans-serif;
+  background-color: #FAF6F4;
+  color: #2B2829;
 }
 
 .theme-photovit .font-title {
   font-family: 'Arizonia', 'Dancing Script', cursive;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .theme-photovit .card-transparant {
-  background: var(--card-bg-translucent);
-  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(217, 119, 104, 0.2);
   border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
 }
 
+/* Magazine masthead header (photovit signature) */
 .theme-photovit .magazine-masthead {
   border-bottom: 2px solid #2B2829;
   border-top: 2px solid #2B2829;
-  padding: 8px 0;
+  padding: 7px 0;
   text-transform: uppercase;
   letter-spacing: 4px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   color: #2B2829;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+  font-family: 'Cabin', sans-serif;
+}
+
+/* Portrait frame with editorial offset-shadow */
+.theme-photovit .magazine-portrait-frame {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 8px 8px 0px rgba(43, 40, 41, 0.25);
+  border: 2px solid #2B2829;
+  margin: 0 auto;
+  max-width: 220px;
+}
+
+.theme-photovit .magazine-portrait-frame img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* Photovit cover title = 48px as per styles.css */
+.theme-photovit #cover .font-title,
+.theme-photovit #cover h2.font-title {
+  font-size: 48px !important;
+}
+
+.theme-photovit .gate-card-box {
+  background: var(--bs-primary);
+  color: #FFFFFF;
+  border: none;
+}
+
+.theme-photovit .gate-card-box .text-muted {
+  color: rgba(255, 255, 255, 0.7) !important;
 }

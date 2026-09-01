@@ -20,6 +20,7 @@ import { RSVPModal, MusicInfoModal } from './components/Modals';
 import { fetchInvitationSettings, DEFAULT_SETTINGS } from './lib/supabaseService';
 import { FullInvitationSettings } from './types';
 import './themes/themeStyles.css';
+import './themes/fireflyAnimation.css';
 
 interface ToastItem {
   id: string;
@@ -130,8 +131,8 @@ export const App: React.FC = () => {
       {/* Fixed Center Watermark Floral Background */}
       <div className="fixed-bg-center" />
 
-      {/* Fixed Botanical Corner Artwork */}
-      {flags.showBotanicalCorners !== false && (
+      {/* Fixed Botanical Corner Artwork — Classic theme only */}
+      {flags.showBotanicalCorners !== false && currentTheme === 'classic-card' && (
         <>
           <img
             src="/assets/images/corner-top-left.png"
@@ -156,6 +157,18 @@ export const App: React.FC = () => {
         />
       )}
 
+      {/* ─── Authentic Wevitation Firefly Ambient Particles ─── */}
+      {(currentTheme === 'timeless-snapshot' || currentTheme === 'elegant-light') && (
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0, position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+          <li className="firefly" />
+          <li className="firefly" />
+          <li className="firefly" />
+          <li className="firefly" />
+          <li className="firefly" />
+          <li className="firefly" />
+        </ul>
+      )}
+
       {/* ─── Desktop Left Cinematic Backdrop (Wevitation Signature Split Screen) ─── */}
       <div
         className="desktop-backdrop"
@@ -163,18 +176,8 @@ export const App: React.FC = () => {
           backgroundImage: `url(${settings.galleryImages?.[0]?.src || settings.couple?.bride?.avatar || '/assets/images/gallery-1.jpg'})`
         }}
       >
-        {/* Floating Firefly Particle Glow */}
-        <div className="firefly-wrapper">
-          <div className="firefly-particle" style={{ top: '20%', left: '30%', animationDelay: '0s' }} />
-          <div className="firefly-particle" style={{ top: '60%', left: '70%', animationDelay: '2s' }} />
-          <div className="firefly-particle" style={{ top: '80%', left: '20%', animationDelay: '4s' }} />
-          <div className="firefly-particle" style={{ top: '35%', left: '85%', animationDelay: '1.5s' }} />
-          <div className="firefly-particle" style={{ top: '50%', left: '45%', animationDelay: '3.5s' }} />
-          <div className="firefly-particle" style={{ top: '15%', left: '60%', animationDelay: '5s' }} />
-        </div>
-
         <div className="desktop-backdrop-overlay">
-          <div style={{ letterSpacing: '4px', textTransform: 'uppercase', fontSize: '13px', fontWeight: 600, opacity: 0.85, marginBottom: '12px' }}>
+          <div style={{ letterSpacing: '4px', textTransform: 'uppercase', fontSize: '13px', fontWeight: 600, opacity: 0.85, marginBottom: '12px', color: '#FFFFFF' }}>
             The Wedding of
           </div>
           <h1
@@ -188,7 +191,7 @@ export const App: React.FC = () => {
           >
             {settings.couple?.combinedTitle || INVITATION_CONFIG.couple.combinedTitle}
           </h1>
-          <div style={{ fontSize: '15px', letterSpacing: '2px', fontWeight: 600, color: 'var(--bs-primary-light)', opacity: 0.9 }}>
+          <div style={{ fontSize: '15px', letterSpacing: '2px', fontWeight: 600, color: 'rgba(255,255,255,0.85)' }}>
             {settings.formattedDate || INVITATION_CONFIG.formattedDate}
           </div>
         </div>
