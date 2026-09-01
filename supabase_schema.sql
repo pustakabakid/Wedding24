@@ -451,11 +451,25 @@ DROP POLICY IF EXISTS "Public Full Access Wishes" ON public.wishes;
 CREATE POLICY "Public Full Access Wishes" ON public.wishes FOR ALL USING (true) WITH CHECK (true);
 
 -- 7. STORAGE BUCKET UNTUK FOTO & AUDIO (wedding-media)
-INSERT INTO storage.buckets (id, name, public) 
-VALUES ('wedding-media', 'wedding-media', true)
-ON CONFLICT (id) DO UPDATE SET public = true;
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types) 
+VALUES (
+    'wedding-media', 
+    'wedding-media', 
+    true,
+    52428800, -- Limit 50MB per file
+    ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml', 'audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg']
+)
+ON CONFLICT (id) DO UPDATE SET 
+    public = true,
+    file_size_limit = 52428800;
 
+-- Hapus policy lama jika ada untuk mencegah duplikasi
 DROP POLICY IF EXISTS "Public Access Wedding Media" ON storage.objects;
-CREATE POLICY "Public Access Wedding Media" ON storage.objects
-FOR ALL USING (bucket_id = 'wedding-media')
+DROP POLICY IF EXISTS "Allow All For Wedding Media" ON storage.objects;
+
+-- Berikan izin penuh (Select, Insert, Update, Delete) untuk bucket wedding-media
+CREATE POLICY "Allow All For Wedding Media" ON storage.objects
+FOR ALL
+TO public
+USING (bucket_id = 'wedding-media')
 WITH CHECK (bucket_id = 'wedding-media');
