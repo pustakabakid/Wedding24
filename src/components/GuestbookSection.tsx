@@ -7,12 +7,14 @@ import { fetchWishes, submitWish, likeWish } from '../lib/supabaseService';
 
 interface GuestbookSectionProps {
   defaultName: string;
+  invitationId?: string;
   flags?: FeatureFlags;
   onShowToast: (msg: string, type?: 'success' | 'error') => void;
 }
 
 export const GuestbookSection: React.FC<GuestbookSectionProps> = ({
   defaultName,
+  invitationId = 'bride',
   flags,
   onShowToast
 }) => {
@@ -27,12 +29,12 @@ export const GuestbookSection: React.FC<GuestbookSectionProps> = ({
   const showWishLikes = flags ? flags.showWishLikes !== false : true;
 
   useEffect(() => {
-    fetchWishes().then((data) => {
+    fetchWishes(invitationId).then((data) => {
       if (data && data.length > 0) {
         setWishes(data);
       }
     });
-  }, []);
+  }, [invitationId]);
 
   useEffect(() => {
     if (defaultName) {
@@ -66,6 +68,7 @@ export const GuestbookSection: React.FC<GuestbookSectionProps> = ({
 
     const newWish: GuestWish = {
       id: Date.now().toString(),
+      invitation_id: invitationId,
       name: name.trim(),
       comment: comment.trim(),
       attending: attendance === 'hadir',
@@ -78,9 +81,9 @@ export const GuestbookSection: React.FC<GuestbookSectionProps> = ({
     setWishes((prev) => [newWish, ...prev]);
     setComment('');
 
-    const ok = await submitWish(name.trim(), comment.trim(), attendance);
+    const ok = await submitWish(name.trim(), comment.trim(), attendance, invitationId);
     if (ok) {
-      fetchWishes().then((data) => {
+      fetchWishes(invitationId).then((data) => {
         if (data && data.length > 0) setWishes(data);
       });
     }

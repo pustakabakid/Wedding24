@@ -1,3 +1,12 @@
+export type InvitationType = 'bride' | 'groom' | 'general';
+
+export interface WeddingRecord {
+  id: string;
+  name: string;
+  slug: string;
+  created_at?: string;
+}
+
 export interface FeatureFlags {
   // 1. Seksi Utama Undangan
   showGateCover: boolean;
@@ -54,6 +63,7 @@ export interface CoupleInfo {
 
 export interface GuestWish {
   id: string;
+  invitation_id?: string;
   name: string;
   comment: string;
   attending?: boolean;
@@ -65,6 +75,7 @@ export interface GuestWish {
 
 export interface RSVPResponse {
   name: string;
+  invitation_id?: string;
   attending: boolean;
   peopleCount: number;
   timestamp: string;
@@ -104,6 +115,7 @@ export interface BankAccount {
 
 export interface GuestItem {
   id: string;
+  invitation_id?: string;
   name: string;
   phone: string;
   slug: string;
@@ -115,6 +127,10 @@ export interface GuestItem {
 
 export interface FullInvitationSettings {
   id?: string;
+  wedding_id?: string;
+  invitation_type?: InvitationType;
+  name?: string;
+  slug?: string;
   couple: CoupleInfo;
   weddingDate: string;
   dayName: string;

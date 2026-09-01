@@ -8,6 +8,7 @@ interface RSVPModalProps {
   isOpen: boolean;
   onClose: () => void;
   guestName: string;
+  invitationId?: string;
   onShowToast: (msg: string, type?: 'success' | 'error') => void;
 }
 
@@ -15,6 +16,7 @@ export const RSVPModal: React.FC<RSVPModalProps> = ({
   isOpen,
   onClose,
   guestName,
+  invitationId = 'bride',
   onShowToast
 }) => {
   const [attending, setAttending] = useState<boolean | null>(true);
@@ -32,7 +34,7 @@ export const RSVPModal: React.FC<RSVPModalProps> = ({
       ? `Konfirmasi kehadiran (${peopleCount} orang)`
       : 'Mohon maaf belum dapat hadir, doa restu kami sampaikan untuk kedua mempelai.';
 
-    await submitWish(effectiveName, comment, willAttend ? 'hadir' : 'tidak');
+    await submitWish(effectiveName, comment, willAttend ? 'hadir' : 'tidak', invitationId);
     setIsSubmitting(false);
     setIsSubmitted(true);
     onShowToast(

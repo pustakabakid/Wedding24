@@ -27,6 +27,18 @@ interface ToastItem {
 }
 
 export const App: React.FC = () => {
+  const resolveInvitationKey = (): string => {
+    const path = window.location.pathname.toLowerCase().replace(/^\/+|\/+$/g, '');
+    const searchParams = new URLSearchParams(window.location.search);
+    const queryInv = searchParams.get('invitation') || searchParams.get('type') || searchParams.get('inv');
+
+    if (queryInv) return queryInv.toLowerCase();
+    if (path.includes('andra') || path.includes('groom') || path.includes('pria')) return 'groom';
+    if (path.includes('via') || path.includes('bride') || path.includes('wanita')) return 'bride';
+    return 'bride'; // Default fallback
+  };
+
+  const [invitationId, setInvitationId] = useState<string>(resolveInvitationKey());
   const [settings, setSettings] = useState<FullInvitationSettings>(DEFAULT_SETTINGS);
   const [isGateOpen, setIsGateOpen] = useState(false);
   const [guestName, setGuestName] = useState<string>('Lia');
@@ -42,9 +54,11 @@ export const App: React.FC = () => {
   // Smooth Momentum Scrolling & GSAP ScrollTrigger
   const { scrollTo } = useScrollAnimation(isGateOpen);
 
-  // Load Settings from Supabase / Storage
+  // Load Settings from Supabase / Storage based on invitation context
   useEffect(() => {
-    fetchInvitationSettings().then((loaded) => {
+    const activeKey = resolveInvitationKey();
+    setInvitationId(activeKey);
+    fetchInvitationSettings(activeKey).then((loaded) => {
       setSettings(loaded);
       if (!loaded.featureFlags.showGateCover) {
         setIsGateOpen(true);
@@ -155,6 +169,7 @@ export const App: React.FC = () => {
         {flags.showGuestbook && (
           <GuestbookSection
             defaultName={guestName}
+            invitationId={invitationId}
             flags={flags}
             onShowToast={showToast}
           />
@@ -180,6 +195,7 @@ export const App: React.FC = () => {
         isOpen={rsvpModalOpen}
         onClose={() => setRsvpModalOpen(false)}
         guestName={guestName}
+        invitationId={invitationId}
         onShowToast={showToast}
       />
 
