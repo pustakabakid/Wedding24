@@ -106,4 +106,6 @@ export interface FullInvitationSettings {
   bankAccounts: BankAccount[];
   galleryImages: GalleryItem[];
   featureFlags: FeatureFlags;
+  invitationUrl?: string;
+  waTemplate?: string;
 }

@@ -152,7 +152,7 @@ export const App: React.FC = () => {
             onShowToast={showToast}
           />
         )}
-        {flags.showIGStoryGenerator && <IGStoryGenerator />}
+        {flags.showIGStoryGenerator && <IGStoryGenerator settings={settings} />}
         <ClosingSection combinedTitle={settings.couple.combinedTitle} />
       </main>
 

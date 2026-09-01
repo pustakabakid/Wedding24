@@ -66,7 +66,9 @@ export async function fetchInvitationSettings(): Promise<FullInvitationSettings>
       loveStories: data.love_stories || DEFAULT_SETTINGS.loveStories,
       bankAccounts: data.bank_accounts || DEFAULT_SETTINGS.bankAccounts,
       galleryImages: data.gallery_images || DEFAULT_SETTINGS.galleryImages,
-      featureFlags: data.feature_flags || DEFAULT_SETTINGS.featureFlags
+      featureFlags: data.feature_flags || DEFAULT_SETTINGS.featureFlags,
+      invitationUrl: data.invitation_url || '',
+      waTemplate: data.wa_template || ''
     };
 
     localStorage.setItem('wedding_settings_data', JSON.stringify(settings));
