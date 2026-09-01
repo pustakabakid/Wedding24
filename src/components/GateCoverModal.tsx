@@ -22,6 +22,7 @@ export const GateCoverModal: React.FC<GateCoverModalProps> = ({
   const coupleTitle = settings?.couple?.combinedTitle || INVITATION_CONFIG.couple.combinedTitle;
   const dayName = settings?.dayName || INVITATION_CONFIG.dayName;
   const defaultGuest = settings?.defaultGuest || INVITATION_CONFIG.defaultGuest;
+  const themeId = settings?.theme_id || 'classic-card';
 
   // Format date display
   const dateObj = new Date(settings?.weddingDate || INVITATION_CONFIG.weddingDate);
@@ -30,30 +31,54 @@ export const GateCoverModal: React.FC<GateCoverModalProps> = ({
   const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
   const monthName = !isNaN(dateObj.getMonth()) ? months[dateObj.getMonth()] : INVITATION_CONFIG.monthName;
 
+  const getGateCardClass = () => {
+    if (themeId === 'elegant-light') return 'gate-card-box gold-hairline-card animate-fade-in-scale';
+    if (themeId === 'timeless-snapshot') return 'gate-card-box vintage-ticket-card animate-fade-in-scale';
+    return 'gate-card-box animate-fade-in-scale';
+  };
+
   return (
-    <div className="gate-screen">
+    <div className={`gate-screen theme-${themeId}`}>
       {/* Background couple portrait with soft opacity */}
       <div className="gate-bg-cover" />
 
-      {/* Decorative Corner Florals */}
-      <img
-        src="/assets/images/corner-top-left.png"
-        alt="Floral Corner"
-        className="fixed-corner-tl"
-      />
-      <img
-        src="/assets/images/corner-bottom-right.png"
-        alt="Floral Corner"
-        className="fixed-corner-br"
-      />
+      {/* Decorative Corner Florals (only in classic theme) */}
+      {themeId === 'classic-card' && (
+        <>
+          <img
+            src="/assets/images/corner-top-left.png"
+            alt="Floral Corner"
+            className="fixed-corner-tl"
+          />
+          <img
+            src="/assets/images/corner-bottom-right.png"
+            alt="Floral Corner"
+            className="fixed-corner-br"
+          />
+        </>
+      )}
 
       {/* Center Gate Card */}
-      <div className="gate-card-box animate-fade-in-scale">
+      <div className={getGateCardClass()} style={{ position: 'relative' }}>
+        {themeId === 'timeless-snapshot' && (
+          <>
+            <div className="washi-tape" />
+            <div className="retro-stamp-badge" style={{ marginTop: '10px' }}>VIP INVITATION</div>
+          </>
+        )}
+        {themeId === 'photovit' && <div className="magazine-masthead">The Wedding Issue</div>}
+
         <div className="text-size-content text-muted mb-1">
-          Undangan Pernikahan
+          {themeId === 'elegant-light' ? 'ROYAL WEDDING INVITATION' : 'Undangan Pernikahan'}
         </div>
 
-        <h1 className="font-title text-size-title text-primary my-2" style={{ fontSize: '38px' }}>
+        <h1
+          className="font-title text-size-title text-primary my-2"
+          style={{
+            fontSize: themeId === 'elegant-light' ? '42px' : '38px',
+            letterSpacing: themeId === 'elegant-light' ? '2px' : 'normal'
+          }}
+        >
           {coupleTitle}
         </h1>
 

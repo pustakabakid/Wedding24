@@ -1,18 +1,30 @@
 import React from 'react';
 import { Heart } from 'lucide-react';
 import { LOVE_STORIES } from '../data/invitationData';
-import { TimelineStory } from '../types';
+import { TimelineStory, ThemeId } from '../types';
 
 interface LoveStoryProps {
   loveStories?: TimelineStory[];
+  themeId?: ThemeId;
 }
 
-export const LoveStory: React.FC<LoveStoryProps> = ({ loveStories: customStories }) => {
-  const loveStories = customStories || LOVE_STORIES;
+export const LoveStory: React.FC<LoveStoryProps> = ({ loveStories: customStories, themeId = 'classic-card' }) => {
+  const loveStories: TimelineStory[] = customStories || LOVE_STORIES;
+
+  const getCardClass = () => {
+    if (themeId === 'elegant-light') return 'card-transparant gold-hairline-card';
+    if (themeId === 'timeless-snapshot') return 'card-transparant vintage-ticket-card';
+    return 'card-transparant';
+  };
 
   return (
-    <section id="lovestory" className="card-transparant">
-      <h2 className="font-title text-primary text-size-title mb-6">Kisah Cinta</h2>
+    <section id="lovestory" className={getCardClass()}>
+      {themeId === 'photovit' && <div className="magazine-masthead">Our Love Journey</div>}
+      {themeId === 'timeless-snapshot' && <div className="retro-stamp-badge">Memories &amp; Stories</div>}
+
+      <h2 className="font-title text-primary text-size-title mb-6">
+        {themeId === 'elegant-light' ? 'Untaian Kisah Kasih' : 'Kisah Cinta'}
+      </h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', textAlign: 'left' }}>
         {loveStories.map((story) => (

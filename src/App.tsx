@@ -165,6 +165,7 @@ export const App: React.FC = () => {
             couple={settings.couple}
             flags={flags}
             invitationType={settings.invitation_type || invitationId}
+            themeId={currentTheme}
           />
         )}
         {flags.showEventSchedule && (
@@ -173,9 +174,15 @@ export const App: React.FC = () => {
             liveStreamUrl={settings.liveStreamUrl}
             combinedTitle={settings.couple.combinedTitle}
             flags={flags}
+            themeId={currentTheme}
           />
         )}
-        {flags.showLoveStory && <LoveStory loveStories={settings.loveStories} />}
+        {flags.showLoveStory && (
+          <LoveStory
+            loveStories={settings.loveStories}
+            themeId={currentTheme}
+          />
+        )}
         {flags.showGallery && <GallerySection galleryImages={settings.galleryImages} />}
         {flags.showGift && (
           <GiftSection

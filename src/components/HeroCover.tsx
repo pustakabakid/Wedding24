@@ -15,13 +15,32 @@ export const HeroCover: React.FC<HeroCoverProps> = ({ guestName, settings }) => 
   const dayName = settings?.dayName || INVITATION_CONFIG.dayName;
   const formattedDateShort = settings?.formattedDateShort || INVITATION_CONFIG.formattedDateShort;
   const defaultGuest = settings?.defaultGuest || INVITATION_CONFIG.defaultGuest;
+  const themeId = settings?.theme_id || 'classic-card';
 
   const timeLeft = useCountdown(weddingDate);
 
+  const getCardClass = () => {
+    if (themeId === 'elegant-light') return 'card-transparant gold-hairline-card';
+    if (themeId === 'timeless-snapshot') return 'card-transparant vintage-ticket-card';
+    return 'card-transparant';
+  };
+
   return (
-    <section id="cover" className="card-transparant" style={{ marginTop: '20px' }}>
-      <div className="text-size-content text-muted mb-2">Undangan Pernikahan</div>
-      <h2 className="font-title text-size-title text-primary" style={{ fontSize: '36px' }}>
+    <section id="cover" className={getCardClass()} style={{ marginTop: '20px' }}>
+      {themeId === 'timeless-snapshot' && <div className="retro-stamp-badge">SAVE THE DATE</div>}
+      {themeId === 'photovit' && <div className="magazine-masthead">The Wedding Celebration</div>}
+      
+      <div className="text-size-content text-muted mb-2">
+        {themeId === 'elegant-light' ? 'THE WEDDING OF' : 'Undangan Pernikahan'}
+      </div>
+
+      <h2
+        className="font-title text-size-title text-primary"
+        style={{
+          fontSize: themeId === 'elegant-light' ? '40px' : '36px',
+          letterSpacing: themeId === 'elegant-light' ? '2px' : 'normal'
+        }}
+      >
         {combinedTitle}
       </h2>
 

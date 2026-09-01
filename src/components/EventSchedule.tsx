@@ -1,20 +1,22 @@
 import React from 'react';
 import { CalendarCheck, Navigation, Radio } from 'lucide-react';
 import { SCHEDULE_DATA, INVITATION_CONFIG } from '../data/invitationData';
-import { ScheduleItem, FeatureFlags } from '../types';
+import { ScheduleItem, FeatureFlags, ThemeId } from '../types';
 
 interface EventScheduleProps {
   schedules?: ScheduleItem[];
   liveStreamUrl?: string;
   combinedTitle?: string;
   flags?: FeatureFlags;
+  themeId?: ThemeId;
 }
 
 export const EventSchedule: React.FC<EventScheduleProps> = ({
   schedules: customSchedules,
   liveStreamUrl: customLiveStreamUrl,
   combinedTitle: customCombinedTitle,
-  flags
+  flags,
+  themeId = 'classic-card'
 }) => {
   const schedules = customSchedules || SCHEDULE_DATA;
   const liveStreamUrl = customLiveStreamUrl || INVITATION_CONFIG.liveStreamUrl;
@@ -53,10 +55,21 @@ export const EventSchedule: React.FC<EventScheduleProps> = ({
 
   const hasAnyButton = showGoogleCal || showAppleCal || showGoogleMaps || showWaze;
 
+  const getCardClass = () => {
+    if (themeId === 'elegant-light') return 'card-transparant gold-hairline-card';
+    if (themeId === 'timeless-snapshot') return 'card-transparant vintage-ticket-card';
+    return 'card-transparant';
+  };
+
   return (
     <section id="schedule">
-      <div className="card-transparant">
-        <h2 className="font-title text-primary text-size-title mb-2">Acara</h2>
+      <div className={getCardClass()}>
+        {themeId === 'photovit' && <div className="magazine-masthead">Wedding Agenda &amp; Venue</div>}
+        {themeId === 'timeless-snapshot' && <div className="retro-stamp-badge">Official Invitation Pass</div>}
+        
+        <h2 className="font-title text-primary text-size-title mb-2">
+          {themeId === 'elegant-light' ? 'Rangkaian Acara' : 'Acara'}
+        </h2>
         <p className="text-size-content text-muted mb-6">
           Kami bermaksud untuk mengundang saudara/(i) dalam acara pernikahan kami pada:
         </p>

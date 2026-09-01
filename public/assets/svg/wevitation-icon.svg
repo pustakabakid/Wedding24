@@ -1,5 +1,39 @@
-<svg width="363" height="363" viewBox="0 0 363 363" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M180.753 119.223C193.042 127.968 204.409 139.046 213.771 152.021C245.413 195.866 242.187 244.742 206.563 261.196C199.127 264.634 190.865 266.385 182.157 266.605" stroke="black" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M213.771 152.021C245.413 195.865 242.187 244.742 206.563 261.196C170.939 277.65 116.415 255.453 84.7727 211.605C53.1305 167.756 56.356 118.884 91.98 102.43C127.604 85.9755 182.134 108.177 213.771 152.021Z" stroke="#F96CB3" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M149.272 152.021C117.629 195.865 120.855 244.742 156.479 261.196C192.103 277.65 246.633 255.449 278.275 211.605C309.917 167.76 306.692 118.884 271.062 102.43C235.45 85.9755 180.914 108.177 149.272 152.021Z" stroke="#9E0050" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW 2021.5 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="1.71208in" height="1.71208in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 239.4 239.4"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil0 {fill:none}
+   ]]>
+  </style>
+   <clipPath id="id0">
+    <path d="M-0 0l239.4 0 0 239.4 -239.4 0 0 -239.4z"/>
+   </clipPath>
+    <clipPath id="id1">
+     <path d="M239.4 16.48l0 206.44 -239.4 0 0 -206.44 239.4 0z"/>
+    </clipPath>
+    <clipPath id="id2">
+     <path d="M-0 0l239.4 0 0 239.4 -239.4 0 0 -239.4z"/>
+    </clipPath>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g>
+  </g>
+  <g style="clip-path:url(#id0)">
+   <g id="_2290633785664">
+   </g>
+   <g style="clip-path:url(#id1)">
+    <image x="-17.93" y="16.48" width="275.25" height="206.44" xlink:href="wevitation-icon_Images\wevitation-icon_ImgID1.png"/>
+   </g>
+   <g style="clip-path:url(#id2)">
+   </g>
+  </g>
+  <polygon class="fil0" points="-0,0 239.4,0 239.4,239.4 -0,239.4 "/>
+ </g>
 </svg>
