@@ -94,7 +94,7 @@ body:has(.theme-photovit) {
   z-index: 1;
 }
 
-/* App Container Layout & Split Screen Engine */
+/* ─── App Layout & Split-Screen Engine ─── */
 .app-viewport {
   position: relative;
   min-height: 100vh;
@@ -103,10 +103,52 @@ body:has(.theme-photovit) {
   z-index: 2;
 }
 
+/* Desktop backdrop hidden on mobile */
 .desktop-backdrop {
   display: none;
 }
 
+/* ─── Mobile / Tablet (< 960px) ─── */
+@media (max-width: 959px) {
+  .app-viewport {
+    background: var(--invitation-bg, #F4F7FB);
+  }
+  .invitation-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 12px 100px 12px !important;
+    margin: 0 auto !important;
+    box-shadow: none !important;
+  }
+  /* Fixed corners smaller on mobile */
+  .fixed-corner-tl,
+  .fixed-corner-br {
+    width: min(160px, 35vw) !important;
+  }
+  /* Floating navbar closer to center on narrow screens */
+  .floating-navbar {
+    max-width: calc(100vw - 32px);
+  }
+}
+
+/* ─── Small phones (< 375px) ─── */
+@media (max-width: 374px) {
+  .invitation-container {
+    padding: 0 8px 100px 8px !important;
+  }
+  .card-transparant {
+    padding: 24px 14px !important;
+  }
+  .font-title {
+    font-size: clamp(22px, 6vw, 32px) !important;
+  }
+  .gate-card-box {
+    padding: 32px 18px !important;
+  }
+}
+
+/* ─── Desktop Split Screen (≥ 960px) ─── */
 @media (min-width: 960px) {
   .app-viewport {
     display: flex;
@@ -154,9 +196,23 @@ body:has(.theme-photovit) {
     box-shadow: -12px 0 45px rgba(0, 0, 0, 0.45);
     z-index: 3;
     position: relative;
+    padding: 0 20px 120px 20px !important;
   }
 }
 
+/* ─── Wide Desktop (≥ 1280px) ─── */
+@media (min-width: 1280px) {
+  .invitation-container {
+    width: 520px !important;
+    min-width: 520px !important;
+    max-width: 520px !important;
+  }
+  .desktop-backdrop {
+    width: calc(100vw - 520px);
+  }
+}
+
+/* ─── Base invitation-container (mobile default) ─── */
 .invitation-container {
   width: 100%;
   max-width: 520px;
@@ -165,6 +221,7 @@ body:has(.theme-photovit) {
   display: flex;
   flex-direction: column;
   position: relative;
+  margin: 0 auto;
 }
 
 /* Typography Utilities */

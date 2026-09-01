@@ -554,3 +554,275 @@
 .animate-pulse-soft {
   animation: pulseSoft 2.5s ease-in-out infinite;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   RESPONSIVE OVERRIDES  ─ All Themes, All Screen Sizes
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Small phones (< 375px) ── */
+@media (max-width: 374px) {
+
+  /* Gate card tighter */
+  .gate-card-box {
+    padding: 28px 16px !important;
+    border-radius: 20px !important;
+  }
+
+  /* Polaroid frame smaller */
+  .polaroid-frame {
+    max-width: 140px;
+    padding: 7px 7px 26px 7px;
+  }
+  .polaroid-caption { font-size: 13px; }
+
+  /* Royal arch frame smaller */
+  .royal-arch-frame {
+    width: 120px !important;
+    height: 155px !important;
+    border-radius: 60px 60px 8px 8px !important;
+  }
+  .royal-arch-frame img {
+    border-radius: 56px 56px 5px 5px !important;
+  }
+
+  /* Magazine frame smaller */
+  .magazine-portrait-frame {
+    max-width: 140px !important;
+  }
+
+  /* Magazine masthead tighter */
+  .magazine-masthead {
+    font-size: 9px !important;
+    letter-spacing: 2px !important;
+  }
+
+  /* Gold hairline inner lines clip */
+  .gold-hairline-card::before { top: 8px; left: 8px; right: 8px; }
+  .gold-hairline-card::after  { bottom: 8px; left: 8px; right: 8px; }
+
+  /* Countdown grid tighter */
+  #countdown {
+    gap: 6px !important;
+    max-width: 280px !important;
+  }
+  .countdown-box {
+    font-size: 16px !important;
+    padding: 8px 2px !important;
+    min-width: 42px !important;
+  }
+
+  /* Stamp badge smaller */
+  .retro-stamp-badge {
+    font-size: 8px !important;
+    letter-spacing: 2px !important;
+    padding: 2px 10px !important;
+  }
+}
+
+/* ── Mobile (375px – 959px) ── */
+@media (min-width: 375px) and (max-width: 959px) {
+
+  /* Polaroid frame — natural size, prevent overflow */
+  .polaroid-frame {
+    max-width: min(180px, 45vw);
+  }
+
+  /* Royal arch frame — fluid width */
+  .royal-arch-frame {
+    width: clamp(130px, 38vw, 160px) !important;
+    height: clamp(168px, 48vw, 205px) !important;
+  }
+  .royal-arch-frame img {
+    border-radius: clamp(65px, 18vw, 76px) clamp(65px, 18vw, 76px) 8px 8px !important;
+  }
+
+  /* Magazine portrait fluid */
+  .magazine-portrait-frame {
+    max-width: min(190px, 50vw) !important;
+  }
+
+  /* Countdown: slightly larger for readability */
+  .countdown-box {
+    font-size: 18px !important;
+    min-width: 48px !important;
+  }
+
+  /* Retro stamp badge */
+  .retro-stamp-badge {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+  }
+
+  /* Gold hairline card inner lines */
+  .gold-hairline-card::before { top: 10px; left: 10px; right: 10px; }
+  .gold-hairline-card::after  { bottom: 10px; left: 10px; right: 10px; }
+
+  /* Firefly particles: size to viewport */
+  .firefly {
+    width: 0.6vw !important;
+    height: 0.6vw !important;
+  }
+}
+
+/* ── Tablet (600px – 959px) ── */
+@media (min-width: 600px) and (max-width: 959px) {
+  .invitation-container {
+    max-width: 480px !important;
+  }
+
+  /* Polaroid side by side on tablet */
+  .polaroid-frame {
+    max-width: 200px;
+  }
+
+  /* Royal arch slightly bigger on tablet */
+  .royal-arch-frame {
+    width: 150px !important;
+    height: 192px !important;
+  }
+
+  /* Magazine portrait fills nicely */
+  .magazine-portrait-frame {
+    max-width: 210px !important;
+  }
+}
+
+/* ── Desktop (≥ 960px) ── */
+@media (min-width: 960px) {
+
+  /* Polaroid normal size */
+  .polaroid-frame {
+    max-width: 200px;
+  }
+
+  /* Royal arch standard */
+  .royal-arch-frame {
+    width: 160px !important;
+    height: 205px !important;
+  }
+
+  /* Magazine portrait standard */
+  .magazine-portrait-frame {
+    max-width: 220px !important;
+  }
+
+  /* Magazine masthead full letterspace */
+  .magazine-masthead {
+    letter-spacing: 4px;
+    font-size: 10px;
+  }
+
+  /* Firefly: desktop size, subtle */
+  .firefly {
+    width: 0.4vw;
+    height: 0.4vw;
+  }
+
+  /* Photovit cover title 48px only on desktop */
+  .theme-photovit #cover h2.font-title {
+    font-size: 48px !important;
+  }
+
+  /* Elegant title on desktop */
+  .theme-elegant-light #cover h2.font-title {
+    font-size: 40px !important;
+  }
+}
+
+/* ── Extra Wide (≥ 1280px) ── */
+@media (min-width: 1280px) {
+  .polaroid-frame { max-width: 220px; }
+  .royal-arch-frame {
+    width: 180px !important;
+    height: 230px !important;
+  }
+  .magazine-portrait-frame { max-width: 240px !important; }
+}
+
+/* ─── Fluid Typography (all themes) ─── */
+/* Couple names scale fluidly on mobile */
+.card-transparant h2.font-title,
+.card-transparant h3.font-title {
+  font-size: clamp(22px, 5vw, 36px);
+}
+/* Gate title scales down on very narrow screens */
+.gate-card-box h1.font-title {
+  font-size: clamp(26px, 7vw, 40px);
+}
+
+/* ─── Avatar wrapper responsive ─── */
+.avatar-wrapper {
+  width: clamp(110px, 35vw, 150px) !important;
+  height: clamp(110px, 35vw, 150px) !important;
+}
+
+/* ─── Gallery responsive ─── */
+@media (max-width: 480px) {
+  /* Gallery thumbnails scroll row */
+  .gallery-thumbnails {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 6px;
+    padding-bottom: 4px;
+  }
+}
+
+/* ─── Washi tape responsive ─── */
+@media (max-width: 480px) {
+  .washi-tape {
+    width: 44px;
+    height: 16px;
+  }
+}
+
+/* ─── Gold hairline card: prevent overflow on small screens ─── */
+@media (max-width: 480px) {
+  .gold-hairline-card {
+    box-shadow: 0 0 0 3px rgba(184,144,71,0.05), 0 8px 24px rgba(184,144,71,0.1) !important;
+  }
+}
+
+/* ─── Magazine masthead mobile ─── */
+@media (max-width: 480px) {
+  .magazine-masthead {
+    letter-spacing: 2px !important;
+    font-size: 9px !important;
+    padding: 5px 0 !important;
+  }
+}
+
+/* ─── Sparator line responsive ─── */
+@media (max-width: 480px) {
+  .sparator-line {
+    width: 90%;
+  }
+}
+
+/* ─── Floating Navbar: always centered, correct width ─── */
+@media (max-width: 480px) {
+  .floating-navbar {
+    padding: 4px 8px;
+    gap: 4px;
+    bottom: 12px;
+  }
+  .nav-link-btn {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+/* ─── Gate screen: full coverage, no overflow ─── */
+.gate-screen {
+  /* Prevent scrollbar on gate screen */
+  overflow: hidden;
+}
+@media (max-width: 480px) {
+  .gate-card-box {
+    max-width: calc(100vw - 32px) !important;
+    border-radius: 20px !important;
+  }
+}
+
