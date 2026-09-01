@@ -80,7 +80,7 @@ export const GiftSection: React.FC<GiftSectionProps> = ({
         {/* Collapsible Bank Account Cards */}
         {isGiftOpen && (
           <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '16px' }}>
-          {BANK_ACCOUNTS.map((bank) => (
+          {bankAccounts.map((bank) => (
             <div
               key={bank.accountNumber}
               style={{
@@ -176,7 +176,7 @@ export const GiftSection: React.FC<GiftSectionProps> = ({
         <div className="modal-overlay" onClick={() => setShowQRModal(false)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <div className="modal-title">QRIS Bank BCA</div>
+              <div className="modal-title">QRIS {bankAccounts[0]?.bankName || 'Digital'}</div>
               <button onClick={() => setShowQRModal(false)} className="modal-close-btn">
                 ✕
               </button>

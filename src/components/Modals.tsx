@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, CheckCircle, AlertCircle, Music as MusicIcon, Play, Pause } from 'lucide-react';
 import { INVITATION_CONFIG } from '../data/invitationData';
+import { submitWish } from '../lib/supabaseService';
 
 // 1. RSVP Attendance Modal
 interface RSVPModalProps {
@@ -19,13 +20,34 @@ export const RSVPModal: React.FC<RSVPModalProps> = ({
   const [attending, setAttending] = useState<boolean | null>(true);
   const [peopleCount, setPeopleCount] = useState<number>(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
 
+  const handleResponse = async (willAttend: boolean) => {
+    setIsSubmitting(true);
+    setAttending(willAttend);
+    const effectiveName = guestName || INVITATION_CONFIG.defaultGuest;
+    const comment = willAttend
+      ? `Konfirmasi kehadiran (${peopleCount} orang)`
+      : 'Mohon maaf belum dapat hadir, doa restu kami sampaikan untuk kedua mempelai.';
+
+    await submitWish(effectiveName, comment, willAttend ? 'hadir' : 'tidak');
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+    onShowToast(
+      willAttend
+        ? `Tersimpan: Konfirmasi Hadir (${peopleCount} orang)`
+        : 'Tersimpan: Konfirmasi Tidak Hadir',
+      willAttend ? 'success' : 'error'
+    );
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    onShowToast('Konfirmasi kehadiran Anda telah tersimpan!', 'success');
+    if (attending !== null) {
+      handleResponse(attending);
+    }
   };
 
   return (
@@ -124,38 +146,34 @@ export const RSVPModal: React.FC<RSVPModalProps> = ({
           <div style={{ display: 'flex', gap: '10px', marginTop: '24px' }}>
             <button
               type="button"
-              onClick={() => {
-                setAttending(true);
-                setIsSubmitted(true);
-                onShowToast('Tersimpan: Akan Hadir (' + peopleCount + ' orang)', 'success');
-              }}
+              disabled={isSubmitting}
+              onClick={() => handleResponse(true)}
               className="btn"
               style={{
                 flex: 1,
                 backgroundColor: '#373a38',
                 color: '#ffffff',
-                borderRadius: '8px'
+                borderRadius: '8px',
+                opacity: isSubmitting ? 0.7 : 1
               }}
             >
-              Hadir
+              {isSubmitting && attending === true ? 'Menyimpan...' : 'Hadir'}
             </button>
 
             <button
               type="button"
-              onClick={() => {
-                setAttending(false);
-                setIsSubmitted(true);
-                onShowToast('Tersimpan: Tidak Hadir', 'error');
-              }}
+              disabled={isSubmitting}
+              onClick={() => handleResponse(false)}
               className="btn"
               style={{
                 flex: 1,
                 backgroundColor: '#ef4444',
                 color: '#ffffff',
-                borderRadius: '8px'
+                borderRadius: '8px',
+                opacity: isSubmitting ? 0.7 : 1
               }}
             >
-              Tidak Hadir
+              {isSubmitting && attending === false ? 'Menyimpan...' : 'Tidak Hadir'}
             </button>
 
             <button
