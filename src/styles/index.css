@@ -1,7 +1,12 @@
 @import './tokens.css';
 @import './animations.css';
 
-* {
+/* ─────────────────────────────────────────────────────────────────
+   Global Reset & Base
+   ─────────────────────────────────────────────────────────────────*/
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -9,28 +14,44 @@
 
 html {
   scroll-behavior: smooth;
-  color-scheme: light only;
 }
 
+/* Body: base styles — theme-specific backgrounds managed by .theme-* classes */
 body {
   font-family: var(--font-body);
   font-size: var(--font3);
   color: var(--text-dark);
-  background-color: var(--invitation-bg);
-  background-image: 
+  background-color: var(--invitation-bg, #F4F7FB);
+  background-image: none;
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s ease;
+}
+
+/* Classic-card body: restore watercolor background */
+body:has(.theme-classic-card) {
+  background-image:
     url('/assets/images/watercolor-top-right.png'),
     url('/assets/images/watercolor-bottom-left.png');
   background-size: min(400px, 45vw), min(400px, 45vw);
   background-repeat: no-repeat, no-repeat;
   background-position: top right, bottom left;
   background-attachment: fixed;
-  min-height: 100vh;
-  overflow-x: hidden;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
 }
 
-/* Fixed Botanical Watermark & Corners */
+/* Timeless Snapshot: pure black body */
+body:has(.theme-timeless-snapshot) {
+  background-color: #0D0C0B;
+}
+
+/* Photovit: warm off-white body */
+body:has(.theme-photovit) {
+  background-color: #FAF6F4;
+}
+
+/* Fixed Botanical Watermark — Only visible in classic-card theme */
 .fixed-bg-center {
   position: fixed;
   top: 50%;
@@ -45,6 +66,14 @@ body {
   opacity: 0.12;
   pointer-events: none;
   z-index: 0;
+  display: block;
+}
+
+/* Hide watermark for non-classic themes */
+.theme-timeless-snapshot .fixed-bg-center,
+.theme-elegant-light .fixed-bg-center,
+.theme-photovit .fixed-bg-center {
+  display: none;
 }
 
 .fixed-corner-tl {
@@ -539,13 +568,9 @@ textarea.form-control {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background-color: var(--invitation-bg);
-  background-image: 
-    url('/assets/images/watercolor-top-right.png'),
-    url('/assets/images/watercolor-bottom-left.png');
-  background-size: min(400px, 45vw), min(400px, 45vw);
-  background-repeat: no-repeat, no-repeat;
-  background-position: top right, bottom left;
+  /* Base: uses --invitation-bg from active theme; overridden by theme-specific CSS */
+  background-color: var(--invitation-bg, #F4F7FB);
+  background-image: none; /* Removed global watercolor — only classic-card uses it */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -553,6 +578,16 @@ textarea.form-control {
   padding: 20px;
   overflow: hidden;
   transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Classic-card theme: restore watercolor BG images */
+.gate-screen.theme-classic-card {
+  background-image:
+    url('/assets/images/watercolor-top-right.png'),
+    url('/assets/images/watercolor-bottom-left.png');
+  background-size: min(400px, 45vw), min(400px, 45vw);
+  background-repeat: no-repeat, no-repeat;
+  background-position: top right, bottom left;
 }
 
 .gate-screen.hidden {
@@ -574,8 +609,9 @@ textarea.form-control {
 .gate-card-box {
   position: relative;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: 28px;
   padding: 44px 28px;
   text-align: center;

@@ -1,7 +1,6 @@
 import React from 'react';
 import { MailOpen } from 'lucide-react';
 import { INVITATION_CONFIG } from '../data/invitationData';
-
 import { FullInvitationSettings } from '../types';
 
 interface GateCoverModalProps {
@@ -20,126 +19,112 @@ export const GateCoverModal: React.FC<GateCoverModalProps> = ({
   if (!isOpen) return null;
 
   const coupleTitle = settings?.couple?.combinedTitle || INVITATION_CONFIG.couple.combinedTitle;
-  const dayName = settings?.dayName || INVITATION_CONFIG.dayName;
-  const defaultGuest = settings?.defaultGuest || INVITATION_CONFIG.defaultGuest;
-  const themeId = settings?.theme_id || 'classic-card';
+  const dayName     = settings?.dayName || INVITATION_CONFIG.dayName;
+  const themeId     = settings?.theme_id || 'classic-card';
 
-  // Format date display
-  const dateObj = new Date(settings?.weddingDate || INVITATION_CONFIG.weddingDate);
+  // Date parsing
+  const dateObj    = new Date(settings?.weddingDate || INVITATION_CONFIG.weddingDate);
   const dateNumber = !isNaN(dateObj.getDate()) ? String(dateObj.getDate()).padStart(2, '0') : INVITATION_CONFIG.dateNumber;
-  const year = !isNaN(dateObj.getFullYear()) ? String(dateObj.getFullYear()) : INVITATION_CONFIG.year;
-  const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-  const monthName = !isNaN(dateObj.getMonth()) ? months[dateObj.getMonth()] : INVITATION_CONFIG.monthName;
+  const year       = !isNaN(dateObj.getFullYear()) ? String(dateObj.getFullYear()) : INVITATION_CONFIG.year;
+  const months     = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const monthName  = !isNaN(dateObj.getMonth()) ? months[dateObj.getMonth()] : INVITATION_CONFIG.monthName;
 
-  const getGateCardClass = () => {
-    if (themeId === 'elegant-light') return 'gate-card-box gold-hairline-card animate-fade-in-scale';
-    if (themeId === 'timeless-snapshot') return 'gate-card-box vintage-ticket-card animate-fade-in-scale';
-    return 'gate-card-box animate-fade-in-scale';
-  };
+  const isTimeless = themeId === 'timeless-snapshot';
+  const isElegant  = themeId === 'elegant-light';
+  const isPhotovit = themeId === 'photovit';
+
+  // Date separators colors per theme
+  const dateSeparatorColor = isTimeless ? '#D4AF37' : isPhotovit ? 'rgba(255,255,255,0.4)' : '#2B2B2B';
+  const dateNumColor       = isTimeless || isPhotovit ? '#FFFFFF' : 'var(--text-dark)';
+  const dateSubColor       = isTimeless || isPhotovit ? 'rgba(255,255,255,0.7)' : 'var(--text-muted)';
 
   return (
     <div className={`gate-screen theme-${themeId}`}>
-      {/* Background couple portrait with soft opacity */}
+      {/* Soft photo backdrop */}
       <div className="gate-bg-cover" />
 
-      {/* Decorative Corner Florals (only in classic theme) */}
+      {/* Classic theme: botanical corners */}
       {themeId === 'classic-card' && (
         <>
-          <img
-            src="/assets/images/corner-top-left.png"
-            alt="Floral Corner"
-            className="fixed-corner-tl"
-          />
-          <img
-            src="/assets/images/corner-bottom-right.png"
-            alt="Floral Corner"
-            className="fixed-corner-br"
-          />
+          <img src="/assets/images/corner-top-left.png" alt="" className="fixed-corner-tl" />
+          <img src="/assets/images/corner-bottom-right.png" alt="" className="fixed-corner-br" />
         </>
       )}
 
-      {/* Center Gate Card */}
-      <div className={getGateCardClass()} style={{ position: 'relative' }}>
-        {themeId === 'timeless-snapshot' && (
+      {/* ── Gate Card ── */}
+      <div className="gate-card-box animate-fade-in-scale" style={{ position: 'relative' }}>
+
+        {/* Theme-specific top decorations */}
+        {isTimeless && (
           <>
             <div className="washi-tape" />
-            <div className="retro-stamp-badge" style={{ marginTop: '10px' }}>VIP INVITATION</div>
+            <div className="retro-stamp-badge" style={{ marginTop: '12px', color: '#D4AF37', borderColor: '#D4AF37' }}>
+              VIP INVITATION
+            </div>
           </>
         )}
-        {themeId === 'photovit' && <div className="magazine-masthead">The Wedding Issue</div>}
+        {isPhotovit && <div className="magazine-masthead" style={{ color: '#FFFFFF', borderColor: '#FFFFFF' }}>The Wedding Issue</div>}
+        {isElegant && (
+          <div style={{ fontSize: '10px', letterSpacing: '4px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--bs-primary)', marginBottom: '8px' }}>
+            Royal Wedding Invitation
+          </div>
+        )}
 
-        <div className="text-size-content text-muted mb-1">
-          {themeId === 'elegant-light' ? 'ROYAL WEDDING INVITATION' : 'Undangan Pernikahan'}
+        {/* Subtitle */}
+        <div
+          className="text-size-content text-muted mb-1"
+          style={{ letterSpacing: isElegant ? '2px' : '0' }}
+        >
+          {isElegant ? 'THE WEDDING OF' : 'Undangan Pernikahan'}
         </div>
 
+        {/* Couple title */}
         <h1
-          className="font-title text-size-title text-primary my-2"
+          className="font-title text-primary my-2"
           style={{
-            fontSize: themeId === 'elegant-light' ? '42px' : '38px',
-            letterSpacing: themeId === 'elegant-light' ? '2px' : 'normal'
+            fontSize: isElegant ? '40px' : isPhotovit ? '38px' : '36px',
+            letterSpacing: isElegant ? '2px' : 'normal',
+            lineHeight: 1.2
           }}
         >
           {coupleTitle}
         </h1>
 
-        {/* Date Box */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '28px 0',
-            gap: '12px'
-          }}
-        >
-          <div style={{ textAlign: 'right', flex: 1, fontSize: '15px', fontWeight: 500 }}>
+        {/* Date display */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '24px 0', gap: '12px' }}>
+          <div style={{ textAlign: 'right', flex: 1, fontSize: '14px', fontWeight: 500, color: isTimeless || isPhotovit ? 'rgba(255,255,255,0.8)' : 'var(--text-dark)' }}>
             {dayName}
           </div>
-          <div
-            style={{
-              padding: '0 16px',
-              borderLeft: '2px solid #2B2B2B',
-              borderRight: '2px solid #2B2B2B',
-              textAlign: 'center'
-            }}
-          >
-            <div style={{ fontSize: '26px', fontWeight: 800, lineHeight: 1 }}>
-              {dateNumber}
-            </div>
-            <div style={{ fontSize: '13px', marginTop: '4px', fontWeight: 600 }}>
-              {year}
-            </div>
+          <div style={{ padding: '0 14px', borderLeft: `2px solid ${dateSeparatorColor}`, borderRight: `2px solid ${dateSeparatorColor}`, textAlign: 'center' }}>
+            <div style={{ fontSize: '26px', fontWeight: 800, lineHeight: 1, color: dateNumColor }}>{dateNumber}</div>
+            <div style={{ fontSize: '12px', marginTop: '4px', fontWeight: 600, color: dateSubColor }}>{year}</div>
           </div>
-          <div style={{ textAlign: 'left', flex: 1, fontSize: '15px', fontWeight: 500 }}>
+          <div style={{ textAlign: 'left', flex: 1, fontSize: '14px', fontWeight: 500, color: isTimeless || isPhotovit ? 'rgba(255,255,255,0.8)' : 'var(--text-dark)' }}>
             {monthName}
           </div>
         </div>
 
-        {/* Guest Designation */}
-        <div style={{ marginTop: '24px', marginBottom: '24px' }}>
-          <div style={{ fontSize: '13px', color: '#666' }}>Kepada:</div>
-          <div
-            style={{
-              fontSize: '18px',
-              fontWeight: 700,
-              color: 'var(--text-dark)',
-              marginTop: '4px'
-            }}
-          >
+        {/* Guest */}
+        <div style={{ marginTop: '16px', marginBottom: '24px' }}>
+          <div style={{ fontSize: '12px', color: isTimeless || isPhotovit ? 'rgba(255,255,255,0.5)' : '#999' }}>Kepada:</div>
+          <div style={{ fontSize: '18px', fontWeight: 700, color: isTimeless || isPhotovit ? '#FFFFFF' : 'var(--text-dark)', marginTop: '4px' }}>
             {guestName || INVITATION_CONFIG.defaultGuest}
           </div>
         </div>
 
-        {/* Open Invitation CTA */}
+        {/* CTA Button */}
         <button
           onClick={onOpenInvitation}
           className="btn btn-primary animate-pulse-soft"
           style={{
-            padding: '12px 28px',
+            padding: '12px 32px',
             fontSize: '15px',
-            borderRadius: '24px',
+            borderRadius: isElegant ? '30px' : isPhotovit ? '8px' : '24px',
             margin: '0 auto',
-            boxShadow: '0 8px 24px rgba(75, 107, 153, 0.35)'
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            letterSpacing: isElegant ? '1px' : '0'
           }}
         >
           <MailOpen size={18} />

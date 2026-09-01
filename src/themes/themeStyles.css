@@ -1,367 +1,464 @@
 /* ═══════════════════════════════════════════════════════════════════
-   WEVITATION 1:1 AUTHENTIC THEME ENGINE
-   CSS Variables & Styles Cloned Precisely from Official Wevitation Sources:
-   - timeless-snapshot: variable.css, styles.css, bg-animation.css
-   - elegant-light: variable.css, styles.css, bg-animation.css
-   - photovit: variable.css, styles.css
+   WEVITATION AUTHENTIC MULTI-THEME ENGINE  ─ v2.0 LAUNCH-READY
+   Cloned & adapted from official Wevitation theme sources:
+   · timeless-snapshot/variable.css  ·  timeless-snapshot/styles.css
+   · elegant-light/variable.css      ·  elegant-light/styles.css
+   · photovit/variable.css           ·  photovit/styles.css
    ═══════════════════════════════════════════════════════════════════ */
 
+
 /* ═══════════════════════════════════════════════════════════════════
-   THEME 1: CLASSIC CARD (Default — Wevitation Classic-Card Style)
+   THEME 1 ─ CLASSIC CARD  (default)
+   Aesthetic: Clean modern card, botanical watercolor, blue-ivory
    ═══════════════════════════════════════════════════════════════════ */
 .theme-classic-card {
   --bs-primary: #4B6B99;
+  --bs-primary-hover: #5d7697;
   --bs-primary-dark: #37537a;
-  --bs-primary-light: #EBF1F8;
-  --text-dark: #202b38;
-  --text-muted: #888;
+  --bs-primary-light: #d6e1f1;
+  --bs-secondary: #BC97C9;
   --invitation-bg: #F4F7FB;
   --bg-primary: #F4F7FB;
   --bg-secondary: rgba(255,255,255,0.72);
-  --card-border: rgba(255, 255, 255, 0.85);
-  --card-shadow: 0 16px 40px rgba(75, 107, 153, 0.12);
+  --text-dark: #202b38;
+  --text-muted: #6c757d;
   --counter-bg: #4B6B99;
   --counter-color: #FFFFFF;
   --counter-radius: 12px;
+  --card-bg: rgba(255,255,255,0.88);
+  --card-radius: 30px;
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
-
 .theme-classic-card .font-title {
-  font-family: 'Philosopher', serif;
+  font-family: 'Philosopher', 'Great Vibes', serif;
+}
+.theme-classic-card .invitation-container {
+  background-color: #F4F7FB;
 }
 
-.theme-classic-card .card-transparant {
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 0 8px 32px rgba(75, 107, 153, 0.1);
-}
 
 /* ═══════════════════════════════════════════════════════════════════
-   THEME 2: TIMELESS SNAPSHOT
-   Source: https://www.wevitation.com/themes/timeless-snapshot/css/variable.css
-   Key facts:
-   - --invitation-bg: #000 (DARK BLACK)
-   - Firefly animation kunang-kunang (12 elemen li.firefly)
-   - Font: Montserrat body, Philosopher title
-   - Background: pitch-dark with gold accents
-   - counter: bg #E8D9C4 (cream), color #7C151D (dark red)
+   THEME 2 ─ TIMELESS SNAPSHOT
+   Aesthetic: Vintage dark film photography, gold accents, polaroid
+   variable.css facts: --invitation-bg:#000, counter #E8D9C4/#7C151D
+   Body font: Montserrat  Title font: Philosopher
    ═══════════════════════════════════════════════════════════════════ */
 .theme-timeless-snapshot {
-  /* Exact tokens from variable.css */
   --transition-counter-bg: #E8D9C4;
   --counter-bg: #EDEAA1;
   --counter-color: #7C151D;
   --counter-radius: 5px;
   --counter-line-bg: #E8D9C4;
-  --counter-line-size: 0.1px;
   --invitation-bg: #0D0C0B;
-  --invitation-bg-light: #F5F8FF;
-
-  /* Extended theme vars */
+  --invitation-bg-light: #1C1917;
   --bs-primary: #D4AF37;
+  --bs-primary-hover: #c09b2a;
   --bs-primary-dark: #9B7B28;
   --bs-primary-light: #1C1917;
   --bs-secondary: #8C6D53;
-  --bs-text-light: #FFFFFF;
-  --text-primary: #FFFFFF;
-  --text-secondary: #D4AF37;
   --text-dark: #F5F0E8;
-  --text-muted: rgba(255, 255, 255, 0.6);
-  --tone-color-1: #8C6D53;
-  --tone-color-2: #D4AF37;
-  --tone-color-3: #FFFFFF;
-  --tone-color-4: #4A3E39;
-  --tone-color-5: #0D0C0B;
+  --text-muted: rgba(255,255,255,0.55);
   --bg-primary: #0D0C0B;
   --bg-secondary: #1C1917;
-  --bg-welcome-color: rgba(13, 12, 11, 0.7);
-  --card-border: rgba(212, 175, 55, 0.25);
-  --card-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-
-  font-family: 'Montserrat', sans-serif;
+  --card-bg: rgba(28,25,23,0.9);
+  --card-radius: 16px;
+  font-family: 'Montserrat', 'Poppins', sans-serif;
   background-color: #0D0C0B;
-  color: #FFFFFF;
+  color: #F5F0E8;
 }
-
 .theme-timeless-snapshot .font-title {
-  font-family: 'Philosopher', serif;
+  font-family: 'Philosopher', Georgia, serif;
   letter-spacing: 0.5px;
 }
-
-/* Override invitation viewport background to pure black */
 .theme-timeless-snapshot .invitation-container {
   background-color: #0D0C0B;
 }
-
-/* Override body background for theme */
+/* Override card for dark background */
 .theme-timeless-snapshot .card-transparant {
-  background: rgba(28, 25, 23, 0.88);
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  background: rgba(28,25,23,0.92) !important;
+  border: 1px solid rgba(212,175,55,0.22) !important;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6) !important;
+  color: #F5F0E8;
 }
-
-.theme-timeless-snapshot .text-muted {
-  color: rgba(255, 255, 255, 0.6) !important;
+/* All text inside dark cards */
+.theme-timeless-snapshot .text-muted,
+.theme-timeless-snapshot .text-size-caption {
+  color: rgba(255,255,255,0.55) !important;
 }
-
 .theme-timeless-snapshot .text-primary {
   color: #D4AF37 !important;
 }
 
-/* Authentic Timeless-snapshot backdrop wrapper with gold hairlines */
-.theme-timeless-snapshot .backdrop-wrapper {
-  position: relative;
+/* ── Countdown Boxes ── */
+.theme-timeless-snapshot .countdown-box {
+  background-color: #EDEAA1 !important;
+  color: #7C151D !important;
+  border-radius: 5px !important;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.4) !important;
+}
+.theme-timeless-snapshot .countdown-label {
+  color: #E8D9C4 !important;
+}
+
+/* ── Retro Stamp Badge ── */
+.retro-stamp-badge {
   display: inline-block;
-  overflow: hidden;
-}
-
-.theme-timeless-snapshot .backdrop-wrapper::before,
-.theme-timeless-snapshot .backdrop-wrapper::after {
-  content: "";
-  position: absolute;
-  left: 3%;
-  right: 3%;
-  height: 2px;
-  background-color: #D4AF37;
-  z-index: 10;
-}
-
-.theme-timeless-snapshot .backdrop-wrapper::before { top: 15px; }
-.theme-timeless-snapshot .backdrop-wrapper::after { bottom: 15px; }
-
-/* Bride content arch (used in original for couple profile) */
-.theme-timeless-snapshot .bride-content {
-  background-color: #1C1917;
-  border-radius: 500px 500px 0 0;
-  padding-top: 75px;
-}
-
-/* Gold divider line with trailing line (from styles.css .text-line) */
-.theme-timeless-snapshot .text-line {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  color: #FFFFFF;
-}
-
-.theme-timeless-snapshot .text-line::after {
-  content: "";
-  flex: 1;
-  margin-left: 10px;
-  border-bottom: 2px solid #D4AF37;
-}
-
-/* Schedule card blur glass effect */
-.theme-timeless-snapshot .schedule-card {
-  background: rgba(28, 25, 23, 0.75);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  border-radius: 12px;
-  padding: 20px;
-}
-
-/* Gold stamp badge (Wevitation original "Official Pass" style) */
-.theme-timeless-snapshot .retro-stamp-badge {
-  display: inline-block;
-  border: 1.5px solid #D4AF37;
+  border: 1.5px solid currentColor;
   color: #D4AF37;
-  padding: 3px 12px;
+  padding: 3px 14px;
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 2.5px;
+  letter-spacing: 3px;
   border-radius: 3px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  font-family: 'Montserrat', sans-serif;
 }
 
-/* Gate screen dark overlay */
+/* ── Polaroid Frame (Timeless Snapshot) ── */
+.polaroid-frame {
+  position: relative;
+  display: inline-block;
+  background: #F9F4EA;
+  padding: 10px 10px 32px 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.25);
+  border-radius: 2px;
+  max-width: 200px;
+  margin: 12px auto;
+}
+.polaroid-frame img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+.polaroid-caption {
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: 'Dancing Script', cursive;
+  font-size: 16px;
+  color: #333;
+}
+.polaroid-tilt-left {
+  transform: rotate(-2.5deg);
+}
+.polaroid-tilt-right {
+  transform: rotate(2.5deg);
+}
+
+/* ── Washi Tape ── */
+.washi-tape {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 20px;
+  background: rgba(237,234,161,0.55);
+  border: 1px solid rgba(212,175,55,0.35);
+  border-radius: 2px;
+  z-index: 5;
+}
+
+/* ── Gate Card (Timeless) ── */
 .theme-timeless-snapshot .gate-screen {
-  background: #0D0C0B;
+  background-color: #0D0C0B !important;
+  background-image: none !important;
+}
+.theme-timeless-snapshot .gate-bg-cover {
+  opacity: 0.08 !important;
+  filter: grayscale(1);
+}
+.theme-timeless-snapshot .gate-card-box {
+  background: rgba(20,18,15,0.97) !important;
+  border: 1px solid rgba(212,175,55,0.35) !important;
+  box-shadow: 0 0 0 1px rgba(212,175,55,0.12), 0 25px 60px rgba(0,0,0,0.85) !important;
+  color: #F5F0E8;
+}
+.theme-timeless-snapshot .gate-card-box .text-muted {
+  color: rgba(255,255,255,0.55) !important;
 }
 
-.theme-timeless-snapshot .gate-card-box {
-  background: rgba(28, 25, 23, 0.95);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(212, 175, 55, 0.2);
+/* ── Open Button (Timeless) ── */
+.theme-timeless-snapshot .btn-primary {
+  background-color: #D4AF37 !important;
+  border-color: #D4AF37 !important;
+  color: #0D0C0B !important;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
+.theme-timeless-snapshot .btn-primary:hover {
+  background-color: #c09b2a !important;
+  border-color: #c09b2a !important;
+  box-shadow: 0 6px 20px rgba(212,175,55,0.4) !important;
+}
+
+/* ── Nav bar (Timeless) ── */
+.theme-timeless-snapshot .floating-navbar {
+  background: rgba(20,18,15,0.95) !important;
+  border: 1px solid rgba(212,175,55,0.2) !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6) !important;
+}
+.theme-timeless-snapshot .nav-link-btn {
+  color: rgba(255,255,255,0.65) !important;
+}
+.theme-timeless-snapshot .nav-link-btn:hover {
+  background-color: rgba(212,175,55,0.12) !important;
+  color: #D4AF37 !important;
+}
+.theme-timeless-snapshot .nav-link-btn.active {
+  background-color: #D4AF37 !important;
+  color: #0D0C0B !important;
+  box-shadow: 0 4px 12px rgba(212,175,55,0.4) !important;
+}
+
+/* ── Side / Float Buttons (Timeless) ── */
+.theme-timeless-snapshot .music-toggle-btn,
+.theme-timeless-snapshot .scroll-top-btn,
+.theme-timeless-snapshot .side-qr-btn {
+  background: rgba(20,18,15,0.95) !important;
+  border-color: rgba(212,175,55,0.25) !important;
+  color: #D4AF37 !important;
+}
+
+/* ── Sparator line ── */
+.theme-timeless-snapshot .sparator-line {
+  border-color: rgba(212,175,55,0.35) !important;
+}
+
 
 /* ═══════════════════════════════════════════════════════════════════
-   THEME 3: ELEGANT LIGHT
-   Source: https://www.wevitation.com/themes/elegant-light/css/variable.css
-   Key facts:
-   - --invitation-bg: #ffffff (PURE WHITE)
-   - counter-bg: #DA6500 (deep orange), color: #000000
-   - Font: "Times New Roman" body, "Pirata One" title, "Pinyon Script" cursive
-   - Has firefly animation
-   - Very light, luxury, clean ivory-white design
+   THEME 3 ─ ELEGANT LIGHT
+   Aesthetic: White luxury, ivory, hairline gold borders, arch frames
+   variable.css: --invitation-bg:#fff, counter #DA6500/#000
+   Body font: Times New Roman  Title: Pirata One  Script: Pinyon Script
    ═══════════════════════════════════════════════════════════════════ */
 .theme-elegant-light {
-  /* Exact tokens from variable.css */
   --transition-counter-bg: #FF871F;
   --counter-bg: #DA6500;
   --counter-color: #000000;
   --counter-radius: 5px;
   --counter-line-bg: #FF871F;
-  --counter-line-size: 0.1px;
   --invitation-bg: #FFFFFF;
-  --invitation-bg-light: #F5F8FF;
-
-  /* Extended theme vars */
+  --invitation-bg-light: #FAF6F0;
   --bs-primary: #B89047;
+  --bs-primary-hover: #9e7b3a;
   --bs-primary-dark: #8F6D30;
   --bs-primary-light: #FAF6F0;
   --bs-secondary: #3B2A2A;
-  --bs-text-light: #FFFFFF;
-  --text-primary: #1E1B18;
-  --text-secondary: #8F6D30;
   --text-dark: #1E1B18;
-  --text-muted: #888;
+  --text-muted: #7a6a5a;
   --bg-primary: #FFFFFF;
-  --bg-primary-dark: #FAF6F0;
-  --bg-secondary: #FFFFFF;
-  --card-border: rgba(184, 144, 71, 0.3);
-  --card-shadow: 0 16px 40px rgba(184, 144, 71, 0.1);
-
+  --bg-secondary: #FAF6F0;
+  --card-bg: rgba(255,255,255,0.97);
+  --card-radius: 20px;
   font-family: 'Times New Roman', Times, serif;
   background-color: #FFFFFF;
   color: #1E1B18;
 }
-
 .theme-elegant-light .font-title {
   font-family: 'Pirata One', 'Cinzel', serif;
   letter-spacing: 2px;
 }
-
-.theme-elegant-light .font-content {
-  font-family: 'Pinyon Script', 'Great Vibes', cursive;
+.theme-elegant-light .invitation-container {
+  background-color: #FFFFFF;
 }
 
-.theme-elegant-light .card-transparant {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(184, 144, 71, 0.25);
-  box-shadow: 0 0 0 3px rgba(184, 144, 71, 0.06), 0 16px 40px rgba(184, 144, 71, 0.1);
-  border-radius: 16px;
-}
-
-/* Countdown boxes: black outline (from styles.css) */
-.theme-elegant-light .countdown-badge {
-  color: #000000 !important;
-  background-color: transparent !important;
-  padding: 10px 8px;
-  border: 1px solid #000000;
-  min-width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  font-weight: 700;
-  font-family: 'Times New Roman', serif;
-}
-
-/* Avatar frame with gold outline (from styles.css .bg-avatar .symbol) */
-.theme-elegant-light .royal-arch-frame {
+/* ── Gold Hairline Card ── */
+.gold-hairline-card {
   position: relative;
-  width: 180px;
-  height: 230px;
-  margin: 0 auto;
-  border-radius: 90px 90px 12px 12px;
-  padding: 5px;
-  background: linear-gradient(145deg, #F3E5AB 0%, #D4AF37 40%, #AA771C 80%, #F3E5AB 100%);
-  box-shadow: 0 0 20px rgba(184, 144, 71, 0.3), 0 0 0 4px rgba(184, 144, 71, 0.15);
+  border: 1px solid rgba(184,144,71,0.3) !important;
+  box-shadow: 0 0 0 5px rgba(184,144,71,0.06), 0 16px 50px rgba(184,144,71,0.1) !important;
+  background: rgba(255,255,255,0.98) !important;
 }
+.gold-hairline-card::before,
+.gold-hairline-card::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #D4AF37 30%, #D4AF37 70%, transparent);
+  opacity: 0.6;
+  pointer-events: none;
+}
+.gold-hairline-card::before { top: 12px; }
+.gold-hairline-card::after  { bottom: 12px; }
 
-.theme-elegant-light .royal-arch-frame img {
+/* ── Royal Arch Frame ── */
+.royal-arch-frame {
+  position: relative;
+  width: 160px;
+  height: 205px;
+  margin: 0 auto;
+  border-radius: 80px 80px 12px 12px;
+  padding: 4px;
+  background: linear-gradient(145deg, #F3E5AB 0%, #D4AF37 40%, #AA771C 80%, #F3E5AB 100%);
+  box-shadow: 0 0 0 6px rgba(184,144,71,0.1), 0 0 25px rgba(184,144,71,0.25);
+}
+.royal-arch-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  border-radius: 85px 85px 8px 8px;
+  border-radius: 76px 76px 8px 8px;
   display: block;
 }
 
-.theme-elegant-light .gate-card-box {
-  background: #FFFFFF;
-  border: 1px solid rgba(184, 144, 71, 0.4);
-  box-shadow: 0 0 0 6px rgba(184, 144, 71, 0.08), 0 25px 60px rgba(184, 144, 71, 0.15);
+/* ── Gold Crest & Diamond Divider ── */
+.gold-crest-icon {
+  color: #D4AF37;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.gold-divider-diamond {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 24px 0;
+}
+.gold-divider-diamond::before,
+.gold-divider-diamond::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #D4AF37);
+}
+.gold-divider-diamond::after {
+  background: linear-gradient(90deg, #D4AF37, transparent);
 }
 
+/* ── Countdown Boxes (Elegant: transparent + black border) ── */
+.theme-elegant-light .countdown-box {
+  background-color: transparent !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+  border-radius: 5px !important;
+  box-shadow: none !important;
+}
+.theme-elegant-light .countdown-label {
+  color: #7a6a5a !important;
+}
+
+/* ── Gate / Open Screen (Elegant) ── */
+.theme-elegant-light .gate-screen {
+  background-color: #FFFFFF !important;
+  background-image: none !important;
+}
+.theme-elegant-light .gate-card-box {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(184,144,71,0.4) !important;
+  box-shadow: 0 0 0 8px rgba(184,144,71,0.06), 0 25px 60px rgba(184,144,71,0.15) !important;
+}
+
+/* ── Button (Elegant) ── */
+.theme-elegant-light .btn-primary {
+  background-color: #B89047 !important;
+  border-color: #B89047 !important;
+  color: #FFFFFF !important;
+  font-family: 'Pirata One', serif;
+  letter-spacing: 1px;
+}
+.theme-elegant-light .btn-primary:hover {
+  background-color: #9e7b3a !important;
+  border-color: #9e7b3a !important;
+  box-shadow: 0 6px 20px rgba(184,144,71,0.35) !important;
+}
+
+/* ── Navbar (Elegant) ── */
+.theme-elegant-light .floating-navbar {
+  background: rgba(255,255,255,0.97) !important;
+  border: 1px solid rgba(184,144,71,0.2) !important;
+  box-shadow: 0 8px 30px rgba(184,144,71,0.12) !important;
+}
+.theme-elegant-light .nav-link-btn {
+  color: #B89047 !important;
+}
+.theme-elegant-light .nav-link-btn:hover {
+  background-color: rgba(184,144,71,0.1) !important;
+}
+.theme-elegant-light .nav-link-btn.active {
+  background-color: #B89047 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(184,144,71,0.35) !important;
+}
+
+
 /* ═══════════════════════════════════════════════════════════════════
-   THEME 4: PHOTOVIT
-   Source: https://www.wevitation.com/themes/photovit/css/variable.css
-   Key facts:
-   - counter-bg: #5a4835 (dark brown), color: #fff
-   - Font: 'Cabin' body, 'Arizonia' title (48px cover)
-   - bg-invitation: uses /themes/photovit/img/bg-2.png texture
-   - Modal background: --bs-primary
+   THEME 4 ─ PHOTOVIT
+   Aesthetic: Editorial magazine, monochrome-warm, portrait journalism
+   variable.css: counter #5a4835/#fff
+   Body: Cabin  Title: Arizonia (48px cover)
    ═══════════════════════════════════════════════════════════════════ */
 .theme-photovit {
-  /* Exact tokens from variable.css */
   --transition-counter-bg: #5a4835;
   --counter-bg: #5a4835;
   --counter-color: #FFFFFF;
   --counter-radius: 5px;
   --counter-line-bg: #5a4835;
-  --counter-line-size: 0.1px;
   --invitation-bg: #FAF6F4;
-
-  /* Extended theme vars */
+  --invitation-bg-light: #FDF1EF;
   --bs-primary: #2B2829;
+  --bs-primary-hover: #3d3a3b;
   --bs-primary-dark: #1A1819;
-  --bs-primary-light: #FDF1EF;
+  --bs-primary-light: #f5ebe8;
   --bs-secondary: #D97768;
-  --text-primary: #2B2829;
-  --text-secondary: #D97768;
   --text-dark: #2B2829;
-  --text-muted: #777;
+  --text-muted: #6b6060;
   --bg-primary: #FAF6F4;
   --bg-secondary: #FFFFFF;
-  --card-border: rgba(217, 119, 104, 0.25);
-  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-
+  --card-bg: rgba(255,255,255,0.95);
+  --card-radius: 20px;
   font-family: 'Cabin', 'Poppins', sans-serif;
   background-color: #FAF6F4;
   color: #2B2829;
 }
-
 .theme-photovit .font-title {
   font-family: 'Arizonia', 'Dancing Script', cursive;
   letter-spacing: 0.5px;
 }
-
+.theme-photovit .invitation-container {
+  background-color: #FAF6F4;
+}
 .theme-photovit .card-transparant {
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(217, 119, 104, 0.2);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  background: rgba(255,255,255,0.95) !important;
+  border: 1px solid rgba(43,40,41,0.08) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.05) !important;
 }
 
-/* Magazine masthead header (photovit signature) */
-.theme-photovit .magazine-masthead {
+/* ── Magazine Masthead ── */
+.magazine-masthead {
   border-bottom: 2px solid #2B2829;
   border-top: 2px solid #2B2829;
   padding: 7px 0;
   text-transform: uppercase;
   letter-spacing: 4px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
   color: #2B2829;
   margin-bottom: 18px;
   font-family: 'Cabin', sans-serif;
+  text-align: center;
 }
 
-/* Portrait frame with editorial offset-shadow */
-.theme-photovit .magazine-portrait-frame {
+/* ── Magazine Portrait Frame ── */
+.magazine-portrait-frame {
   position: relative;
-  border-radius: 16px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 8px 8px 0px rgba(43, 40, 41, 0.25);
+  box-shadow: 7px 7px 0px rgba(43,40,41,0.22);
   border: 2px solid #2B2829;
   margin: 0 auto;
-  max-width: 220px;
+  max-width: 200px;
 }
-
-.theme-photovit .magazine-portrait-frame img {
+.magazine-portrait-frame img {
   width: 100%;
   aspect-ratio: 3/4;
   object-fit: cover;
@@ -369,18 +466,91 @@
   display: block;
 }
 
-/* Photovit cover title = 48px as per styles.css */
-.theme-photovit #cover .font-title,
+/* ── Cover Title Override (48px from styles.css) ── */
 .theme-photovit #cover h2.font-title {
   font-size: 48px !important;
+  line-height: 1.2;
 }
 
+/* ── Countdown Boxes (Photovit) ── */
+.theme-photovit .countdown-box {
+  background-color: #5a4835 !important;
+  color: #FFFFFF !important;
+  border-radius: 5px !important;
+  box-shadow: 0 3px 8px rgba(90,72,53,0.3) !important;
+}
+.theme-photovit .countdown-label {
+  color: #6b6060 !important;
+}
+
+/* ── Gate / Open Screen (Photovit) ── */
+.theme-photovit .gate-screen {
+  background-color: #2B2829 !important;
+  background-image: none !important;
+}
+.theme-photovit .gate-bg-cover {
+  opacity: 0.06 !important;
+}
 .theme-photovit .gate-card-box {
-  background: var(--bs-primary);
+  background: #2B2829 !important;
+  border: none !important;
   color: #FFFFFF;
-  border: none;
+  box-shadow: none !important;
+}
+.theme-photovit .gate-card-box .text-muted,
+.theme-photovit .gate-card-box .text-size-content {
+  color: rgba(255,255,255,0.65) !important;
+}
+.theme-photovit .gate-card-box .font-title {
+  color: #FFFFFF !important;
 }
 
-.theme-photovit .gate-card-box .text-muted {
-  color: rgba(255, 255, 255, 0.7) !important;
+/* ── Button (Photovit) ── */
+.theme-photovit .btn-primary {
+  background-color: #D97768 !important;
+  border-color: #D97768 !important;
+  color: #FFFFFF !important;
+  font-family: 'Cabin', sans-serif;
+  font-weight: 700;
+}
+.theme-photovit .btn-primary:hover {
+  background-color: #c4655c !important;
+  border-color: #c4655c !important;
+  box-shadow: 0 6px 20px rgba(217,119,104,0.4) !important;
+}
+
+/* ── Navbar (Photovit) ── */
+.theme-photovit .floating-navbar {
+  background: rgba(255,255,255,0.96) !important;
+  border: 1px solid rgba(43,40,41,0.1) !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08) !important;
+}
+.theme-photovit .nav-link-btn {
+  color: #2B2829 !important;
+}
+.theme-photovit .nav-link-btn:hover {
+  background-color: rgba(43,40,41,0.06) !important;
+}
+.theme-photovit .nav-link-btn.active {
+  background-color: #2B2829 !important;
+  color: #FFFFFF !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   SHARED ANIMATION UTILITIES (all themes)
+   ═══════════════════════════════════════════════════════════════════ */
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes pulseSoft {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--bs-primary-rgb, 75 107 153), 0.3); }
+  50%       { box-shadow: 0 0 0 8px rgba(var(--bs-primary-rgb, 75 107 153), 0); }
+}
+.animate-fade-in-scale {
+  animation: fadeInScale 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.animate-pulse-soft {
+  animation: pulseSoft 2.5s ease-in-out infinite;
 }
