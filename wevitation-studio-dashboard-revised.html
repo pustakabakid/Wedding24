@@ -1,0 +1,3833 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wevitation Studio — Dashboard Pengaturan Undangan</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans, Philosopher, Great Vibes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      /* Nusantara Wedding Color Palette */
+      --primary: #2F5D62;
+      --primary-hover: #24494D;
+      --primary-light: #E8F1F2;
+      --primary-subtle: #F2F7F7;
+      
+      --accent: #B98B4E;
+      --accent-hover: #9E743D;
+      --accent-light: #F7F3EB;
+      --accent-subtle: #FAF7F2;
+
+      --bg: #FBF9F5;
+      --card-bg: #FFFFFF;
+      
+      --text: #2A2622;
+      --text-muted: #6B655D;
+      --text-light: #9C958B;
+      
+      --border: #E8E2D9;
+      --border-light: #F0ECE4;
+      --border-focus: #2F5D62;
+
+      --wa-green: #25D366;
+      --wa-dark: #128C7E;
+      --wa-light: #EBF8F2;
+
+      --danger: #C53030;
+      --danger-light: #FDE8E8;
+
+      --success: #2F855A;
+      --success-light: #E6FFFA;
+
+      /* Systematic Spacing Scale (Kelipatan 4px) */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+
+      /* Tiered Radius System */
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+
+      /* Purposeful Shadows */
+      --shadow-subtle: 0 1px 3px rgba(42, 38, 34, 0.04);
+      --shadow-card: 0 4px 16px rgba(42, 38, 34, 0.06);
+      --shadow-floating: 0 12px 36px rgba(42, 38, 34, 0.12), 0 2px 6px rgba(42, 38, 34, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Typography Utilities */
+    .font-serif {
+      font-family: 'Philosopher', serif;
+    }
+
+    .font-script {
+      font-family: 'Great Vibes', cursive;
+    }
+
+    /* Login Lock Screen */
+    .login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: var(--space-5);
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+    }
+
+    .login-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .login-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--accent);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6) var(--space-6) var(--space-5) var(--space-6);
+      width: 100%;
+      max-width: 400px;
+      box-shadow: var(--shadow-floating);
+      text-align: center;
+      position: relative;
+    }
+
+    .login-monogram {
+      font-size: 38px;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: var(--space-2);
+      user-select: none;
+    }
+
+    .login-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.2px;
+      margin-bottom: var(--space-1);
+    }
+
+    .login-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: var(--space-5);
+    }
+
+    .login-card.shake {
+      animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+
+    /* Top Studio Header */
+    .top-nav {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: var(--space-3) var(--space-5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      gap: var(--space-4);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .brand-group:hover .brand-icon {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.2px;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    /* Status Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-sm);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .status-badge.connected {
+      background: var(--success-light);
+      color: var(--success);
+      border: 1px solid #B2F5EA;
+    }
+
+    .status-badge.local {
+      background: var(--accent-light);
+      color: var(--accent-hover);
+      border: 1px solid #EADDC7;
+    }
+
+    /* Workspace Studio Layout */
+    .studio-layout {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: var(--space-5) var(--space-4) 120px var(--space-4);
+      flex: 1;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: var(--space-5);
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .studio-layout {
+        display: block;
+        max-width: 820px;
+        padding-top: var(--space-4);
+      }
+    }
+
+    /* ─── DESKTOP PERSISTENT SIDEBAR (>960px) ─── */
+    .side-nav {
+      position: sticky;
+      top: 80px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-3) var(--space-2);
+      box-shadow: var(--shadow-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+
+    @media (max-width: 960px) {
+      .side-nav {
+        display: none !important;
+      }
+    }
+
+    .side-nav-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .side-nav-heading {
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      padding: var(--space-1) var(--space-3);
+      margin-bottom: 2px;
+    }
+
+    .side-nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .side-nav-item:hover {
+      background: var(--bg);
+      color: var(--primary);
+    }
+
+    .side-nav-item.active {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .side-nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      bottom: 6px;
+      width: 3px;
+      background: var(--primary);
+      border-radius: 0 3px 3px 0;
+    }
+
+    .side-nav-icon {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.85;
+    }
+
+    .side-nav-item.active .side-nav-icon {
+      opacity: 1;
+    }
+
+    /* ─── MOBILE TAB BAR (<=960px) ─── */
+    .mobile-tab-bar {
+      display: none;
+      position: sticky;
+      top: 64px;
+      z-index: 90;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: var(--space-2) var(--space-3);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      gap: var(--space-1);
+      scrollbar-width: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .mobile-tab-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (max-width: 960px) {
+      .mobile-tab-bar {
+        display: flex;
+      }
+    }
+
+    .mobile-tab-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border-light);
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+
+    .mobile-tab-item:hover {
+      border-color: var(--border);
+      background: #ffffff;
+    }
+
+    .mobile-tab-item.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      font-weight: 700;
+    }
+
+    .mobile-tab-item.active i {
+      color: #ffffff;
+    }
+
+    .editor-pane {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      width: 100%;
+      min-width: 0;
+    }
+
+    /* Main Menu Hub Header */
+    .menu-hub-header {
+      margin-bottom: var(--space-5);
+      text-align: center;
+      padding: var(--space-1) 0;
+    }
+
+    .menu-hub-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.3px;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .menu-hub-subtitle {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-top: var(--space-1);
+    }
+
+    /* Minimalist App-Icon Grid (Balanced 4-Column Grid for 8 Modules) */
+    .menu-icon-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      width: 100%;
+    }
+
+    @media (max-width: 960px) {
+      .menu-icon-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-3);
+      }
+    }
+
+    .menu-icon-tile {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-5) var(--space-3) var(--space-4) var(--space-3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: var(--shadow-subtle);
+      user-select: none;
+      width: 100%;
+      text-align: center;
+    }
+
+    .menu-icon-tile:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary);
+      box-shadow: var(--shadow-card);
+    }
+
+    .menu-icon-tile:active {
+      transform: scale(0.98);
+    }
+
+    .tile-icon-box {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      background: var(--primary-light);
+      transition: all 0.2s;
+    }
+
+    .menu-icon-tile:hover .tile-icon-box {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .tile-icon-box.accent-wa {
+      color: var(--wa-dark);
+      background: var(--wa-light);
+    }
+    .menu-icon-tile:hover .tile-icon-box.accent-wa {
+      background: var(--wa-dark);
+      color: #ffffff;
+    }
+
+    .tile-icon-box.accent-gold {
+      color: var(--accent-hover);
+      background: var(--accent-light);
+    }
+    .menu-icon-tile:hover .tile-icon-box.accent-gold {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .tile-label {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    .tile-desc {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* Subpage Module Navigation Bar with Breadcrumb */
+    .module-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-2) var(--space-4);
+      margin-bottom: var(--space-4);
+      box-shadow: var(--shadow-subtle);
+      gap: var(--space-2);
+    }
+
+    .btn-back-hub {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      background: var(--primary-subtle);
+      color: var(--primary);
+      border: 1px solid var(--primary-light);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    .btn-back-hub:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
+
+    /* Breadcrumbs */
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .breadcrumb-link {
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: color 0.15s;
+      font-weight: 500;
+    }
+
+    .breadcrumb-link:hover {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+
+    .breadcrumb-sep {
+      width: 12px;
+      height: 12px;
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+
+    .breadcrumb-current {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Form Section Box */
+    .panel-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-4);
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .panel-header-info {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .panel-header-icon {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .panel-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .panel-subtitle {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Reusable Panel Footer Navigation */
+    .panel-footer-nav {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: var(--space-5);
+    }
+
+    /* Reusable Subsection Box */
+    .subsection-box {
+      background: var(--bg);
+      padding: var(--space-4);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      margin-bottom: var(--space-4);
+    }
+
+    .subsection-box.bg-white {
+      background: #FFFFFF;
+    }
+
+    .subsection-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-3);
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+
+    @media (max-width: 768px) {
+      .form-grid-2 {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+      }
+      .panel-card {
+        padding: var(--space-4);
+      }
+    }
+
+    .form-group {
+      margin-bottom: var(--space-4);
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: var(--space-1);
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="tel"],
+    input[type="datetime-local"],
+    input[type="password"],
+    textarea,
+    select {
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 13.5px;
+      color: var(--text);
+      background: #FFFFFF;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(47, 93, 98, 0.15);
+    }
+
+    /* Inputs with specialized icon (URL, phone, social) */
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper.has-icon input {
+      padding-left: 36px;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      pointer-events: none;
+    }
+
+    /* Switch Toggles */
+    .switch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+    }
+
+    @media (max-width: 768px) {
+      .switch-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .switch-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-3) var(--space-4);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      transition: background 0.15s;
+    }
+
+    .switch-item:hover {
+      background: #FFFFFF;
+      border-color: var(--border);
+    }
+
+    .switch-info {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .switch-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .switch-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      min-width: 44px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #D1D5DB;
+      transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-4);
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #ffffff;
+    }
+    .btn-accent:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #ffffff;
+    }
+    .btn-success:hover {
+      background: #276749;
+    }
+
+    .btn-wa {
+      background: var(--wa-dark);
+      color: #ffffff;
+    }
+    .btn-wa:hover {
+      background: #0D6E63;
+    }
+
+    .btn-light {
+      background: #FFFFFF;
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-light:hover {
+      background: var(--bg);
+      border-color: var(--text-light);
+    }
+
+    .btn-clean {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: var(--space-1) var(--space-2);
+      cursor: pointer;
+    }
+    .btn-clean:hover {
+      color: var(--text);
+    }
+
+    .btn-sm {
+      padding: 6px var(--space-3);
+      font-size: 12px;
+      border-radius: var(--radius-sm);
+    }
+
+    .btn-danger {
+      background: var(--danger-light);
+      color: var(--danger);
+      border-color: #FEB2B2;
+    }
+    .btn-danger:hover {
+      background: #FED7D7;
+    }
+
+    /* Upload Zone */
+    .upload-zone {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-3);
+      background: var(--bg);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      margin-top: var(--space-2);
+    }
+
+    .upload-preview-thumb {
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      border: 1px solid var(--border);
+      background: #ffffff;
+    }
+
+    /* KPI Stat Cards */
+    .kpi-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+
+    @media (max-width: 768px) {
+      .kpi-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .kpi-stat-card {
+      background: var(--bg);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: var(--space-3) var(--space-4);
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      position: relative;
+    }
+
+    .kpi-stat-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .kpi-stat-card.active {
+      background: #FFFFFF;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary), 0 4px 12px rgba(47, 93, 98, 0.12);
+    }
+
+    .kpi-stat-card.accent-wa {
+      background: var(--wa-light);
+      border-color: #BEE3DB;
+    }
+
+    .kpi-stat-card.accent-wa:hover {
+      border-color: var(--wa-dark);
+      box-shadow: 0 4px 12px rgba(18, 140, 126, 0.15);
+    }
+
+    .kpi-stat-card.accent-wa.active {
+      background: #FFFFFF;
+      border-color: var(--wa-dark);
+      box-shadow: 0 0 0 2px var(--wa-dark), 0 4px 12px rgba(18, 140, 126, 0.18);
+    }
+
+    .kpi-stat-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .kpi-stat-card.accent-wa .kpi-stat-label {
+      color: var(--wa-dark);
+    }
+
+    .kpi-stat-number {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      margin-top: 2px;
+    }
+
+    .kpi-stat-card.accent-wa .kpi-stat-number {
+      color: var(--wa-dark);
+    }
+
+    /* WhatsApp Tag Helper Chips */
+    .tag-chips-container {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: var(--space-2);
+    }
+
+    .tag-chip {
+      background: var(--primary-subtle);
+      color: var(--primary);
+      border: 1px solid var(--primary-light);
+      padding: var(--space-1) var(--space-2);
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tag-chip:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
+
+    .tag-chip.chip-required {
+      background: var(--accent-light);
+      color: var(--accent-hover);
+      border-color: #EADDC7;
+    }
+
+    .btn-reset-template {
+      background: transparent;
+      border: none;
+      color: var(--danger);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: auto;
+      padding: var(--space-1);
+    }
+
+    .btn-reset-template:hover {
+      text-decoration: underline;
+    }
+
+    /* Guest Table (CSS Column Sizing) */
+    .guest-table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      margin-top: var(--space-3);
+      background: #ffffff;
+    }
+
+    .guest-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .guest-table th {
+      background: var(--bg);
+      padding: var(--space-2) var(--space-3);
+      font-weight: 700;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+
+    .guest-table td {
+      padding: var(--space-2) var(--space-3);
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: middle;
+    }
+
+    .guest-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Systematic Column Widths */
+    .guest-table th:nth-child(1), .guest-table td:nth-child(1) { width: 44px; text-align: center; }
+    .guest-table th:nth-child(2), .guest-table td:nth-child(2) { width: 100px; }
+    .guest-table th:nth-child(3), .guest-table td:nth-child(3) { min-width: 120px; }
+    .guest-table th:nth-child(4), .guest-table td:nth-child(4) { width: 130px; }
+    .guest-table th:nth-child(5), .guest-table td:nth-child(5) { min-width: 170px; }
+    .guest-table th:nth-child(6), .guest-table td:nth-child(6) { width: 140px; text-align: right; }
+
+    /* Floating Bottom Action Bar */
+    .floating-bottom-bar {
+      position: fixed;
+      bottom: var(--space-4);
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 680px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--accent);
+      box-shadow: var(--shadow-floating);
+      border-radius: var(--radius-lg);
+      padding: var(--space-2) var(--space-3);
+      display: none; /* Controlled dynamically by switchTab */
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      z-index: 990;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2A2622;
+      color: #ffffff;
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      box-shadow: var(--shadow-floating);
+      z-index: 99999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, -10px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Lock Screen -->
+  <div id="loginOverlay" class="login-overlay">
+    <div id="loginCard" class="login-card">
+      <div class="login-monogram font-script">W</div>
+      <div class="login-title font-serif">Wevitation Studio</div>
+      <div class="login-subtitle">Masukkan kata sandi untuk mengelola undangan</div>
+
+      <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+        <div class="form-group" style="text-align: left; margin-bottom: var(--space-4);">
+          <div class="input-wrapper has-icon">
+            <i data-lucide="lock" class="input-icon" style="width: 16px; height: 16px;"></i>
+            <input type="password" id="loginPasswordInput" placeholder="Kata sandi studio..." required autocomplete="current-password">
+            <button type="button" onclick="togglePasswordVisibility()" class="btn-clean" style="position: absolute; right: var(--space-2); top: 50%; transform: translateY(-50%); color: var(--text-light);" title="Tampilkan/Sembunyikan sandi">
+              <i data-lucide="eye" id="eyeIcon" style="width: 16px; height: 16px;"></i>
+            </button>
+          </div>
+          <div id="loginErrorMsg" style="color: var(--danger); font-size: 11.5px; font-weight: 600; margin-top: var(--space-1); display: none;">
+            Kata sandi salah. Silakan coba lagi.
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: var(--space-3) var(--space-4);">
+          <i data-lucide="unlock" style="width: 15px; height: 15px;"></i>
+          <span>Buka Studio</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Top Studio Header -->
+  <nav class="top-nav">
+    <div class="brand-group" onclick="switchTab('tab-menu-grid')" title="Kembali ke Menu Utama">
+      <div class="brand-icon">
+        <i data-lucide="layout-grid" style="width: 18px; height: 18px;"></i>
+      </div>
+      <div>
+        <div style="display: flex; align-items: center; gap: var(--space-2);">
+          <span class="brand-title font-serif">Wevitation Studio</span>
+          <div id="supabaseStatusBadge" class="status-badge local" onclick="event.stopPropagation(); switchTab('tab-cloud')" title="Status Database: Klik untuk atur Supabase">
+            <i data-lucide="cloud-off" style="width: 12px; height: 12px;" id="supabaseStatusIcon"></i>
+            <span id="supabaseStatusText">Lokal</span>
+          </div>
+        </div>
+        <div class="brand-subtitle">Dashboard Pengaturan Undangan Digital</div>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <button onclick="handleStudioLogout()" class="btn btn-light btn-sm" title="Kunci Dashboard">
+        <i data-lucide="lock" style="width: 14px; height: 14px;"></i>
+        <span>Kunci</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Horizontal Scrollable Tab Bar for Mobile & Tablet (<=960px) -->
+  <div class="mobile-tab-bar" id="mobileTabBar">
+    <div class="mobile-tab-item active" data-tab="tab-menu-grid" onclick="switchTab('tab-menu-grid')">
+      <i data-lucide="layout-grid" style="width: 14px; height: 14px;"></i>
+      <span>Beranda</span>
+    </div>
+    <div class="mobile-tab-item" data-tab="tab-features" onclick="switchTab('tab-features')">
+      <i data-lucide="sliders" style="width: 14px; height: 14px;"></i>
+      <span>Fitur</span>
+    </div>
+    <div class="mobile-tab-item" data-tab="tab-couple" onclick="switchTab('tab-couple')">
+      <i data-lucide="heart" style="width: 14px; height: 14px;"></i>
+      <span>Mempelai</span>
+    </div>
+    <div class="mobile-tab-item" data-tab="tab-schedule" onclick="switchTab('tab-schedule')">
+      <i data-lucide="calendar-days" style="width: 14px; height: 14px;"></i>
+      <span>Acara</span>
+    </div>
+    <div class="mobile-tab-item" data-tab="tab-gallery" onclick="switchTab('tab-gallery')">
+      <i data-lucide="image" style="width: 14px; height: 14px;"></i>
+      <span>Galeri</span>
+    </div>
+    <div class="mobile-tab-item" data-tab="tab-gift" onclick="switchTab('tab-gift')">
+      <i data-lucide="credit-card" style="width: 14px; height: 14px;"></i>
+      <span>Kado</span>
+    </div>
+    <div class="mobile-tab-item" data-tab="tab-story" onclick="switchTab('tab-story')">
+      <i data-lucide="music-2" style="width: 14px; height: 14px;"></i>
+      <span>Cerita &amp; Musik</span>
+    </div>
+    <div class="mobile-tab-item" data-tab="tab-guests" onclick="switchTab('tab-guests')">
+      <i data-lucide="users" style="width: 14px; height: 14px;"></i>
+      <span>Tamu</span>
+    </div>
+    <div class="mobile-tab-item" data-tab="tab-cloud" onclick="switchTab('tab-cloud')">
+      <i data-lucide="database" style="width: 14px; height: 14px;"></i>
+      <span>Cloud</span>
+    </div>
+  </div>
+
+  <!-- Workspace Studio Layout -->
+  <div class="studio-layout">
+    
+    <!-- Persistent Sidebar for Desktop (>960px) -->
+    <aside class="side-nav" id="desktopSideNav">
+      <!-- Group 1: Menu Utama -->
+      <div class="side-nav-group">
+        <div class="side-nav-heading">Menu Utama</div>
+        <div class="side-nav-item active" data-tab="tab-menu-grid" onclick="switchTab('tab-menu-grid')">
+          <div class="side-nav-icon"><i data-lucide="layout-grid" style="width: 15px; height: 15px;"></i></div>
+          <span>Beranda / Hub</span>
+        </div>
+      </div>
+
+      <!-- Group 2: Konten Undangan -->
+      <div class="side-nav-group">
+        <div class="side-nav-heading">Konten Undangan</div>
+        <div class="side-nav-item" data-tab="tab-features" onclick="switchTab('tab-features')">
+          <div class="side-nav-icon"><i data-lucide="sliders" style="width: 15px; height: 15px;"></i></div>
+          <span>Visibilitas Fitur</span>
+        </div>
+        <div class="side-nav-item" data-tab="tab-couple" onclick="switchTab('tab-couple')">
+          <div class="side-nav-icon"><i data-lucide="heart" style="width: 15px; height: 15px;"></i></div>
+          <span>Mempelai &amp; Foto</span>
+        </div>
+        <div class="side-nav-item" data-tab="tab-schedule" onclick="switchTab('tab-schedule')">
+          <div class="side-nav-icon"><i data-lucide="calendar-days" style="width: 15px; height: 15px;"></i></div>
+          <span>Acara &amp; Lokasi</span>
+        </div>
+        <div class="side-nav-item" data-tab="tab-gallery" onclick="switchTab('tab-gallery')">
+          <div class="side-nav-icon"><i data-lucide="image" style="width: 15px; height: 15px;"></i></div>
+          <span>Galeri Foto</span>
+        </div>
+        <div class="side-nav-item" data-tab="tab-gift" onclick="switchTab('tab-gift')">
+          <div class="side-nav-icon"><i data-lucide="credit-card" style="width: 15px; height: 15px;"></i></div>
+          <span>Kado &amp; QRIS</span>
+        </div>
+        <div class="side-nav-item" data-tab="tab-story" onclick="switchTab('tab-story')">
+          <div class="side-nav-icon"><i data-lucide="music-2" style="width: 15px; height: 15px;"></i></div>
+          <span>Cerita &amp; Musik</span>
+        </div>
+      </div>
+
+      <!-- Group 3: Tamu & Sistem -->
+      <div class="side-nav-group">
+        <div class="side-nav-heading">Tamu &amp; Sistem</div>
+        <div class="side-nav-item" data-tab="tab-guests" onclick="switchTab('tab-guests')">
+          <div class="side-nav-icon"><i data-lucide="users" style="width: 15px; height: 15px;"></i></div>
+          <span>Tamu &amp; WhatsApp</span>
+        </div>
+        <div class="side-nav-item" data-tab="tab-cloud" onclick="switchTab('tab-cloud')">
+          <div class="side-nav-icon"><i data-lucide="database" style="width: 15px; height: 15px;"></i></div>
+          <span>Supabase Cloud</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Form & Configuration Panels -->
+    <div class="editor-pane">
+
+      <!-- MAIN MENU GRID HUB (MINIMALIST APP-ICON TILES) -->
+      <div id="tab-menu-grid" class="tab-content" style="display: block;">
+        <div class="menu-hub-header">
+          <div class="menu-hub-title font-serif">
+            <span>Menu Pengaturan Undangan</span>
+          </div>
+          <div class="menu-hub-subtitle">Pilih modul di bawah untuk mulai mengelola data dan konten undangan.</div>
+        </div>
+
+        <!-- 8 Minimalist App-Icon Tiles Grid (Balanced 4-Column Grid) -->
+        <div class="menu-icon-grid">
+          
+          <!-- Tile 1: Visibilitas Fitur -->
+          <div class="menu-icon-tile" onclick="switchTab('tab-features')">
+            <div class="tile-icon-box">
+              <i data-lucide="sliders" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div>
+              <div class="tile-label">Visibilitas Fitur</div>
+              <div class="tile-desc">Saklar seksi &amp; fitur</div>
+            </div>
+          </div>
+
+          <!-- Tile 2: Mempelai & Foto -->
+          <div class="menu-icon-tile" onclick="switchTab('tab-couple')">
+            <div class="tile-icon-box">
+              <i data-lucide="heart" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div>
+              <div class="tile-label">Mempelai &amp; Foto</div>
+              <div class="tile-desc">Profil &amp; avatar pengantin</div>
+            </div>
+          </div>
+
+          <!-- Tile 3: Acara & Lokasi -->
+          <div class="menu-icon-tile" onclick="switchTab('tab-schedule')">
+            <div class="tile-icon-box">
+              <i data-lucide="calendar-days" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div>
+              <div class="tile-label">Acara &amp; Lokasi</div>
+              <div class="tile-desc">Jadwal akad, resepsi, maps</div>
+            </div>
+          </div>
+
+          <!-- Tile 4: Galeri Foto -->
+          <div class="menu-icon-tile" onclick="switchTab('tab-gallery')">
+            <div class="tile-icon-box">
+              <i data-lucide="image" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div>
+              <div class="tile-label">Galeri Foto</div>
+              <div class="tile-desc">Upload &amp; kelola album</div>
+            </div>
+          </div>
+
+          <!-- Tile 5: Kado & QRIS -->
+          <div class="menu-icon-tile" onclick="switchTab('tab-gift')">
+            <div class="tile-icon-box accent-gold">
+              <i data-lucide="credit-card" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div>
+              <div class="tile-label">Kado &amp; QRIS</div>
+              <div class="tile-desc">Rekening &amp; amplop digital</div>
+            </div>
+          </div>
+
+          <!-- Tile 6: Cerita & Musik -->
+          <div class="menu-icon-tile" onclick="switchTab('tab-story')">
+            <div class="tile-icon-box">
+              <i data-lucide="music-2" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div>
+              <div class="tile-label">Cerita &amp; Musik</div>
+              <div class="tile-desc">Kisah cinta &amp; lagu latar</div>
+            </div>
+          </div>
+
+          <!-- Tile 7: Tamu & WhatsApp -->
+          <div class="menu-icon-tile" onclick="switchTab('tab-guests')">
+            <div class="tile-icon-box accent-wa">
+              <i data-lucide="users" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div>
+              <div class="tile-label">Tamu &amp; WhatsApp</div>
+              <div class="tile-desc">Broadcast WA &amp; RSVP</div>
+            </div>
+          </div>
+
+          <!-- Tile 8: Supabase Cloud -->
+          <div class="menu-icon-tile" onclick="switchTab('tab-cloud')">
+            <div class="tile-icon-box">
+              <i data-lucide="database" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div>
+              <div class="tile-label">Supabase Cloud</div>
+              <div class="tile-desc">Database &amp; penyimpanan</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TAB 1: KONTROL VISIBILITAS FITUR -->
+      <div id="tab-features" class="tab-content" style="display: none;">
+        <div class="module-nav-bar">
+          <button onclick="switchTab('tab-menu-grid')" class="btn-back-hub" title="Kembali ke Menu Utama">
+            <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
+            <span>Kembali</span>
+          </button>
+          <div class="breadcrumb-nav">
+            <span class="breadcrumb-link" onclick="switchTab('tab-menu-grid')">Menu Utama</span>
+            <i data-lucide="chevron-right" class="breadcrumb-sep"></i>
+            <span class="breadcrumb-current">Visibilitas Fitur</span>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-header-info">
+              <div class="panel-header-icon"><i data-lucide="sliders"></i></div>
+              <div>
+                <div class="panel-title font-serif">Kontrol Visibilitas Fitur &amp; Seksi</div>
+                <div class="panel-subtitle">Aktifkan atau nonaktifkan seksi yang tampil di website undangan</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="switch-grid">
+            <div class="switch-item">
+              <div class="switch-info">
+                <i data-lucide="mail" style="color: var(--primary); width: 18px; height: 18px;"></i>
+                <div>
+                  <div class="switch-label">Gate Cover</div>
+                  <div class="switch-desc">Sampul pembuka amplop</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="flagGateCover" checked onchange="updateAll()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="switch-item">
+              <div class="switch-info">
+                <i data-lucide="clock" style="color: var(--primary); width: 18px; height: 18px;"></i>
+                <div>
+                  <div class="switch-label">Countdown Timer</div>
+                  <div class="switch-desc">Hitung mundur hari bahagia</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="flagCountdown" checked onchange="updateAll()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="switch-item">
+              <div class="switch-info">
+                <i data-lucide="quote" style="color: var(--primary); width: 18px; height: 18px;"></i>
+                <div>
+                  <div class="switch-label">Kutipan Ayat Suci</div>
+                  <div class="switch-desc">Surah Ar-Rum ayat 21</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="flagQuote" checked onchange="updateAll()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="switch-item">
+              <div class="switch-info">
+                <i data-lucide="users" style="color: var(--primary); width: 18px; height: 18px;"></i>
+                <div>
+                  <div class="switch-label">Profil Mempelai</div>
+                  <div class="switch-desc">Foto, nama orang tua, &amp; IG</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="flagCoupleProfile" checked onchange="updateAll()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="switch-item">
+              <div class="switch-info">
+                <i data-lucide="calendar" style="color: var(--primary); width: 18px; height: 18px;"></i>
+                <div>
+                  <div class="switch-label">Jadwal Acara &amp; Maps</div>
+                  <div class="switch-desc">Akad, Resepsi, dan rute map</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="flagEventSchedule" checked onchange="updateAll()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="switch-item">
+              <div class="switch-info">
+                <i data-lucide="book-open" style="color: var(--primary); width: 18px; height: 18px;"></i>
+                <div>
+                  <div class="switch-label">Kisah Cinta (Love Story)</div>
+                  <div class="switch-desc">Timeline pertemuan &amp; lamaran</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="flagLoveStory" checked onchange="updateAll()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="switch-item">
+              <div class="switch-info">
+                <i data-lucide="image" style="color: var(--primary); width: 18px; height: 18px;"></i>
+                <div>
+                  <div class="switch-label">Galeri Foto</div>
+                  <div class="switch-desc">Slider foto prewedding</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="flagGallery" checked onchange="updateAll()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="switch-item">
+              <div class="switch-info">
+                <i data-lucide="credit-card" style="color: var(--primary); width: 18px; height: 18px;"></i>
+                <div>
+                  <div class="switch-label">Kado Digital &amp; QRIS</div>
+                  <div class="switch-desc">Amplop kado &amp; rekening</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="flagGift" checked onchange="updateAll()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="switch-item">
+              <div class="switch-info">
+                <i data-lucide="message-square" style="color: var(--primary); width: 18px; height: 18px;"></i>
+                <div>
+                  <div class="switch-label">Buku Tamu &amp; Ucapan</div>
+                  <div class="switch-desc">Doa restu &amp; RSVP online</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="flagGuestbook" checked onchange="updateAll()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="switch-item">
+              <div class="switch-info">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                <div>
+                  <div class="switch-label">IG Story Generator</div>
+                  <div class="switch-desc">Export kartu ucapan 9:16</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="flagIGStory" checked onchange="updateAll()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="switch-item">
+              <div class="switch-info">
+                <i data-lucide="music" style="color: var(--primary); width: 18px; height: 18px;"></i>
+                <div>
+                  <div class="switch-label">Musik Latar (Audio)</div>
+                  <div class="switch-desc">Pemutar lagu otomatis</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="flagMusic" checked onchange="updateAll()">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="panel-footer-nav">
+            <button onclick="switchTab('tab-couple')" class="btn btn-primary">
+              <span>Lanjut ke Mempelai</span>
+              <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: MEMPELAI & UPLOAD FOTO -->
+      <div id="tab-couple" class="tab-content" style="display: none;">
+        <div class="module-nav-bar">
+          <button onclick="switchTab('tab-menu-grid')" class="btn-back-hub" title="Kembali ke Menu Utama">
+            <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
+            <span>Kembali</span>
+          </button>
+          <div class="breadcrumb-nav">
+            <span class="breadcrumb-link" onclick="switchTab('tab-menu-grid')">Menu Utama</span>
+            <i data-lucide="chevron-right" class="breadcrumb-sep"></i>
+            <span class="breadcrumb-current">Mempelai &amp; Foto</span>
+          </div>
+        </div>
+
+        <!-- Bride Card -->
+        <div class="panel-card" style="margin-bottom: var(--space-4);">
+          <div class="panel-header">
+            <div class="panel-header-info">
+              <div class="panel-header-icon"><i data-lucide="heart"></i></div>
+              <div>
+                <div class="panel-title font-serif">Mempelai Wanita</div>
+                <div class="panel-subtitle">Profil dan foto mempelai wanita</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Nama Lengkap</label>
+              <input type="text" id="brideName" value="Eviana Saskia" oninput="updateAll()">
+            </div>
+            <div class="form-group">
+              <label>Nama Panggilan</label>
+              <input type="text" id="brideNick" value="Via" oninput="updateAll()">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Nama Orang Tua</label>
+            <input type="text" id="brideParents" value="Putri Bapak Danang Hendra & Ibu Siti Laela" oninput="updateAll()">
+          </div>
+
+          <div class="form-group">
+            <label>Username Instagram (tanpa @)</label>
+            <div class="input-wrapper has-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+              <input type="text" id="brideIg" value="wevitation" placeholder="username_tanpa_@" oninput="updateAll()">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>URL Profil Instagram (opsional)</label>
+            <div class="input-wrapper has-icon">
+              <i data-lucide="external-link" class="input-icon" style="width: 15px; height: 15px;"></i>
+              <input type="url" id="brideIgUrl" value="https://instagram.com/wevitation" placeholder="https://instagram.com/username" oninput="updateAll()">
+            </div>
+          </div>
+          <input type="hidden" id="brideAvatar" value="/assets/images/bride-eviana.jpg">
+
+          <!-- Bride Upload Box -->
+          <div class="upload-zone">
+            <img id="brideAvatarPreview" src="/assets/images/bride-eviana.jpg" class="upload-preview-thumb" alt="Preview">
+            <div style="flex: 1; width: 100%;">
+              <div style="font-size: 12.5px; font-weight: 700;">Ganti Foto Mempelai Wanita</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--space-1);">Penyimpanan cloud otomatis menimpa file lama.</div>
+              <input type="file" id="fileBrideAvatar" accept="image/*" style="font-size: 12px; width: 100%;" onchange="handleMediaUpload(this, 'avatars', 'brideAvatar', 'brideAvatarPreview')">
+            </div>
+          </div>
+        </div>
+
+        <!-- Groom Card -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-header-info">
+              <div class="panel-header-icon"><i data-lucide="user"></i></div>
+              <div>
+                <div class="panel-title font-serif">Mempelai Pria</div>
+                <div class="panel-subtitle">Profil dan foto mempelai pria</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Nama Lengkap</label>
+              <input type="text" id="groomName" value="Andra Gunawan" oninput="updateAll()">
+            </div>
+            <div class="form-group">
+              <label>Nama Panggilan</label>
+              <input type="text" id="groomNick" value="Andra" oninput="updateAll()">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Nama Orang Tua</label>
+            <input type="text" id="groomParents" value="Putra Bapak Arya Gunawan & Ibu Djenar Widiati" oninput="updateAll()">
+          </div>
+
+          <div class="form-group">
+            <label>Username Instagram (tanpa @)</label>
+            <div class="input-wrapper has-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+              <input type="text" id="groomIg" value="wevitation" placeholder="username_tanpa_@" oninput="updateAll()">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>URL Profil Instagram (opsional)</label>
+            <div class="input-wrapper has-icon">
+              <i data-lucide="external-link" class="input-icon" style="width: 15px; height: 15px;"></i>
+              <input type="url" id="groomIgUrl" value="https://instagram.com/wevitation" placeholder="https://instagram.com/username" oninput="updateAll()">
+            </div>
+          </div>
+          <input type="hidden" id="groomAvatar" value="/assets/images/groom-andra.jpg">
+
+          <!-- Groom Upload Box -->
+          <div class="upload-zone">
+            <img id="groomAvatarPreview" src="/assets/images/groom-andra.jpg" class="upload-preview-thumb" alt="Preview">
+            <div style="flex: 1; width: 100%;">
+              <div style="font-size: 12.5px; font-weight: 700;">Ganti Foto Mempelai Pria</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--space-1);">Penyimpanan cloud otomatis menimpa file lama.</div>
+              <input type="file" id="fileGroomAvatar" accept="image/*" style="font-size: 12px; width: 100%;" onchange="handleMediaUpload(this, 'avatars', 'groomAvatar', 'groomAvatarPreview')">
+            </div>
+          </div>
+
+          <div class="panel-footer-nav">
+            <button onclick="switchTab('tab-schedule')" class="btn btn-primary">
+              <span>Lanjut ke Acara</span>
+              <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: ACARA & WAKTU -->
+      <div id="tab-schedule" class="tab-content" style="display: none;">
+        <div class="module-nav-bar">
+          <button onclick="switchTab('tab-menu-grid')" class="btn-back-hub" title="Kembali ke Menu Utama">
+            <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
+            <span>Kembali</span>
+          </button>
+          <div class="breadcrumb-nav">
+            <span class="breadcrumb-link" onclick="switchTab('tab-menu-grid')">Menu Utama</span>
+            <i data-lucide="chevron-right" class="breadcrumb-sep"></i>
+            <span class="breadcrumb-current">Acara &amp; Lokasi</span>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-header-info">
+              <div class="panel-header-icon"><i data-lucide="calendar-days"></i></div>
+              <div>
+                <div class="panel-title font-serif">Waktu, Lokasi &amp; Peta Navigasi</div>
+                <div class="panel-subtitle">Jadwal Akad Nikah, Resepsi, alamat dan rute maps</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Tanggal Target (Countdown)</label>
+              <input type="datetime-local" id="weddingDateTime" value="2026-09-21T16:00" oninput="updateAll()">
+            </div>
+            <div class="form-group">
+              <label>Hari</label>
+              <input type="text" id="dayName" value="Senin" oninput="updateAll()">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Format Tanggal Lengkap</label>
+              <input type="text" id="formattedDate" value="Senin, 21 September 2026" oninput="updateAll()">
+            </div>
+            <div class="form-group">
+              <label>Format Tanggal Ringkas</label>
+              <input type="text" id="formattedDateShort" value="21 • 09 • 2026" oninput="updateAll()">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Jam Akad Nikah</label>
+              <input type="text" id="akadTime" value="16:00 - 17:00" oninput="updateAll()">
+            </div>
+            <div class="form-group">
+              <label>Jam Resepsi</label>
+              <input type="text" id="resepsiTime" value="18:30 - 20:30" oninput="updateAll()">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Nama Tempat / Gedung</label>
+            <input type="text" id="venueName" value="Maximo Resto &amp; Garden" oninput="updateAll()">
+          </div>
+
+          <div class="form-group">
+            <label>Alamat Lengkap</label>
+            <input type="text" id="venueAddress" value="Jl. Dr. Setiabudi No. 378" oninput="updateAll()">
+          </div>
+
+          <div class="form-group">
+            <label>Tautan Google Maps</label>
+            <div class="input-wrapper has-icon">
+              <i data-lucide="map-pin" class="input-icon" style="width: 15px; height: 15px;"></i>
+              <input type="url" id="mapsUrl" value="https://maps.app.goo.gl/vwB5zqwGS2P4cPaY9" oninput="updateAll()">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Tautan Live Stream / YouTube</label>
+            <div class="input-wrapper has-icon">
+              <i data-lucide="video" class="input-icon" style="width: 15px; height: 15px;"></i>
+              <input type="url" id="liveStreamUrl" value="https://youtube.com/wevitation" placeholder="https://youtube.com/live/..." oninput="updateAll()">
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Tautan ini tampil di tombol Live Stream pada jadwal acara undangan.</div>
+          </div>
+
+          <div class="panel-footer-nav">
+            <button onclick="switchTab('tab-gallery')" class="btn btn-primary">
+              <span>Lanjut ke Galeri Foto</span>
+              <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: GALERI FOTO & UPLOAD ALBUM -->
+      <div id="tab-gallery" class="tab-content" style="display: none;">
+        <div class="module-nav-bar">
+          <button onclick="switchTab('tab-menu-grid')" class="btn-back-hub" title="Kembali ke Menu Utama">
+            <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
+            <span>Kembali</span>
+          </button>
+          <div class="breadcrumb-nav">
+            <span class="breadcrumb-link" onclick="switchTab('tab-menu-grid')">Menu Utama</span>
+            <i data-lucide="chevron-right" class="breadcrumb-sep"></i>
+            <span class="breadcrumb-current">Galeri Foto</span>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-header-info">
+              <div class="panel-header-icon"><i data-lucide="image"></i></div>
+              <div>
+                <div class="panel-title font-serif">Galeri Foto Pernikahan</div>
+                <div class="panel-subtitle">Upload dan kelola foto album slider yang tampil di website undangan</div>
+              </div>
+            </div>
+            <button type="button" onclick="handleAddGallerySlot()" class="btn btn-light btn-sm" style="display: inline-flex; align-items: center; gap: var(--space-1);">
+              <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+              <span>Tambah Foto</span>
+            </button>
+          </div>
+
+          <div style="background: var(--bg); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-4); font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: var(--space-2);">
+            <i data-lucide="info" style="width: 16px; height: 16px; color: var(--primary); min-width: 16px;"></i>
+            <span>Format foto yang disarankan: JPG, PNG, atau WEBP rasio 4:3. Foto otomatis diunggah dan disimpan ke Supabase Storage (<code>wedding-media/gallery</code>).</span>
+          </div>
+
+          <!-- Dynamic Gallery Cards Grid -->
+          <div id="galleryCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-4);">
+            <!-- Rendered dynamically by JS -->
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
+            <button type="button" onclick="handleAddGallerySlot()" class="btn btn-light" style="display: inline-flex; align-items: center; gap: var(--space-2);">
+              <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
+              <span>Tambah Slot Foto Baru</span>
+            </button>
+            <button onclick="switchTab('tab-gift')" class="btn btn-primary">
+              <span>Lanjut ke Kado &amp; QRIS</span>
+              <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: KADO & QRIS -->
+      <div id="tab-gift" class="tab-content" style="display: none;">
+        <div class="module-nav-bar">
+          <button onclick="switchTab('tab-menu-grid')" class="btn-back-hub" title="Kembali ke Menu Utama">
+            <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
+            <span>Kembali</span>
+          </button>
+          <div class="breadcrumb-nav">
+            <span class="breadcrumb-link" onclick="switchTab('tab-menu-grid')">Menu Utama</span>
+            <i data-lucide="chevron-right" class="breadcrumb-sep"></i>
+            <span class="breadcrumb-current">Kado &amp; QRIS</span>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-header-info">
+              <div class="panel-header-icon" style="background: var(--accent-light); color: var(--accent-hover);"><i data-lucide="credit-card"></i></div>
+              <div>
+                <div class="panel-title font-serif">Kado Digital &amp; Barcode QRIS</div>
+                <div class="panel-subtitle">Nomor rekening transfer bank dan upload gambar QRIS</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Nama Bank / E-Wallet</label>
+              <input type="text" id="bankName" value="Bank BCA" oninput="updateAll()">
+            </div>
+            <div class="form-group">
+              <label>Nomor Rekening</label>
+              <input type="text" id="bankAccount" value="12345678" oninput="updateAll()">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Nama Pemilik Rekening</label>
+            <input type="text" id="bankHolder" value="Eviana Saskia" oninput="updateAll()">
+          </div>
+          <input type="hidden" id="qrisImage" value="/assets/images/qris-bca.jpg">
+
+          <!-- QRIS Upload Box -->
+          <div class="upload-zone">
+            <img id="qrisPreview" src="/assets/images/qris-bca.jpg" class="upload-preview-thumb" alt="QRIS">
+            <div style="flex: 1; width: 100%;">
+              <div style="font-size: 12.5px; font-weight: 700;">Upload Gambar QRIS Baru</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--space-1);">File QRIS lama di penyimpanan cloud otomatis diganti.</div>
+              <input type="file" id="fileQris" accept="image/*" style="font-size: 12px; width: 100%;" onchange="handleMediaUpload(this, 'qris', 'qrisImage', 'qrisPreview')">
+            </div>
+          </div>
+
+          <div class="panel-footer-nav">
+            <button onclick="switchTab('tab-story')" class="btn btn-primary">
+              <span>Lanjut ke Cerita &amp; Musik</span>
+              <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: CERITA CINTA & MUSIK LATAR -->
+      <div id="tab-story" class="tab-content" style="display: none;">
+        <div class="module-nav-bar">
+          <button onclick="switchTab('tab-menu-grid')" class="btn-back-hub" title="Kembali ke Menu Utama">
+            <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
+            <span>Kembali</span>
+          </button>
+          <div class="breadcrumb-nav">
+            <span class="breadcrumb-link" onclick="switchTab('tab-menu-grid')">Menu Utama</span>
+            <i data-lucide="chevron-right" class="breadcrumb-sep"></i>
+            <span class="breadcrumb-current">Cerita &amp; Musik</span>
+          </div>
+        </div>
+
+        <div class="panel-card" style="margin-bottom: var(--space-4);">
+          <div class="panel-header">
+            <div class="panel-header-info">
+              <div class="panel-header-icon"><i data-lucide="book-open"></i></div>
+              <div>
+                <div class="panel-title font-serif">Kisah Cinta (Love Story)</div>
+                <div class="panel-subtitle">Cerita perjalanan asmara mempelai</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: var(--space-4); padding-bottom: var(--space-4); border-bottom: 1px dashed var(--border-light);">
+            <div class="form-group">
+              <label>Cerita 1 - Judul</label>
+              <input type="text" id="story1Title" value="Pertemuan Pertama" oninput="updateAll()">
+            </div>
+            <div class="form-group">
+              <label>Cerita 1 - Isi</label>
+              <textarea id="story1Desc" rows="3" oninput="updateAll()">Pertama kali kami bertemu saat menjadi anggota sebuah organisasi di kampus. Kebetulan kami berada di divisi yang sama, yang menjadikan kami lebih akrab. Dari diskusi yang serius hingga tawa lepas karena lelucon yang garing, momen-momen itu perlahan menumbuhkan benih cinta yang tak terduga di antara kami.</textarea>
+            </div>
+            <input type="hidden" id="story1Image" value="/assets/images/story-first-meet.jpg">
+            <div class="upload-zone">
+              <img id="story1ImagePreview" src="/assets/images/story-first-meet.jpg" class="upload-preview-thumb" alt="Preview Cerita 1">
+              <div style="flex: 1; width: 100%;">
+                <div style="font-size: 12.5px; font-weight: 700;">Foto Cerita 1 (Opsional)</div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--space-1);">Ganti foto ilustrasi kisah cerita pertama.</div>
+                <input type="file" accept="image/*" style="font-size: 12px; width: 100%;" onchange="handleMediaUpload(this, 'stories', 'story1Image', 'story1ImagePreview')">
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="form-group">
+              <label>Cerita 2 - Judul</label>
+              <input type="text" id="story2Title" value="Lamaran" oninput="updateAll()">
+            </div>
+            <div class="form-group">
+              <label>Cerita 2 - Isi</label>
+              <textarea id="story2Desc" rows="3" oninput="updateAll()">Walaupun kami sempat menjalani hubungan jarak jauh selama 2 tahun terakhir, namun hal itu bukan menjadi halangan untuk hubungan kami. Justru kami menjadi semakin yakin satu sama lain. Oleh karena itu kami memutuskan untuk menjalin hubungan lebih serius.</textarea>
+            </div>
+            <input type="hidden" id="story2Image" value="/assets/images/story-proposal.jpg">
+            <div class="upload-zone">
+              <img id="story2ImagePreview" src="/assets/images/story-proposal.jpg" class="upload-preview-thumb" alt="Preview Cerita 2">
+              <div style="flex: 1; width: 100%;">
+                <div style="font-size: 12.5px; font-weight: 700;">Foto Cerita 2 (Opsional)</div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--space-1);">Ganti foto ilustrasi kisah cerita kedua.</div>
+                <input type="file" accept="image/*" style="font-size: 12px; width: 100%;" onchange="handleMediaUpload(this, 'stories', 'story2Image', 'story2ImagePreview')">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-header-info">
+              <div class="panel-header-icon"><i data-lucide="music-2"></i></div>
+              <div>
+                <div class="panel-title font-serif">Musik Backsound &amp; Audio</div>
+                <div class="panel-subtitle">Unggah file lagu mp3 ke cloud storage</div>
+              </div>
+            </div>
+          </div>
+
+          <input type="hidden" id="audioUrl" value="/assets/audio/romantic-wedding-soundtrack.mp3">
+
+          <div class="upload-zone">
+            <div style="width: 44px; height: 44px; min-width: 44px; background: var(--primary-light); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+              <i data-lucide="music" style="width: 20px; height: 20px;"></i>
+            </div>
+            <div style="flex: 1; width: 100%;">
+              <div style="font-size: 12.5px; font-weight: 700;">Upload Lagu Backsound Baru (.mp3)</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--space-1);">Audio lama di penyimpanan cloud otomatis diganti.</div>
+              <input type="file" id="fileAudio" accept="audio/mp3,audio/*" style="font-size: 12px; width: 100%;" onchange="handleMediaUpload(this, 'audio', 'audioUrl')">
+            </div>
+          </div>
+
+          <div class="panel-footer-nav">
+            <button onclick="switchTab('tab-guests')" class="btn btn-primary">
+              <span>Lanjut ke Tamu &amp; WhatsApp</span>
+              <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 7: PENERIMA UNDANGAN (WHATSAPP BLAST) -->
+      <div id="tab-guests" class="tab-content" style="display: none;">
+        <div class="module-nav-bar">
+          <button onclick="switchTab('tab-menu-grid')" class="btn-back-hub" title="Kembali ke Menu Utama">
+            <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
+            <span>Kembali</span>
+          </button>
+          <div class="breadcrumb-nav">
+            <span class="breadcrumb-link" onclick="switchTab('tab-menu-grid')">Menu Utama</span>
+            <i data-lucide="chevron-right" class="breadcrumb-sep"></i>
+            <span class="breadcrumb-current">Tamu &amp; WhatsApp</span>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-header-info">
+              <div class="panel-header-icon" style="background: var(--wa-light); color: var(--wa-dark);"><i data-lucide="users"></i></div>
+              <div>
+                <div class="panel-title font-serif">Manajemen Tamu &amp; Broadcast WhatsApp</div>
+                <div class="panel-subtitle">Daftar penerima, broadcast WA personal, import/export data, &amp; statistik kehadiran</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI Analytics Cards as Interactive Filter Controls -->
+          <div class="kpi-stats-grid">
+            <div class="kpi-stat-card active" id="kpiCardAll" onclick="setGuestTableFilter('all')" title="Klik untuk menampilkan semua tamu">
+              <div class="kpi-stat-label">
+                <span>Total Diundang</span>
+                <i data-lucide="users" style="width: 13px; height: 13px; opacity: 0.7;"></i>
+              </div>
+              <div class="kpi-stat-number" id="statTotalGuests">0</div>
+            </div>
+
+            <div class="kpi-stat-card accent-wa" id="kpiCardSent" onclick="setGuestTableFilter('sent')" title="Klik untuk filter tamu yang sudah terkirim WA">
+              <div class="kpi-stat-label">
+                <span>Terkirim WhatsApp</span>
+                <i data-lucide="send" style="width: 13px; height: 13px; opacity: 0.7;"></i>
+              </div>
+              <div class="kpi-stat-number" id="statSentGuests">0</div>
+            </div>
+
+            <div class="kpi-stat-card" id="kpiCardHadir" onclick="setGuestTableFilter('hadir')" title="Klik untuk filter tamu yang konfirmasi hadir">
+              <div class="kpi-stat-label">
+                <span>Konfirmasi Hadir</span>
+                <i data-lucide="check-circle-2" style="width: 13px; height: 13px; color: #22863A;"></i>
+              </div>
+              <div class="kpi-stat-number" id="statAttendingCount" style="color: #22863A;">0</div>
+            </div>
+
+            <div class="kpi-stat-card" id="kpiCardWishes" onclick="setGuestTableFilter('wishes')" title="Klik untuk filter tamu yang sudah mengisi ucapan / doa">
+              <div class="kpi-stat-label">
+                <span>Ucapan Masuk</span>
+                <i data-lucide="message-square-heart" style="width: 13px; height: 13px; color: #D946EF;"></i>
+              </div>
+              <div class="kpi-stat-number" id="statTotalWishes">0</div>
+            </div>
+          </div>
+
+          <!-- URL Domain Website Undangan -->
+          <div class="subsection-box">
+            <label style="margin-bottom: var(--space-1);">
+              <i data-lucide="globe" style="width: 14px; height: 14px;"></i>
+              <span>URL Domain Website Undangan (Production URL)</span>
+            </label>
+            <div class="input-wrapper has-icon">
+              <i data-lucide="link" class="input-icon" style="width: 15px; height: 15px;"></i>
+              <input type="url" id="invitationBaseUrl" placeholder="Contoh: https://wedding24.pages.dev" oninput="handleBaseUrlChange()" style="font-weight: 600;">
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: var(--space-1);">
+              Tautan WhatsApp dan tombol Buka Undangan akan otomatis mengarah ke domain ini.
+            </div>
+          </div>
+
+          <!-- Custom WhatsApp Message Template Editor with Tag Helpers -->
+          <div class="subsection-box bg-white">
+            <div class="subsection-header">
+              <label style="margin: 0;">
+                <i data-lucide="message-square" style="width: 14px; height: 14px; color: var(--wa-dark);"></i>
+                <span>Template Pesan Broadcast WhatsApp</span>
+              </label>
+              <div style="font-size: 11px; color: var(--text-muted);">Klik tag untuk menyisipkan:</div>
+            </div>
+
+            <!-- Tag Helper Chips -->
+            <div class="tag-chips-container">
+              <button type="button" onclick="insertWaTag('[NAMA]')" class="tag-chip">+ [NAMA]</button>
+              <button type="button" onclick="insertWaTag('[LINK]')" class="tag-chip chip-required">+ [LINK] (Wajib)</button>
+              <button type="button" onclick="insertWaTag('[PASANGAN]')" class="tag-chip">+ [PASANGAN]</button>
+              <button type="button" onclick="insertWaTag('[TANGGAL]')" class="tag-chip">+ [TANGGAL]</button>
+              <button type="button" onclick="resetDefaultWaTemplate()" class="btn-reset-template">Reset ke Template Awal</button>
+            </div>
+
+            <textarea id="waMessageTemplate" rows="5" style="font-size: 13px; line-height: 1.45;" oninput="updateAll()">Kepada Yth. Bapak/Ibu/Saudara/i *[NAMA]*
+
+Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:
+
+*[PASANGAN]*
+Tanggal: [TANGGAL]
+
+Detail undangan dapat diakses melalui tautan berikut:
+[LINK]
+
+Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.
+
+Terima kasih.</textarea>
+          </div>
+
+          <!-- Add Guest Form & Import / Export Controls -->
+          <div class="subsection-box">
+            <div class="subsection-header">
+              <span style="font-size: 12.5px; font-weight: 700; color: var(--text);">Tambah Tamu Undangan</span>
+              <div style="display: flex; gap: var(--space-1);">
+                <input type="file" id="csvFileInput" accept=".csv, .txt" style="display: none;" onchange="handleImportCSV(event)">
+                <button type="button" onclick="document.getElementById('csvFileInput').click()" class="btn btn-sm btn-light" title="Import daftar tamu dari file CSV">
+                  <i data-lucide="upload" style="width: 13px; height: 13px;"></i>
+                  <span>Import CSV</span>
+                </button>
+                <button type="button" onclick="handleExportCSV()" class="btn btn-sm btn-light" title="Download daftar tamu ke file CSV">
+                  <i data-lucide="download" style="width: 13px; height: 13px;"></i>
+                  <span>Export CSV</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label>Nama Penerima</label>
+                <input type="text" id="guestInputName" placeholder="Contoh: Bapak Ahmad / Sahabat Lia">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label>Nomor WhatsApp</label>
+                <div class="input-wrapper has-icon">
+                  <i data-lucide="phone" class="input-icon" style="width: 15px; height: 15px;"></i>
+                  <input type="tel" id="guestInputPhone" placeholder="081234567890 / 6281234567890">
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-top: var(--space-3);">
+              <button onclick="handleAddGuest()" class="btn btn-wa btn-sm">
+                <i data-lucide="user-plus" style="width: 14px; height: 14px;"></i>
+                <span>Tambahkan Tamu</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Table Header Controls -->
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-2); margin-top: var(--space-4);">
+            <div style="font-size: 13px; font-weight: 700; color: var(--text);" id="tableFilterLabel">
+              Semua Tamu Undangan
+            </div>
+            <div>
+              <button onclick="loadGuests(); loadWishes();" class="btn btn-light btn-sm" style="display: inline-flex; align-items: center; gap: 4px;" title="Refresh Data">
+                <i data-lucide="refresh-cw" style="width: 12px; height: 12px;"></i>
+                <span>Refresh</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Guest List Table -->
+          <div class="guest-table-wrapper">
+            <table class="guest-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Status WA</th>
+                  <th>Nama Tamu</th>
+                  <th>Nomor WhatsApp</th>
+                  <th>Status RSVP &amp; Ucapan</th>
+                  <th>Tautan Undangan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="guestTableBody">
+                <tr>
+                  <td colspan="7" style="text-align: center; color: var(--text-muted); padding: var(--space-5);">Belum ada daftar tamu. Tambahkan tamu di atas.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="panel-footer-nav" style="margin-top: var(--space-4);">
+            <button onclick="switchTab('tab-cloud')" class="btn btn-primary">
+              <span>Lanjut ke Supabase Cloud</span>
+              <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- TAB 8: KONEKSI SUPABASE -->
+      <div id="tab-cloud" class="tab-content" style="display: none;">
+        <div class="module-nav-bar">
+          <button onclick="switchTab('tab-menu-grid')" class="btn-back-hub" title="Kembali ke Menu Utama">
+            <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
+            <span>Kembali</span>
+          </button>
+          <div class="breadcrumb-nav">
+            <span class="breadcrumb-link" onclick="switchTab('tab-menu-grid')">Menu Utama</span>
+            <i data-lucide="chevron-right" class="breadcrumb-sep"></i>
+            <span class="breadcrumb-current">Supabase Cloud</span>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-header-info">
+              <div class="panel-header-icon"><i data-lucide="database"></i></div>
+              <div>
+                <div class="panel-title font-serif">Koneksi Database &amp; Storage Supabase</div>
+                <div class="panel-subtitle">Hubungkan dashboard ke proyek Supabase untuk penyimpanan online</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Supabase Project URL</label>
+            <div class="input-wrapper has-icon">
+              <i data-lucide="globe" class="input-icon" style="width: 15px; height: 15px;"></i>
+              <input type="text" id="supabaseUrlInput" placeholder="https://xyzcompany.supabase.co">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Supabase Anon Public API Key</label>
+            <div class="input-wrapper has-icon">
+              <i data-lucide="key" class="input-icon" style="width: 15px; height: 15px;"></i>
+              <input type="password" id="supabaseKeyInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+            </div>
+          </div>
+
+          <div style="display: flex; gap: var(--space-2); margin-top: var(--space-4); flex-wrap: wrap;">
+            <button onclick="handleSaveSupabaseConfig()" class="btn btn-primary" style="flex: 1; min-width: 180px;">
+              <i data-lucide="save" style="width: 15px; height: 15px;"></i>
+              <span>Hubungkan &amp; Simpan</span>
+            </button>
+            <button onclick="handleTestConnection()" class="btn btn-light" style="flex: 1; min-width: 130px;">
+              <i data-lucide="refresh-cw" style="width: 15px; height: 15px;"></i>
+              <span>Uji Koneksi</span>
+            </button>
+          </div>
+
+          <!-- SQL Schema Guide -->
+          <div style="margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--border-light);">
+            <div style="font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: var(--space-1); display: flex; align-items: center; gap: var(--space-1);">
+              <i data-lucide="file-text" style="width: 15px; height: 15px; color: var(--primary);"></i>
+              <span>Skrip SQL Schema Database</span>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: var(--space-2);">
+              Jalankan skrip ini di <strong>SQL Editor</strong> dashboard Supabase Anda jika baru pertama kali menyiapkan database:
+            </div>
+            <button onclick="copySQLSchema()" class="btn btn-light btn-sm" style="margin-bottom: var(--space-2);">
+              <i data-lucide="copy" style="width: 13px; height: 13px;"></i>
+              <span>Salin Skrip SQL</span>
+            </button>
+            <div style="background: #1E293B; color: #E2E8F0; padding: var(--space-3); border-radius: var(--radius-sm); font-family: monospace; font-size: 11px; max-height: 180px; overflow-y: auto;" id="sqlBoxPreview">
+-- Menyiapkan tabel dan bucket di Supabase...
+            </div>
+          </div>
+        </div>
+
+        <!-- OG Thumbnail / WhatsApp Preview Card -->
+        <div class="panel-card" style="margin-top: var(--space-4);">
+          <div class="panel-header">
+            <div class="panel-header-info">
+              <div class="panel-header-icon"><i data-lucide="share-2"></i></div>
+              <div>
+                <div class="panel-title font-serif">Thumbnail Pratinjau WhatsApp</div>
+                <div class="panel-subtitle">Gambar yang tampil saat link undangan dibagikan di WhatsApp, Telegram, dan media sosial</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current OG Thumbnail Preview -->
+          <div style="margin-bottom: var(--space-4);">
+            <label style="margin-bottom: var(--space-2);">Pratinjau Thumbnail Saat Ini</label>
+            <div style="border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; max-width: 480px;">
+              <img id="ogThumbnailPreview" src="/assets/images/og-thumbnail.jpg" alt="OG Thumbnail Preview" style="width: 100%; display: block; aspect-ratio: 1200/630; object-fit: cover;">
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: var(--space-1);">Format yang disarankan: JPG/PNG, ukuran 1200×630px (rasio 16:9).</div>
+          </div>
+
+          <input type="hidden" id="ogThumbnailUrl" value="/assets/images/og-thumbnail.jpg">
+
+          <!-- Upload Zone -->
+          <div class="upload-zone">
+            <div style="width: 44px; height: 44px; min-width: 44px; background: var(--primary-light); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+              <i data-lucide="image-plus" style="width: 20px; height: 20px;"></i>
+            </div>
+            <div style="flex: 1; width: 100%;">
+              <div style="font-size: 12.5px; font-weight: 700;">Upload Thumbnail Baru</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--space-1);">Gambar lama otomatis diganti di Supabase Storage (<code>wedding-media/og/</code>).</div>
+              <input type="file" accept="image/*" style="font-size: 12px; width: 100%;" onchange="handleOgThumbnailUpload(this)">
+            </div>
+          </div>
+
+          <!-- WA Card Simulator -->
+          <div style="margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--border-light);">
+            <div style="font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: var(--space-2); display: flex; align-items: center; gap: var(--space-1);">
+              <i data-lucide="smartphone" style="width: 14px; height: 14px; color: var(--primary);"></i>
+              <span>Simulasi Tampilan di WhatsApp</span>
+            </div>
+            <div style="background: #E8FAE3; border-radius: 10px; padding: 8px; max-width: 280px; font-family: -apple-system, sans-serif; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
+              <div style="background: #fff; border-radius: 6px; overflow: hidden; border: 1px solid #ddd;">
+                <img id="ogSimPreview" src="/assets/images/og-thumbnail.jpg" style="width: 100%; aspect-ratio: 1.91/1; object-fit: cover; display: block;">
+                <div style="padding: 8px 10px;">
+                  <div style="font-size: 12px; font-weight: 700; color: #111; line-height: 1.3;">Undangan Pernikahan — Via &amp; Andra</div>
+                  <div style="font-size: 10.5px; color: #555; margin-top: 2px; line-height: 1.4;">Senin, 21 September 2026 · Maximo Resto &amp; Garden</div>
+                  <div style="font-size: 10px; color: #888; margin-top: 3px;">wevitation.com</div>
+                </div>
+              </div>
+              <div style="font-size: 10px; color: #8696A0; text-align: right; margin-top: 4px; padding-right: 4px;">15:03 ✓✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <!-- Floating Bottom Action Bar for [Cloud] and [Undangan] (Hidden on Hub Screen) -->
+  <div class="floating-bottom-bar" id="floatingBottomBar">
+    <div style="flex: 1;">
+      <button onclick="saveAllToSupabase()" class="btn btn-primary" style="width: 100%; padding: var(--space-2) var(--space-4);">
+        <i data-lucide="cloud-upload" style="width: 16px; height: 16px;"></i>
+        <span>Simpan ke Cloud</span>
+      </button>
+    </div>
+    <div style="flex: 1;">
+      <a href="/" id="navInvitationLink" target="_blank" class="btn btn-accent" style="width: 100%; padding: var(--space-2) var(--space-4);">
+        <i data-lucide="external-link" style="width: 16px; height: 16px;"></i>
+        <span>Buka Undangan</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Toast Notification with dynamic Lucide Icon -->
+  <div id="toast" class="toast">
+    <i data-lucide="check-circle" id="toastIcon" style="width: 16px; height: 16px; color: #48BB78;"></i>
+    <span id="toastMsg">Tersimpan</span>
+  </div>
+
+  <script>
+    const STUDIO_PASSWORD = 'weeding26';
+    let supabaseClient = null;
+    let guestsList = [];
+    let sqlSchemaCode = '';
+    let galleryList = [
+      { id: "1", src: "/assets/images/gallery-1.jpg", alt: "Foto Galeri 1" },
+      { id: "2", src: "/assets/images/gallery-2.jpg", alt: "Foto Galeri 2" },
+      { id: "3", src: "/assets/images/gallery-3.jpg", alt: "Foto Galeri 3" },
+      { id: "4", src: "/assets/images/gallery-4.jpg", alt: "Foto Galeri 4" }
+    ];
+
+    function renderGalleryManager() {
+      const container = document.getElementById('galleryCardsContainer');
+      if (!container) return;
+
+      if (!galleryList || galleryList.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-5); background: var(--bg); border: 1px dashed var(--border); border-radius: var(--radius-md); color: var(--text-muted);">
+            Belum ada foto galeri. Klik tombol "Tambah Foto" di atas untuk menambahkan.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = galleryList.map((item, idx) => {
+        return `
+          <div style="background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--shadow-subtle);">
+            <div style="position: relative; width: 100%; aspect-ratio: 4/3; background: var(--bg); overflow: hidden;">
+              <img id="galleryPreview_${idx}" src="${item.src || '/assets/images/gallery-1.jpg'}" alt="${item.alt || 'Foto Galeri'}" style="width: 100%; height: 100%; object-fit: cover;">
+              <span style="position: absolute; top: 8px; left: 8px; background: rgba(42, 38, 34, 0.75); color: #FFFFFF; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; backdrop-filter: blur(4px);">
+                Foto #${idx + 1}
+              </span>
+              <button onclick="handleDeleteGalleryPhoto(${idx})" type="button" class="btn-clean" style="position: absolute; top: 8px; right: 8px; background: rgba(229, 62, 62, 0.85); color: #FFFFFF; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(4px);" title="Hapus foto">
+                <i data-lucide="trash-2" style="width: 13px; height: 13px;"></i>
+              </button>
+            </div>
+            <div style="padding: var(--space-3); display: flex; flex-direction: column; gap: var(--space-2); flex: 1;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label style="font-size: 11.5px; margin-bottom: 2px;">Keterangan Foto (Alt Text)</label>
+                <input type="text" value="${item.alt || ''}" placeholder="Contoh: Prewedding di Pantai" oninput="handleGalleryAltChange(${idx}, this.value)" style="font-size: 12px; padding: 4px 8px;">
+              </div>
+              <div>
+                <label style="font-size: 11.5px; margin-bottom: 4px;">Pilih / Ganti File Foto</label>
+                <input type="file" accept="image/*" onchange="handleGalleryPhotoUpload(${idx}, this)" style="font-size: 11px; width: 100%;">
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function handleGalleryAltChange(idx, val) {
+      if (galleryList[idx]) {
+        galleryList[idx].alt = val;
+        updateAll();
+      }
+    }
+
+    function handleAddGallerySlot() {
+      const newId = (galleryList.length + 1).toString();
+      galleryList.push({
+        id: newId,
+        src: '/assets/images/gallery-1.jpg',
+        alt: `Foto Galeri ${newId}`
+      });
+      renderGalleryManager();
+      updateAll();
+      showToast('Slot foto galeri baru ditambahkan', 'success');
+    }
+
+    function handleDeleteGalleryPhoto(idx) {
+      if (!confirm('Hapus foto ini dari galeri?')) return;
+      galleryList.splice(idx, 1);
+      renderGalleryManager();
+      updateAll();
+      showToast('Foto dihapus dari galeri', 'info');
+    }
+
+    async function handleGalleryPhotoUpload(idx, inputElem) {
+      const file = inputElem.files?.[0];
+      if (!file) return;
+
+      const oldUrl = galleryList[idx]?.src || '';
+
+      if (!supabaseClient) {
+        const localBlob = URL.createObjectURL(file);
+        if (galleryList[idx]) galleryList[idx].src = localBlob;
+        renderGalleryManager();
+        updateAll();
+        showToast('Foto galeri dipratinjau lokal', 'info');
+        return;
+      }
+
+      showToast('Mengunggah foto ke Galeri Cloud...', 'info');
+
+      try {
+        const bucket = 'wedding-media';
+        if (oldUrl && oldUrl.includes('/storage/v1/object/public/wedding-media/')) {
+          const parts = oldUrl.split('/storage/v1/object/public/wedding-media/');
+          if (parts.length > 1) {
+            await supabaseClient.storage.from(bucket).remove([parts[1]]);
+          }
+        }
+
+        const ext = file.name.split('.').pop() || 'jpg';
+        const newFilePath = `gallery/${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${ext}`;
+
+        const { error: uploadErr } = await supabaseClient.storage.from(bucket).upload(newFilePath, file, { upsert: true });
+        if (uploadErr) {
+          showToast('Gagal unggah foto: ' + uploadErr.message, 'error');
+          return;
+        }
+
+        const { data: pubData } = supabaseClient.storage.from(bucket).getPublicUrl(newFilePath);
+        if (galleryList[idx]) {
+          galleryList[idx].src = pubData.publicUrl;
+        }
+        renderGalleryManager();
+        updateAll();
+        await saveAllToSupabase();
+        showToast('Foto galeri berhasil diunggah & disimpan!', 'success');
+      } catch (err) {
+        showToast('Error unggah: ' + err.message, 'error');
+      }
+    }
+
+    const DEFAULT_SUPABASE_URL = 'https://mxqhvfopceusvbmewkwn.supabase.co';
+    const DEFAULT_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14cWh2Zm9wY2V1c3ZibWV3a3duIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxOTQyNzIsImV4cCI6MjEwMzc3MDI3Mn0.hE6npPiRrj4pQOmKHq9ITDJwwecTkmnMMK1a2akoJK0';
+
+    // Tab & Menu Hub Switching with Bottom Bar & Navigation Synchronization
+    function switchTab(tabId) {
+      const allTabs = document.querySelectorAll('.tab-content');
+      allTabs.forEach(t => t.style.display = 'none');
+
+      const target = document.getElementById(tabId);
+      if (target) {
+        target.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Synchronize Desktop Sidebar Navigation
+      document.querySelectorAll('.side-nav-item').forEach(item => {
+        if (item.getAttribute('data-tab') === tabId) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+
+      // Synchronize Mobile Horizontal Tab Bar
+      document.querySelectorAll('.mobile-tab-item').forEach(item => {
+        if (item.getAttribute('data-tab') === tabId) {
+          item.classList.add('active');
+          item.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        } else {
+          item.classList.remove('active');
+        }
+      });
+
+      // Save active tab to session storage for seamless page refreshes
+      sessionStorage.setItem('wevitation_active_tab', tabId);
+
+      // Hide floating bottom bar on Menu Grid Hub screen, show in other 8 modules
+      const bottomBar = document.getElementById('floatingBottomBar');
+      if (bottomBar) {
+        bottomBar.style.display = (tabId === 'tab-menu-grid') ? 'none' : 'flex';
+      }
+
+      lucide.createIcons();
+    }
+
+    // Check & Handle Studio Authentication
+    function checkStudioAuth() {
+      const isAuth = sessionStorage.getItem('wevitation_studio_auth');
+      const overlay = document.getElementById('loginOverlay');
+      if (isAuth === STUDIO_PASSWORD) {
+        overlay.classList.add('hidden');
+      } else {
+        overlay.classList.remove('hidden');
+        setTimeout(() => document.getElementById('loginPasswordInput')?.focus(), 250);
+      }
+    }
+
+    function handleLoginSubmit(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('loginPasswordInput');
+      const val = input.value.trim();
+      const card = document.getElementById('loginCard');
+      const err = document.getElementById('loginErrorMsg');
+
+      if (val === STUDIO_PASSWORD) {
+        sessionStorage.setItem('wevitation_studio_auth', STUDIO_PASSWORD);
+        err.style.display = 'none';
+        document.getElementById('loginOverlay').classList.add('hidden');
+        showToast('Berhasil masuk ke Wevitation Studio', 'success');
+      } else {
+        err.style.display = 'block';
+        card.classList.remove('shake');
+        void card.offsetWidth; // trigger CSS reflow for animation
+        card.classList.add('shake');
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    function togglePasswordVisibility() {
+      const input = document.getElementById('loginPasswordInput');
+      const icon = document.getElementById('eyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.setAttribute('data-lucide', 'eye-off');
+      } else {
+        input.type = 'password';
+        icon.setAttribute('data-lucide', 'eye');
+      }
+      lucide.createIcons();
+    }
+
+    function handleStudioLogout() {
+      sessionStorage.removeItem('wevitation_studio_auth');
+      document.getElementById('loginPasswordInput').value = '';
+      document.getElementById('loginErrorMsg').style.display = 'none';
+      document.getElementById('loginOverlay').classList.remove('hidden');
+      showToast('Dashboard terkunci', 'lock');
+      setTimeout(() => document.getElementById('loginPasswordInput')?.focus(), 250);
+    }
+
+    // Initialize Supabase Client
+    function initSupabase() {
+      const url = localStorage.getItem('supabase_project_url') || DEFAULT_SUPABASE_URL;
+      const key = localStorage.getItem('supabase_anon_key') || DEFAULT_SUPABASE_KEY;
+
+      const statusBadge = document.getElementById('supabaseStatusBadge');
+      const statusIcon = document.getElementById('supabaseStatusIcon');
+      const statusText = document.getElementById('supabaseStatusText');
+
+      if (url && key && window.supabase) {
+        try {
+          supabaseClient = window.supabase.createClient(url, key);
+          statusBadge.className = 'status-badge connected';
+          statusIcon.setAttribute('data-lucide', 'cloud');
+          statusText.innerText = 'Cloud';
+        } catch (e) {
+          statusBadge.className = 'status-badge local';
+          statusIcon.setAttribute('data-lucide', 'cloud-off');
+          statusText.innerText = 'Lokal';
+        }
+      } else {
+        statusBadge.className = 'status-badge local';
+        statusIcon.setAttribute('data-lucide', 'cloud-off');
+        statusText.innerText = 'Lokal';
+      }
+      lucide.createIcons();
+    }
+
+    function getBaseUrl() {
+      const customUrl = (document.getElementById('invitationBaseUrl')?.value || '').trim();
+      if (customUrl) {
+        return customUrl.replace(/\/+$/, '');
+      }
+      return window.location.origin;
+    }
+
+    function handleBaseUrlChange() {
+      const url = getBaseUrl();
+      const linkBtn = document.getElementById('navInvitationLink');
+      if (linkBtn) linkBtn.href = url;
+      localStorage.setItem('wedding_base_url', document.getElementById('invitationBaseUrl').value.trim());
+      renderGuestTable();
+    }
+
+    function getFormValues() {
+      const groomIgUsername = document.getElementById('groomIg').value.trim().replace('@', '');
+      const brideIgUsername = document.getElementById('brideIg').value.trim().replace('@', '');
+      const groomIgUrl = (document.getElementById('groomIgUrl')?.value.trim()) || ('https://instagram.com/' + groomIgUsername);
+      const brideIgUrl = (document.getElementById('brideIgUrl')?.value.trim()) || ('https://instagram.com/' + brideIgUsername);
+      return {
+        invitationUrl: document.getElementById('invitationBaseUrl')?.value.trim() || '',
+        couple: {
+          groom: {
+            name: document.getElementById('groomName').value,
+            nickname: document.getElementById('groomNick').value,
+            parents: document.getElementById('groomParents').value,
+            avatar: document.getElementById('groomAvatar').value,
+            instagram: groomIgUsername,
+            instagramUrl: groomIgUrl
+          },
+          bride: {
+            name: document.getElementById('brideName').value,
+            nickname: document.getElementById('brideNick').value,
+            parents: document.getElementById('brideParents').value,
+            avatar: document.getElementById('brideAvatar').value,
+            instagram: brideIgUsername,
+            instagramUrl: brideIgUrl
+          },
+          combinedTitle: `${document.getElementById('brideNick').value} & ${document.getElementById('groomNick').value}`
+        },
+        weddingDate: document.getElementById('weddingDateTime').value + ':00+07:00',
+        dayName: document.getElementById('dayName').value,
+        formattedDate: document.getElementById('formattedDate').value,
+        formattedDateShort: document.getElementById('formattedDateShort').value,
+        defaultGuest: 'Lia',
+        audioUrl: document.getElementById('audioUrl').value,
+        liveStreamUrl: document.getElementById('liveStreamUrl')?.value.trim() || 'https://youtube.com/wevitation',
+        schedules: [
+          {
+            id: 'akad',
+            title: 'Akad Nikah',
+            date: document.getElementById('formattedDate').value,
+            time: document.getElementById('akadTime').value,
+            venue: document.getElementById('venueName').value,
+            address: document.getElementById('venueAddress').value,
+            calendarUrl: 'https://www.google.com/calendar/event?action=TEMPLATE&text=' + encodeURIComponent('Akad Nikah'),
+            mapsUrl: document.getElementById('mapsUrl').value
+          },
+          {
+            id: 'resepsi',
+            title: 'Resepsi',
+            date: document.getElementById('formattedDate').value,
+            time: document.getElementById('resepsiTime').value,
+            venue: document.getElementById('venueName').value,
+            address: document.getElementById('venueAddress').value,
+            calendarUrl: 'https://www.google.com/calendar/event?action=TEMPLATE&text=' + encodeURIComponent('Resepsi'),
+            mapsUrl: document.getElementById('mapsUrl').value
+          }
+        ],
+        loveStories: [
+          {
+            id: 'pertemuan',
+            title: document.getElementById('story1Title').value,
+            image: document.getElementById('story1Image')?.value || '/assets/images/story-first-meet.jpg',
+            description: document.getElementById('story1Desc').value
+          },
+          {
+            id: 'lamaran',
+            title: document.getElementById('story2Title').value,
+            image: document.getElementById('story2Image')?.value || '/assets/images/story-proposal.jpg',
+            description: document.getElementById('story2Desc').value
+          }
+        ],
+        bankAccounts: [
+          {
+            bankName: document.getElementById('bankName').value,
+            accountHolder: document.getElementById('bankHolder').value,
+            accountNumber: document.getElementById('bankAccount').value,
+            logo: '/assets/svg/bca-logo.svg',
+            qrisImage: document.getElementById('qrisImage').value
+          }
+        ],
+        featureFlags: {
+          showGateCover: document.getElementById('flagGateCover').checked,
+          showCountdown: document.getElementById('flagCountdown').checked,
+          showQuote: document.getElementById('flagQuote').checked,
+          showCoupleProfile: document.getElementById('flagCoupleProfile').checked,
+          showEventSchedule: document.getElementById('flagEventSchedule').checked,
+          showLoveStory: document.getElementById('flagLoveStory').checked,
+          showGallery: document.getElementById('flagGallery').checked,
+          showGift: document.getElementById('flagGift').checked,
+          showGuestbook: document.getElementById('flagGuestbook').checked,
+          showIGStoryGenerator: document.getElementById('flagIGStory').checked,
+          showMusic: document.getElementById('flagMusic').checked
+        },
+        galleryImages: galleryList,
+        waTemplate: document.getElementById('waMessageTemplate')?.value || DEFAULT_WA_TEMPLATE
+      };
+    }
+
+    function updateAll() {
+      const data = getFormValues();
+      localStorage.setItem('wedding_settings_data', JSON.stringify(data));
+    }
+
+    // Save All to Supabase Cloud
+    async function saveAllToSupabase() {
+      const data = getFormValues();
+      localStorage.setItem('wedding_settings_data', JSON.stringify(data));
+
+      if (!supabaseClient) {
+        showToast('Tersimpan di memori lokal', 'success');
+        return;
+      }
+
+      showToast('Menyimpan ke Cloud Supabase...', 'info');
+      try {
+        const payload = {
+          couple: data.couple,
+          wedding_date: data.weddingDate,
+          day_name: data.dayName,
+          formatted_date: data.formattedDate,
+          formatted_date_short: data.formattedDateShort,
+          default_guest: data.defaultGuest,
+          audio_url: data.audioUrl,
+          live_stream_url: data.liveStreamUrl,
+          schedules: data.schedules,
+          love_stories: data.loveStories,
+          bank_accounts: data.bankAccounts,
+          gallery_images: data.galleryImages,
+          feature_flags: data.featureFlags,
+          invitation_url: data.invitationUrl,
+          wa_template: data.waTemplate,
+          updated_at: new Date().toISOString()
+        };
+
+        // Try UPDATE first
+        let { data: updatedRows, error } = await supabaseClient
+          .from('invitation_settings')
+          .update(payload)
+          .eq('id', 'default')
+          .select();
+
+        // If row does not exist yet in database, do INSERT
+        if (!error && (!updatedRows || updatedRows.length === 0)) {
+          payload.id = 'default';
+          const insertRes = await supabaseClient.from('invitation_settings').insert(payload);
+          error = insertRes.error;
+        }
+
+        // Graceful column fallback if newly introduced columns don't exist yet
+        if (error && (error.message?.includes('invitation_url') || error.message?.includes('wa_template') || error.code === 'PGRST204' || error.code === '42703' || error.status === 400)) {
+          delete payload.invitation_url;
+          delete payload.wa_template;
+          const retry = await supabaseClient.from('invitation_settings').update(payload).eq('id', 'default');
+          error = retry.error;
+        }
+
+        if (error) {
+          showToast('Gagal: ' + error.message, 'error');
+        } else {
+          showToast('Berhasil tersimpan ke Cloud Supabase', 'success');
+        }
+      } catch (err) {
+        showToast('Error koneksi: ' + err.message, 'error');
+      }
+    }
+
+    // Handle File Upload to Supabase Storage with Old File Replacement
+    async function handleMediaUpload(inputElem, folder, targetFieldId, previewId) {
+      const file = inputElem.files?.[0];
+      if (!file) return;
+
+      const oldUrl = document.getElementById(targetFieldId)?.value || '';
+
+      if (!supabaseClient) {
+        const localBlob = URL.createObjectURL(file);
+        document.getElementById(targetFieldId).value = localBlob;
+        if (previewId) document.getElementById(previewId).src = localBlob;
+        updateAll();
+        showToast('File dipratinjau secara lokal', 'info');
+        return;
+      }
+
+      try {
+        const bucket = 'wedding-media';
+        if (oldUrl && oldUrl.includes('/storage/v1/object/public/wedding-media/')) {
+          const parts = oldUrl.split('/storage/v1/object/public/wedding-media/');
+          if (parts.length > 1) {
+            await supabaseClient.storage.from(bucket).remove([parts[1]]);
+          }
+        }
+
+        const ext = file.name.split('.').pop() || 'jpg';
+        const newFilePath = `${folder}/${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${ext}`;
+
+        const { error: uploadErr } = await supabaseClient.storage.from(bucket).upload(newFilePath, file, { upsert: true });
+        if (uploadErr) {
+          showToast('Gagal unggah: ' + uploadErr.message, 'error');
+          return;
+        }
+
+        const { data: pubData } = supabaseClient.storage.from(bucket).getPublicUrl(newFilePath);
+        document.getElementById(targetFieldId).value = pubData.publicUrl;
+        if (previewId) document.getElementById(previewId).src = pubData.publicUrl;
+        updateAll();
+        await saveAllToSupabase();
+        showToast('File berhasil diunggah ke Cloud', 'success');
+      } catch (err) {
+        showToast('Error unggah: ' + err.message, 'error');
+      }
+    }
+
+    // WhatsApp Template Helpers
+    const DEFAULT_WA_TEMPLATE = `Kepada Yth. Bapak/Ibu/Saudara/i *[NAMA]*
+
+Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:
+
+*[PASANGAN]*
+Tanggal: [TANGGAL]
+
+Detail undangan dapat diakses melalui tautan berikut:
+[LINK]
+
+Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.
+
+Terima kasih.`;
+
+    function insertWaTag(tag) {
+      const textarea = document.getElementById('waMessageTemplate');
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+      textarea.value = text.substring(0, start) + tag + text.substring(end);
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + tag.length;
+      updateAll();
+    }
+
+    function resetDefaultWaTemplate() {
+      if (confirm('Kembalikan template pesan WhatsApp ke format default?')) {
+        document.getElementById('waMessageTemplate').value = DEFAULT_WA_TEMPLATE;
+        updateAll();
+        showToast('Template WhatsApp dikembalikan ke default', 'info');
+      }
+    }
+
+    function generateWaMessage(guestName, guestLink) {
+      const template = document.getElementById('waMessageTemplate')?.value || DEFAULT_WA_TEMPLATE;
+      const coupleTitle = document.getElementById('brideNick').value + ' & ' + document.getElementById('groomNick').value;
+      const weddingDate = document.getElementById('formattedDate').value;
+
+      let msg = template
+        .replace(/\[NAMA\]/g, guestName)
+        .replace(/\[PASANGAN\]/g, coupleTitle)
+        .replace(/\[TANGGAL\]/g, weddingDate);
+
+      if (msg.includes('[LINK]')) {
+        msg = msg.replace(/\[LINK\]/g, guestLink);
+      } else {
+        msg += `\n\nLink Undangan:\n${guestLink}`;
+      }
+
+      return msg;
+    }
+
+    let guestFilter = 'all';
+
+    function setGuestTableFilter(filter) {
+      guestFilter = filter;
+      
+      // Update active state on KPI Stat Cards
+      const cardMap = {
+        'all': 'kpiCardAll',
+        'sent': 'kpiCardSent',
+        'hadir': 'kpiCardHadir',
+        'wishes': 'kpiCardWishes'
+      };
+
+      Object.keys(cardMap).forEach(key => {
+        const el = document.getElementById(cardMap[key]);
+        if (el) {
+          if (key === filter) el.classList.add('active');
+          else el.classList.remove('active');
+        }
+      });
+
+      // Update table filter title label
+      const labelMap = {
+        'all': 'Semua Tamu Undangan',
+        'sent': 'Tamu Terkirim WhatsApp',
+        'hadir': 'Tamu Konfirmasi Hadir',
+        'wishes': 'Tamu yang Sudah Mengirim Ucapan & Doa'
+      };
+
+      const lbl = document.getElementById('tableFilterLabel');
+      if (lbl) lbl.innerText = labelMap[filter] || 'Daftar Tamu';
+
+      renderGuestTable();
+    }
+
+    async function toggleGuestSentStatus(id, newStatus) {
+      guestsList = guestsList.map(g => g.id === id ? { ...g, is_sent: newStatus, sent_at: newStatus ? new Date().toISOString() : null } : g);
+      localStorage.setItem('wedding_guests_data', JSON.stringify(guestsList));
+      
+      if (supabaseClient) {
+        try {
+          await supabaseClient.from('guests').update({ is_sent: newStatus, sent_at: newStatus ? new Date().toISOString() : null }).eq('id', id);
+        } catch (e) {}
+      }
+
+      renderGuestTable();
+      updateDashboardStats();
+    }
+
+    function handleSendWaClick(id, waUrl) {
+      toggleGuestSentStatus(id, true);
+      window.open(waUrl, '_blank');
+    }
+
+    // ═══ BUKU TAMU & RSVP DATA ═══
+    let wishesList = [];
+
+    async function loadWishes() {
+      if (supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient
+            .from('wishes')
+            .select('*')
+            .order('created_at', { ascending: false });
+          if (!error && data) {
+            wishesList = data;
+            localStorage.setItem('wedding_wishes_data', JSON.stringify(data));
+          }
+        } catch (e) {
+          const local = localStorage.getItem('wedding_wishes_data');
+          if (local) wishesList = JSON.parse(local);
+        }
+      } else {
+        const local = localStorage.getItem('wedding_wishes_data');
+        if (local) wishesList = JSON.parse(local);
+      }
+      renderGuestTable();
+      updateDashboardStats();
+    }
+
+    async function deleteWish(wishId) {
+      if (!confirm('Hapus pesan/doa restu ini dari buku tamu?')) return;
+      wishesList = wishesList.filter(w => w.id !== wishId);
+      localStorage.setItem('wedding_wishes_data', JSON.stringify(wishesList));
+      if (supabaseClient) {
+        try {
+          await supabaseClient.from('wishes').delete().eq('id', wishId);
+        } catch (e) {}
+      }
+      renderGuestTable();
+      updateDashboardStats();
+      showToast('Pesan berhasil dihapus', 'success');
+    }
+
+    function findGuestWish(guestName) {
+      if (!guestName || !wishesList || wishesList.length === 0) return null;
+      const gNorm = guestName.trim().toLowerCase();
+      return wishesList.find(w => (w.name || '').trim().toLowerCase() === gNorm) || null;
+    }
+
+    // Export Guests to CSV (Including RSVP Status and Wishes)
+    function handleExportCSV() {
+      if (guestsList.length === 0) {
+        showToast('Daftar tamu masih kosong', 'info');
+        return;
+      }
+
+      const baseUrl = getBaseUrl();
+      const headers = ['No', 'Nama Tamu', 'Nomor WhatsApp', 'Status WA', 'Status RSVP', 'Pesan / Ucapan', 'Tautan Undangan'];
+      const rows = guestsList.map((g, idx) => {
+        const wish = findGuestWish(g.name);
+        const rsvpStatus = wish ? (wish.attendance_status || (wish.attending ? 'hadir' : 'tidak_hadir')) : 'Belum RSVP';
+        const comment = wish ? (wish.comment || '').replace(/"/g, '""') : '-';
+        return [
+          idx + 1,
+          `"${g.name.replace(/"/g, '""')}"`,
+          `"${g.phone}"`,
+          g.is_sent ? 'Terkirim' : 'Belum',
+          rsvpStatus,
+          `"${comment}"`,
+          `"${baseUrl}/?to=${encodeURIComponent(g.name)}"`
+        ];
+      });
+
+      const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `rekap_tamu_rsvp_${Date.now()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('File CSV rekap tamu & RSVP berhasil diunduh', 'success');
+    }
+
+    // Update Dashboard Analytics
+    async function updateDashboardStats() {
+      const totalGuests = guestsList.length;
+      const sentGuests = guestsList.filter(g => g.is_sent).length;
+
+      let countHadir = 0;
+      guestsList.forEach(g => {
+        const w = findGuestWish(g.name);
+        if (w && (w.attendance_status === 'hadir' || w.attending === true)) {
+          countHadir++;
+        }
+      });
+
+      // Update KPI Stat Numbers
+      const set = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+      set('statTotalGuests', totalGuests);
+      set('statSentGuests', sentGuests);
+      set('statAttendingCount', countHadir);
+      set('statTotalWishes', wishesList.length);
+    }
+
+    // Guest & WhatsApp Management
+    async function loadGuests() {
+      if (supabaseClient) {
+        try {
+          const { data } = await supabaseClient.from('guests').select('*').order('created_at', { ascending: false });
+          if (data && data.length > 0) {
+            guestsList = data;
+          } else {
+            const local = localStorage.getItem('wedding_guests_data');
+            if (local) guestsList = JSON.parse(local);
+          }
+        } catch (e) {
+          const local = localStorage.getItem('wedding_guests_data');
+          if (local) guestsList = JSON.parse(local);
+        }
+      } else {
+        const local = localStorage.getItem('wedding_guests_data');
+        if (local) guestsList = JSON.parse(local);
+      }
+      renderGuestTable();
+      updateDashboardStats();
+    }
+
+    function renderGuestTable() {
+      const tbody = document.getElementById('guestTableBody');
+      if (!tbody) return;
+
+      if (guestsList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: var(--space-5);">Belum ada daftar tamu. Tambahkan tamu di atas.</td></tr>`;
+        return;
+      }
+
+      const baseUrl = getBaseUrl();
+      const filtered = guestsList.filter(g => {
+        if (guestFilter === 'sent') return g.is_sent;
+        if (guestFilter === 'hadir') {
+          const w = findGuestWish(g.name);
+          return w && (w.attendance_status === 'hadir' || w.attending === true);
+        }
+        if (guestFilter === 'wishes') {
+          const w = findGuestWish(g.name);
+          return w !== null;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: var(--space-5);">Tidak ada tamu pada kategori ini.</td></tr>`;
+        return;
+      }
+
+      const statusBadges = {
+        hadir: { label: 'Hadir', bg: '#F0FFF4', color: '#22863A', border: '#9AE6B4', icon: 'check-circle-2' },
+        tidak_hadir: { label: 'Tidak Hadir', bg: '#FFF5F0', color: '#DD6B20', border: '#FBD38D', icon: 'x-circle' },
+        mungkin: { label: 'Mungkin', bg: '#F5F3FF', color: '#6D28D9', border: '#C4B5FD', icon: 'help-circle' }
+      };
+
+      tbody.innerHTML = filtered.map((g, idx) => {
+        const guestLink = `${baseUrl}/?to=${encodeURIComponent(g.name)}`;
+        const waMsg = generateWaMessage(g.name, guestLink);
+        const waUrl = `https://api.whatsapp.com/send?phone=${formatPhoneWA(g.phone)}&text=${encodeURIComponent(waMsg)}`;
+        const isSent = !!g.is_sent;
+        const waUrlB64 = btoa(unescape(encodeURIComponent(waUrl)));
+
+        // Match with wish
+        const wish = findGuestWish(g.name);
+        let rsvpCellHtml = '';
+
+        if (wish) {
+          const st = wish.attendance_status || (wish.attending ? 'hadir' : 'tidak_hadir');
+          const cfg = statusBadges[st] || statusBadges.hadir;
+          rsvpCellHtml = `
+            <div>
+              <div style="display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 12px; background: ${cfg.bg}; color: ${cfg.color}; border: 1px solid ${cfg.border};">
+                <i data-lucide="${cfg.icon}" style="width: 11px; height: 11px;"></i>
+                <span>${cfg.label}</span>
+              </div>
+              <div style="font-size: 11.5px; color: var(--text); font-style: italic; margin-top: 3px; max-width: 220px; white-space: normal; line-height: 1.3;" title="${wish.comment}">
+                "${wish.comment.length > 50 ? wish.comment.slice(0, 50) + '…' : wish.comment}"
+              </div>
+            </div>
+          `;
+        } else {
+          rsvpCellHtml = `
+            <span style="font-size: 11px; color: var(--text-muted); background: var(--bg); padding: 2px 7px; border-radius: 4px; border: 1px dashed var(--border);">
+              Belum RSVP
+            </span>
+          `;
+        }
+
+        return `
+          <tr style="${isSent ? 'background: #FAFDFB;' : ''}">
+            <td>${idx + 1}</td>
+            <td>
+              <button onclick="toggleGuestSentStatus('${g.id}', ${!isSent})" class="btn-clean" style="display: inline-flex; align-items: center; gap: var(--space-1); font-size: 11px; font-weight: 700; cursor: pointer; padding: 2px 7px; border-radius: 4px; background: ${isSent ? 'var(--wa-light)' : 'var(--bg)'}; color: ${isSent ? 'var(--wa-dark)' : 'var(--text-muted)'};">
+                <i data-lucide="${isSent ? 'check' : 'clock'}" style="width: 12px; height: 12px;"></i>
+                <span>${isSent ? 'Terkirim' : 'Belum'}</span>
+              </button>
+            </td>
+            <td><strong>${g.name}</strong></td>
+            <td><code>${g.phone}</code></td>
+            <td>${rsvpCellHtml}</td>
+            <td><a href="${guestLink}" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 11.5px;">${guestLink}</a></td>
+            <td style="text-align: right; white-space: nowrap;">
+              <button
+                class="btn btn-wa btn-sm btn-send-wa"
+                data-guest-id="${g.id}"
+                data-wa-url="${waUrlB64}"
+                style="margin-right: var(--space-1);"
+                title="Kirim Undangan via WhatsApp"
+              >
+                <i data-lucide="send" style="width: 12px; height: 12px;"></i>
+                <span>Kirim</span>
+              </button>
+              <button onclick="copyToClipboard('${guestLink}')" class="btn btn-light btn-sm" title="Salin tautan" style="margin-right: var(--space-1);">
+                <i data-lucide="copy" style="width: 12px; height: 12px;"></i>
+              </button>
+              <button onclick="handleDeleteGuest('${g.id}')" class="btn btn-danger btn-sm" title="Hapus tamu">
+                <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Attach event listeners to WA send buttons after rendering
+      document.querySelectorAll('.btn-send-wa').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const guestId = this.dataset.guestId;
+          const waUrl = decodeURIComponent(escape(atob(this.dataset.waUrl)));
+          handleSendWaClick(guestId, waUrl);
+        });
+      });
+
+      lucide.createIcons();
+    }
+
+    // OG Thumbnail Upload Handler
+    async function handleOgThumbnailUpload(inputElem) {
+      const file = inputElem.files?.[0];
+      if (!file) return;
+
+      const oldUrl = document.getElementById('ogThumbnailUrl')?.value || '';
+
+      if (!supabaseClient) {
+        const localBlob = URL.createObjectURL(file);
+        document.getElementById('ogThumbnailPreview').src = localBlob;
+        document.getElementById('ogSimPreview').src = localBlob;
+        document.getElementById('ogThumbnailUrl').value = localBlob;
+        showToast('Thumbnail dipratinjau lokal. Hubungkan Supabase untuk menyimpan ke cloud.', 'info');
+        return;
+      }
+
+      showToast('Mengunggah thumbnail ke cloud...', 'info');
+      try {
+        const bucket = 'wedding-media';
+        if (oldUrl && oldUrl.includes('/storage/v1/object/public/wedding-media/')) {
+          const parts = oldUrl.split('/storage/v1/object/public/wedding-media/');
+          if (parts.length > 1) await supabaseClient.storage.from(bucket).remove([parts[1]]);
+        }
+
+        const ext = file.name.split('.').pop() || 'jpg';
+        const newFilePath = `og/og-thumbnail_${Date.now()}.${ext}`;
+        const { error: uploadErr } = await supabaseClient.storage.from(bucket).upload(newFilePath, file, { upsert: true });
+
+        if (uploadErr) {
+          showToast('Gagal unggah thumbnail: ' + uploadErr.message, 'error');
+          return;
+        }
+
+        const { data: pubData } = supabaseClient.storage.from(bucket).getPublicUrl(newFilePath);
+        const newUrl = pubData.publicUrl;
+        document.getElementById('ogThumbnailUrl').value = newUrl;
+        document.getElementById('ogThumbnailPreview').src = newUrl;
+        document.getElementById('ogSimPreview').src = newUrl;
+
+        showToast('Thumbnail berhasil diunggah! Perbarui meta tag og:image di index.html dengan URL baru ini.', 'success');
+        // Auto-copy new URL to clipboard
+        navigator.clipboard.writeText(newUrl).catch(() => {});
+      } catch (err) {
+        showToast('Error: ' + err.message, 'error');
+      }
+    }
+
+    // Export Guests to CSV
+    function handleExportCSV() {
+      if (guestsList.length === 0) {
+        showToast('Daftar tamu masih kosong', 'info');
+        return;
+      }
+
+      const baseUrl = getBaseUrl();
+      const headers = ['No', 'Nama Tamu', 'Nomor WhatsApp', 'Status Kirim', 'Tautan Undangan'];
+      const rows = guestsList.map((g, idx) => [
+        idx + 1,
+        `"${g.name.replace(/"/g, '""')}"`,
+        `"${g.phone}"`,
+        g.is_sent ? 'Terkirim' : 'Belum',
+        `"${baseUrl}/?to=${encodeURIComponent(g.name)}"`
+      ]);
+
+      const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `daftar_tamu_undangan_${Date.now()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('File CSV berhasil diunduh', 'success');
+    }
+
+    // Import Guests from CSV
+    function handleImportCSV(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const text = e.target.result;
+        const lines = text.split(/\r\n|\n/);
+        let importedCount = 0;
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if (!line) continue;
+          
+          if (i === 0 && (line.toLowerCase().includes('nama') || line.toLowerCase().includes('name'))) {
+            continue;
+          }
+
+          const cols = line.split(/[,;\t]/).map(c => c.replace(/^["']|["']$/g, '').trim());
+          if (cols.length >= 2 && cols[0] && cols[1]) {
+            const guestName = cols[0];
+            const guestPhone = cols[1];
+            
+            const newGuest = {
+              id: (Date.now() + importedCount).toString(),
+              name: guestName,
+              phone: guestPhone,
+              slug: encodeURIComponent(guestName),
+              is_sent: false,
+              created_at: new Date().toISOString()
+            };
+
+            guestsList.unshift(newGuest);
+            importedCount++;
+
+            if (supabaseClient) {
+              try {
+                const { data } = await supabaseClient.from('guests').insert({
+                  name: guestName,
+                  phone: guestPhone,
+                  slug: encodeURIComponent(guestName),
+                  is_sent: false
+                }).select().single();
+                if (data && data.id) newGuest.id = data.id;
+              } catch (err) {}
+            }
+          }
+        }
+
+        localStorage.setItem('wedding_guests_data', JSON.stringify(guestsList));
+        renderGuestTable();
+        updateDashboardStats();
+        showToast(`Berhasil mengimpor ${importedCount} tamu`, 'success');
+        event.target.value = '';
+      };
+
+      reader.readAsText(file);
+    }
+
+    // Update Dashboard Analytics
+    async function updateDashboardStats() {
+      const totalGuests = guestsList.length;
+      const sentGuests = guestsList.filter(g => g.is_sent).length;
+      
+      document.getElementById('statTotalGuests').innerText = totalGuests;
+      document.getElementById('statSentGuests').innerText = sentGuests;
+      document.getElementById('countGuestAll').innerText = totalGuests;
+      document.getElementById('countGuestPending').innerText = totalGuests - sentGuests;
+      document.getElementById('countGuestSent').innerText = sentGuests;
+
+      if (supabaseClient) {
+        try {
+          const { data: wishesData } = await supabaseClient.from('wishes').select('attending, attendance_status');
+          if (wishesData) {
+            document.getElementById('statTotalWishes').innerText = wishesData.length;
+            const attending = wishesData.filter(w => w.attendance_status === 'hadir' || w.attending).length;
+            document.getElementById('statAttendingCount').innerText = attending;
+          }
+        } catch (e) {}
+      } else {
+        const localWishes = localStorage.getItem('wedding_guest_wishes');
+        if (localWishes) {
+          try {
+            const list = JSON.parse(localWishes);
+            document.getElementById('statTotalWishes').innerText = list.length;
+            const attending = list.filter(w => w.attendance_status === 'hadir' || w.attending).length;
+            document.getElementById('statAttendingCount').innerText = attending;
+          } catch (e) {}
+        }
+      }
+    }
+
+    // Guest & WhatsApp Management
+    async function loadGuests() {
+      if (supabaseClient) {
+        try {
+          const { data } = await supabaseClient.from('guests').select('*').order('created_at', { ascending: false });
+          if (data && data.length > 0) {
+            guestsList = data;
+          } else {
+            const local = localStorage.getItem('wedding_guests_data');
+            if (local) guestsList = JSON.parse(local);
+          }
+        } catch (e) {
+          const local = localStorage.getItem('wedding_guests_data');
+          if (local) guestsList = JSON.parse(local);
+        }
+      } else {
+        const local = localStorage.getItem('wedding_guests_data');
+        if (local) guestsList = JSON.parse(local);
+      }
+      renderGuestTable();
+      updateDashboardStats();
+    }
+
+    function renderGuestTable() {
+      const tbody = document.getElementById('guestTableBody');
+      if (guestsList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: var(--space-5);">Belum ada daftar tamu. Tambahkan tamu di atas.</td></tr>`;
+        return;
+      }
+
+      const baseUrl = getBaseUrl();
+      const filtered = guestsList.filter(g => {
+        if (guestFilter === 'sent') return g.is_sent;
+        if (guestFilter === 'pending') return !g.is_sent;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: var(--space-5);">Tidak ada tamu pada filter ini.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((g, idx) => {
+        const guestLink = `${baseUrl}/?to=${encodeURIComponent(g.name)}`;
+        const waMsg = generateWaMessage(g.name, guestLink);
+        const waUrl = `https://api.whatsapp.com/send?phone=${formatPhoneWA(g.phone)}&text=${encodeURIComponent(waMsg)}`;
+        const isSent = !!g.is_sent;
+        // Encode waUrl as base64 to safely store in data attribute (avoids quote/ampersand conflicts)
+        const waUrlB64 = btoa(unescape(encodeURIComponent(waUrl)));
+
+        return `
+          <tr style="${isSent ? 'background: #FAFDFB;' : ''}">
+            <td>${idx + 1}</td>
+            <td>
+              <button onclick="toggleGuestSentStatus('${g.id}', ${!isSent})" class="btn-clean" style="display: inline-flex; align-items: center; gap: var(--space-1); font-size: 11px; font-weight: 700; cursor: pointer; padding: 2px 7px; border-radius: 4px; background: ${isSent ? 'var(--wa-light)' : 'var(--bg)'}; color: ${isSent ? 'var(--wa-dark)' : 'var(--text-muted)'};">
+                <i data-lucide="${isSent ? 'check' : 'clock'}" style="width: 12px; height: 12px;"></i>
+                <span>${isSent ? 'Terkirim' : 'Belum'}</span>
+              </button>
+            </td>
+            <td><strong>${g.name}</strong></td>
+            <td><code>${g.phone}</code></td>
+            <td><a href="${guestLink}" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 11.5px;">${guestLink}</a></td>
+            <td style="text-align: right; white-space: nowrap;">
+              <button
+                class="btn btn-wa btn-sm btn-send-wa"
+                data-guest-id="${g.id}"
+                data-wa-url="${waUrlB64}"
+                style="margin-right: var(--space-1);"
+                title="Kirim Undangan via WhatsApp"
+              >
+                <i data-lucide="send" style="width: 12px; height: 12px;"></i>
+                <span>Kirim</span>
+              </button>
+              <button onclick="copyToClipboard('${guestLink}')" class="btn btn-light btn-sm" title="Salin tautan" style="margin-right: var(--space-1);">
+                <i data-lucide="copy" style="width: 12px; height: 12px;"></i>
+              </button>
+              <button onclick="handleDeleteGuest('${g.id}')" class="btn btn-danger btn-sm" title="Hapus tamu">
+                <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Attach event listeners to WA send buttons after rendering
+      document.querySelectorAll('.btn-send-wa').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const guestId = this.dataset.guestId;
+          const waUrl = decodeURIComponent(escape(atob(this.dataset.waUrl)));
+          handleSendWaClick(guestId, waUrl);
+        });
+      });
+
+      lucide.createIcons();
+    }
+
+    function formatPhoneWA(phone) {
+      let cleaned = phone.replace(/\D/g, '');
+      if (cleaned.startsWith('0')) {
+        cleaned = '62' + cleaned.substring(1);
+      }
+      return cleaned;
+    }
+
+    async function handleAddGuest() {
+      const nameInput = document.getElementById('guestInputName');
+      const phoneInput = document.getElementById('guestInputPhone');
+
+      const name = nameInput.value.trim();
+      const phone = phoneInput.value.trim();
+
+      if (!name || !phone) {
+        showToast('Mohon lengkapi nama dan nomor WhatsApp tamu', 'error');
+        return;
+      }
+
+      const newGuest = {
+        id: Date.now().toString(),
+        name,
+        phone,
+        slug: encodeURIComponent(name),
+        is_sent: false,
+        created_at: new Date().toISOString()
+      };
+
+      guestsList.unshift(newGuest);
+      localStorage.setItem('wedding_guests_data', JSON.stringify(guestsList));
+      renderGuestTable();
+      updateDashboardStats();
+
+      nameInput.value = '';
+      phoneInput.value = '';
+      showToast('Tamu berhasil ditambahkan', 'success');
+
+      if (supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient.from('guests').insert({
+            name: newGuest.name,
+            phone: newGuest.phone,
+            slug: newGuest.slug,
+            is_sent: false
+          }).select().single();
+          if (data && data.id) {
+            newGuest.id = data.id;
+            localStorage.setItem('wedding_guests_data', JSON.stringify(guestsList));
+            renderGuestTable();
+          }
+        } catch (err) {
+          console.warn('Gagal simpan tamu ke Supabase:', err);
+        }
+      }
+    }
+
+    async function handleDeleteGuest(id) {
+      if (!confirm('Hapus tamu ini dari daftar?')) return;
+
+      guestsList = guestsList.filter(g => g.id !== id);
+      localStorage.setItem('wedding_guests_data', JSON.stringify(guestsList));
+      renderGuestTable();
+      updateDashboardStats();
+      showToast('Tamu dihapus dari daftar', 'info');
+
+      if (supabaseClient) {
+        try {
+          await supabaseClient.from('guests').delete().eq('id', id);
+        } catch (err) {}
+      }
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Tautan berhasil disalin ke clipboard', 'success');
+      });
+    }
+
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      const textElem = document.getElementById('toastMsg');
+      const iconElem = document.getElementById('toastIcon');
+
+      textElem.innerText = msg;
+
+      if (type === 'error') {
+        iconElem.setAttribute('data-lucide', 'alert-circle');
+        iconElem.style.color = '#F56565';
+      } else if (type === 'lock') {
+        iconElem.setAttribute('data-lucide', 'lock');
+        iconElem.style.color = '#ECC94B';
+      } else if (type === 'info') {
+        iconElem.setAttribute('data-lucide', 'info');
+        iconElem.style.color = '#63B3ED';
+      } else {
+        iconElem.setAttribute('data-lucide', 'check-circle');
+        iconElem.style.color = '#48BB78';
+      }
+
+      lucide.createIcons();
+
+      t.classList.add('show');
+      setTimeout(() => {
+        t.classList.remove('show');
+      }, 3200);
+    }
+
+    // Handle Supabase Configuration
+    function handleSaveSupabaseConfig() {
+      const url = document.getElementById('supabaseUrlInput').value.trim();
+      const key = document.getElementById('supabaseKeyInput').value.trim();
+
+      if (!url || !key) {
+        showToast('Mohon masukkan URL dan Public Key Supabase', 'error');
+        return;
+      }
+
+      localStorage.setItem('supabase_project_url', url);
+      localStorage.setItem('supabase_anon_key', key);
+
+      initSupabase();
+      saveAllToSupabase();
+      showToast('Konfigurasi Supabase berhasil disimpan', 'success');
+    }
+
+    async function handleTestConnection() {
+      const url = document.getElementById('supabaseUrlInput').value.trim();
+      const key = document.getElementById('supabaseKeyInput').value.trim();
+
+      if (!url || !key) {
+        showToast('Mohon masukkan URL dan Key terlebih dahulu', 'error');
+        return;
+      }
+
+      showToast('Menguji koneksi ke Supabase...', 'info');
+
+      try {
+        const client = window.supabase.createClient(url, key);
+        const { data, error } = await client.from('invitation_settings').select('id').limit(1);
+
+        if (error) {
+          showToast('Koneksi gagal: ' + error.message, 'error');
+        } else {
+          showToast('Koneksi ke database Supabase berhasil', 'success');
+        }
+      } catch (e) {
+        showToast('Gagal menghubungi server: ' + e.message, 'error');
+      }
+    }
+
+    function copySQLSchema() {
+      navigator.clipboard.writeText(sqlSchemaCode).then(() => {
+        showToast('Skrip SQL berhasil disalin', 'success');
+      });
+    }
+
+    function populateForm(d) {
+      if (!d) return;
+      const invUrl = d.invitationUrl || d.invitation_url || localStorage.getItem('wedding_base_url') || '';
+      if (document.getElementById('invitationBaseUrl')) {
+        document.getElementById('invitationBaseUrl').value = invUrl;
+      }
+      const navLink = document.getElementById('navInvitationLink');
+      if (navLink) navLink.href = getBaseUrl();
+
+      const waTemplate = d.waTemplate || d.wa_template;
+      if (waTemplate && document.getElementById('waMessageTemplate')) {
+        document.getElementById('waMessageTemplate').value = waTemplate;
+      }
+
+      if (d.couple?.bride) {
+        document.getElementById('brideName').value = d.couple.bride.name || '';
+        document.getElementById('brideNick').value = d.couple.bride.nickname || '';
+        document.getElementById('brideParents').value = d.couple.bride.parents || '';
+        document.getElementById('brideIg').value = d.couple.bride.instagram || '';
+        if (document.getElementById('brideIgUrl')) {
+          document.getElementById('brideIgUrl').value = d.couple.bride.instagramUrl || ('https://instagram.com/' + (d.couple.bride.instagram || ''));
+        }
+        document.getElementById('brideAvatar').value = d.couple.bride.avatar || '';
+        document.getElementById('brideAvatarPreview').src = d.couple.bride.avatar || '';
+      }
+      if (d.couple?.groom) {
+        document.getElementById('groomName').value = d.couple.groom.name || '';
+        document.getElementById('groomNick').value = d.couple.groom.nickname || '';
+        document.getElementById('groomParents').value = d.couple.groom.parents || '';
+        document.getElementById('groomIg').value = d.couple.groom.instagram || '';
+        if (document.getElementById('groomIgUrl')) {
+          document.getElementById('groomIgUrl').value = d.couple.groom.instagramUrl || ('https://instagram.com/' + (d.couple.groom.instagram || ''));
+        }
+        document.getElementById('groomAvatar').value = d.couple.groom.avatar || '';
+        document.getElementById('groomAvatarPreview').src = d.couple.groom.avatar || '';
+      }
+      if (d.dayName || d.day_name) document.getElementById('dayName').value = d.dayName || d.day_name;
+      if (d.formattedDate || d.formatted_date) document.getElementById('formattedDate').value = d.formattedDate || d.formatted_date;
+      if (d.formattedDateShort || d.formatted_date_short) document.getElementById('formattedDateShort').value = d.formattedDateShort || d.formatted_date_short;
+      if (d.audioUrl || d.audio_url) document.getElementById('audioUrl').value = d.audioUrl || d.audio_url;
+
+      // Populate liveStreamUrl
+      const liveUrl = d.liveStreamUrl || d.live_stream_url;
+      if (liveUrl && document.getElementById('liveStreamUrl')) {
+        document.getElementById('liveStreamUrl').value = liveUrl;
+      }
+
+      // Populate schedule fields from first/second schedule entry
+      const scheds = d.schedules;
+      if (scheds && scheds.length >= 1) {
+        const akad = scheds.find(s => s.id === 'akad') || scheds[0];
+        if (akad) {
+          if (document.getElementById('akadTime')) document.getElementById('akadTime').value = akad.time || '';
+          if (document.getElementById('venueName')) document.getElementById('venueName').value = akad.venue || '';
+          if (document.getElementById('venueAddress')) document.getElementById('venueAddress').value = akad.address || '';
+          if (document.getElementById('mapsUrl')) document.getElementById('mapsUrl').value = akad.mapsUrl || '';
+        }
+        const resepsi = scheds.find(s => s.id === 'resepsi') || scheds[1];
+        if (resepsi && document.getElementById('resepsiTime')) {
+          document.getElementById('resepsiTime').value = resepsi.time || '';
+        }
+      }
+
+      // Populate love story fields
+      const stories = d.loveStories || d.love_stories;
+      if (stories && stories.length >= 1) {
+        const s1 = stories[0];
+        if (s1) {
+          if (document.getElementById('story1Title')) document.getElementById('story1Title').value = s1.title || '';
+          if (document.getElementById('story1Desc')) document.getElementById('story1Desc').value = s1.description || '';
+          if (s1.image && document.getElementById('story1Image')) {
+            document.getElementById('story1Image').value = s1.image;
+            document.getElementById('story1ImagePreview').src = s1.image;
+          }
+        }
+        if (stories.length >= 2) {
+          const s2 = stories[1];
+          if (s2) {
+            if (document.getElementById('story2Title')) document.getElementById('story2Title').value = s2.title || '';
+            if (document.getElementById('story2Desc')) document.getElementById('story2Desc').value = s2.description || '';
+            if (s2.image && document.getElementById('story2Image')) {
+              document.getElementById('story2Image').value = s2.image;
+              document.getElementById('story2ImagePreview').src = s2.image;
+            }
+          }
+        }
+      }
+
+      const banks = d.bankAccounts || d.bank_accounts;
+      if (banks && banks[0]) {
+        document.getElementById('bankName').value = banks[0].bankName;
+        document.getElementById('bankAccount').value = banks[0].accountNumber;
+        document.getElementById('bankHolder').value = banks[0].accountHolder;
+        document.getElementById('qrisImage').value = banks[0].qrisImage || '';
+        document.getElementById('qrisPreview').src = banks[0].qrisImage || '';
+      }
+      const flags = d.featureFlags || d.feature_flags;
+      if (flags) {
+        document.getElementById('flagGateCover').checked = flags.showGateCover !== false;
+        document.getElementById('flagCountdown').checked = flags.showCountdown !== false;
+        document.getElementById('flagQuote').checked = flags.showQuote !== false;
+        document.getElementById('flagCoupleProfile').checked = flags.showCoupleProfile !== false;
+        document.getElementById('flagEventSchedule').checked = flags.showEventSchedule !== false;
+        document.getElementById('flagLoveStory').checked = flags.showLoveStory !== false;
+        document.getElementById('flagGallery').checked = flags.showGallery !== false;
+        document.getElementById('flagGift').checked = flags.showGift !== false;
+        document.getElementById('flagGuestbook').checked = flags.showGuestbook !== false;
+        document.getElementById('flagIGStory').checked = (flags.showIGStoryGenerator !== false && flags.showIGStory !== false);
+        document.getElementById('flagMusic').checked = flags.showMusic !== false;
+      }
+
+      const gal = d.galleryImages || d.gallery_images;
+      if (gal && Array.isArray(gal) && gal.length > 0) {
+        galleryList = gal;
+      }
+      renderGalleryManager();
+    }
+
+    // Load initial settings
+    window.addEventListener('DOMContentLoaded', async () => {
+      checkStudioAuth();
+      renderGalleryManager();
+      lucide.createIcons();
+
+      // Read SQL Schema for display
+      fetch('/supabase_schema.sql').then(r => r.text()).then(t => {
+        sqlSchemaCode = t;
+        document.getElementById('sqlBoxPreview').innerText = t.slice(0, 1000) + '\n... (salin untuk teks lengkap)';
+      }).catch(() => {});
+
+      // Set input config fields
+      document.getElementById('supabaseUrlInput').value = localStorage.getItem('supabase_project_url') || DEFAULT_SUPABASE_URL;
+      document.getElementById('supabaseKeyInput').value = localStorage.getItem('supabase_anon_key') || DEFAULT_SUPABASE_KEY;
+
+      initSupabase();
+
+      // Load local settings first
+      const saved = localStorage.getItem('wedding_settings_data');
+      if (saved) {
+        try { populateForm(JSON.parse(saved)); } catch (e) {}
+      }
+
+      // Then fetch from Supabase if connected
+      if (supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient.from('invitation_settings').select('*').eq('id', 'default').single();
+          if (data && !error) {
+            populateForm(data);
+          }
+        } catch (err) {
+          console.warn('Could not fetch initial settings from Supabase:', err);
+        }
+      }
+
+      loadGuests();
+      loadWishes();
+      updateAll();
+
+      // Restore last active tab or default to Menu Grid Hub
+      const lastActiveTab = sessionStorage.getItem('wevitation_active_tab') || 'tab-menu-grid';
+      switchTab(lastActiveTab);
+    });
+  </script>
+
+</body>
+</html>
