@@ -105,16 +105,20 @@ export const App: React.FC = () => {
       <div className="fixed-bg-center" />
 
       {/* Fixed Botanical Corner Artwork */}
-      <img
-        src="/assets/images/corner-top-left.png"
-        alt="Top Left Botanical"
-        className="fixed-corner-tl"
-      />
-      <img
-        src="/assets/images/corner-bottom-right.png"
-        alt="Bottom Right Botanical"
-        className="fixed-corner-br"
-      />
+      {flags.showBotanicalCorners !== false && (
+        <>
+          <img
+            src="/assets/images/corner-top-left.png"
+            alt="Top Left Botanical"
+            className="fixed-corner-tl"
+          />
+          <img
+            src="/assets/images/corner-bottom-right.png"
+            alt="Bottom Right Botanical"
+            className="fixed-corner-br"
+          />
+        </>
+      )}
 
       {/* Envelope / Gate Cover Modal */}
       {flags.showGateCover && (
@@ -130,11 +134,12 @@ export const App: React.FC = () => {
       <main className="invitation-container">
         <HeroCover guestName={guestName} settings={settings} />
         {flags.showQuote && <QuoteSection />}
-        {flags.showCoupleProfile && <CoupleProfile couple={settings.couple} />}
+        {flags.showCoupleProfile && <CoupleProfile couple={settings.couple} flags={flags} />}
         {flags.showEventSchedule && (
           <EventSchedule
             schedules={settings.schedules}
             liveStreamUrl={settings.liveStreamUrl}
+            flags={flags}
           />
         )}
         {flags.showLoveStory && <LoveStory loveStories={settings.loveStories} />}
@@ -142,6 +147,7 @@ export const App: React.FC = () => {
         {flags.showGift && (
           <GiftSection
             bankAccounts={settings.bankAccounts}
+            flags={flags}
             onOpenRSVP={() => setRsvpModalOpen(true)}
             onShowToast={showToast}
           />
@@ -149,6 +155,7 @@ export const App: React.FC = () => {
         {flags.showGuestbook && (
           <GuestbookSection
             defaultName={guestName}
+            flags={flags}
             onShowToast={showToast}
           />
         )}
@@ -157,7 +164,7 @@ export const App: React.FC = () => {
       </main>
 
       {/* Floating Bottom Nav Dock (visible when invitation is unlocked) */}
-      {isGateOpen && <FloatingNavbar />}
+      {isGateOpen && flags.showFloatingNav !== false && <FloatingNavbar />}
 
       {/* Floating Action Buttons */}
       {isGateOpen && flags.showMusic && (

@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Copy, Check, QrCode, UserCheck } from 'lucide-react';
 import { BANK_ACCOUNTS } from '../data/invitationData';
-import { BankAccount } from '../types';
+import { BankAccount, FeatureFlags } from '../types';
 
 interface GiftSectionProps {
   bankAccounts?: BankAccount[];
+  flags?: FeatureFlags;
   onOpenRSVP: () => void;
   onShowToast: (msg: string, type?: 'success' | 'error') => void;
 }
 
 export const GiftSection: React.FC<GiftSectionProps> = ({
   bankAccounts: customBanks,
+  flags,
   onOpenRSVP,
   onShowToast
 }) => {
@@ -18,6 +20,10 @@ export const GiftSection: React.FC<GiftSectionProps> = ({
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
   const [showQRModal, setShowQRModal] = useState(false);
   const [isGiftOpen, setIsGiftOpen] = useState(false);
+
+  const showRsvpButton = flags ? flags.showRsvpButton !== false : true;
+  const showBankTransfer = flags ? flags.showBankTransfer !== false : true;
+  const showQrisCode = flags ? flags.showQrisCode !== false : true;
 
   const handleCopy = (accountNumber: string) => {
     navigator.clipboard
@@ -36,24 +42,28 @@ export const GiftSection: React.FC<GiftSectionProps> = ({
     <section id="gift" className="card-transparant">
       <div id="gift-section">
         {/* RSVP Trigger Button */}
-        <h2 className="font-title text-primary text-size-title mb-2">Rsvp</h2>
-        <div style={{ marginBottom: '32px' }}>
-          <button
-            onClick={onOpenRSVP}
-            className="btn btn-primary"
-            style={{
-              width: '100%',
-              padding: '16px 20px',
-              borderRadius: '16px',
-              flexDirection: 'column',
-              gap: '6px',
-              boxShadow: '0 8px 20px rgba(75, 107, 153, 0.25)'
-            }}
-          >
-            <UserCheck size={28} />
-            <span style={{ fontSize: '15px', fontWeight: 700 }}>Konfirmasi Kehadiran</span>
-          </button>
-        </div>
+        {showRsvpButton && (
+          <>
+            <h2 className="font-title text-primary text-size-title mb-2">Rsvp</h2>
+            <div style={{ marginBottom: '32px' }}>
+              <button
+                onClick={onOpenRSVP}
+                className="btn btn-primary"
+                style={{
+                  width: '100%',
+                  padding: '16px 20px',
+                  borderRadius: '16px',
+                  flexDirection: 'column',
+                  gap: '6px',
+                  boxShadow: '0 8px 20px rgba(75, 107, 153, 0.25)'
+                }}
+              >
+                <UserCheck size={28} />
+                <span style={{ fontSize: '15px', fontWeight: 700 }}>Konfirmasi Kehadiran</span>
+              </button>
+            </div>
+          </>
+        )}
 
         {/* Gift / Kado Header */}
         <h2 className="font-title text-primary text-size-title mb-2">Kado</h2>
@@ -91,58 +101,62 @@ export const GiftSection: React.FC<GiftSectionProps> = ({
                 boxShadow: '0 4px 16px rgba(0,0,0,0.05)'
               }}
             >
-              <img
-                src={bank.logo}
-                alt={bank.bankName}
-                style={{ height: '24px', margin: '0 auto 12px auto', display: 'block' }}
-              />
+              {showBankTransfer && (
+                <>
+                  <img
+                    src={bank.logo}
+                    alt={bank.bankName}
+                    style={{ height: '24px', margin: '0 auto 12px auto', display: 'block' }}
+                  />
 
-              <div style={{ fontSize: '16px', fontWeight: 800, color: 'var(--bs-primary)' }}>
-                {bank.bankName}
-              </div>
+                  <div style={{ fontSize: '16px', fontWeight: 800, color: 'var(--bs-primary)' }}>
+                    {bank.bankName}
+                  </div>
 
-              <div className="text-size-caption text-muted mt-2">Nama Rekening</div>
-              <div style={{ fontSize: '14px', fontWeight: 600, color: '#333' }}>
-                {bank.accountHolder}
-              </div>
+                  <div className="text-size-caption text-muted mt-2">Nama Rekening</div>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#333' }}>
+                    {bank.accountHolder}
+                  </div>
 
-              <div className="text-size-caption text-muted mt-3">Nomor Rekening</div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  marginTop: '2px'
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: '18px',
-                    fontWeight: 800,
-                    letterSpacing: '1px',
-                    color: 'var(--bs-primary)'
-                  }}
-                >
-                  {bank.accountNumber}
-                </span>
-                <button
-                  onClick={() => handleCopy(bank.accountNumber)}
-                  className="btn btn-clean"
-                  title="Salin nomor rekening"
-                  style={{ color: 'var(--bs-primary)' }}
-                >
-                  {copiedAccount === bank.accountNumber ? (
-                    <Check size={18} color="#16a34a" />
-                  ) : (
-                    <Copy size={18} />
-                  )}
-                </button>
-              </div>
+                  <div className="text-size-caption text-muted mt-3">Nomor Rekening</div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      marginTop: '2px'
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: '18px',
+                        fontWeight: 800,
+                        letterSpacing: '1px',
+                        color: 'var(--bs-primary)'
+                      }}
+                    >
+                      {bank.accountNumber}
+                    </span>
+                    <button
+                      onClick={() => handleCopy(bank.accountNumber)}
+                      className="btn btn-clean"
+                      title="Salin nomor rekening"
+                      style={{ color: 'var(--bs-primary)' }}
+                    >
+                      {copiedAccount === bank.accountNumber ? (
+                        <Check size={18} color="#16a34a" />
+                      ) : (
+                        <Copy size={18} />
+                      )}
+                    </button>
+                  </div>
+                </>
+              )}
 
               {/* QRIS section */}
-              {bank.qrisImage && (
-                <div style={{ marginTop: '24px', borderTop: '1px dashed #e2e8f0', paddingTop: '16px' }}>
+              {showQrisCode && bank.qrisImage && (
+                <div style={{ marginTop: showBankTransfer ? '24px' : '0', borderTop: showBankTransfer ? '1px dashed #e2e8f0' : 'none', paddingTop: showBankTransfer ? '16px' : '0' }}>
                   <div className="text-size-caption text-muted mb-2">
                     Transfer pakai QRIS {bank.bankName}
                   </div>

@@ -1,19 +1,27 @@
 import React from 'react';
 import { CalendarCheck, Navigation, Radio } from 'lucide-react';
 import { SCHEDULE_DATA, INVITATION_CONFIG } from '../data/invitationData';
-import { ScheduleItem } from '../types';
+import { ScheduleItem, FeatureFlags } from '../types';
 
 interface EventScheduleProps {
   schedules?: ScheduleItem[];
   liveStreamUrl?: string;
+  flags?: FeatureFlags;
 }
 
 export const EventSchedule: React.FC<EventScheduleProps> = ({
   schedules: customSchedules,
-  liveStreamUrl: customLiveStreamUrl
+  liveStreamUrl: customLiveStreamUrl,
+  flags
 }) => {
   const schedules = customSchedules || SCHEDULE_DATA;
   const liveStreamUrl = customLiveStreamUrl || INVITATION_CONFIG.liveStreamUrl;
+
+  const showGoogleCal = flags ? flags.showGoogleCal !== false : true;
+  const showAppleCal = flags ? flags.showAppleCal !== false : true;
+  const showGoogleMaps = flags ? flags.showGoogleMaps !== false : true;
+  const showWaze = flags ? flags.showWaze !== false : true;
+  const showLiveStream = flags ? flags.showLiveStream !== false : true;
 
   const downloadIcsFile = (item: ScheduleItem) => {
     const icsContent = [
@@ -39,6 +47,8 @@ export const EventSchedule: React.FC<EventScheduleProps> = ({
     link.click();
     document.body.removeChild(link);
   };
+
+  const hasAnyButton = showGoogleCal || showAppleCal || showGoogleMaps || showWaze;
 
   return (
     <section id="schedule">
@@ -68,60 +78,70 @@ export const EventSchedule: React.FC<EventScheduleProps> = ({
                 </div>
                 <div className="text-size-caption text-muted mb-4">{item.address}</div>
 
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '8px',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <a
-                    href={item.calendarUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-primary btn-sm"
-                    style={{ minWidth: '130px' }}
-                    title="Simpan ke Google Calendar"
+                {hasAnyButton && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: '8px',
+                      justifyContent: 'center'
+                    }}
                   >
-                    <CalendarCheck size={14} />
-                    <span>Google Cal</span>
-                  </a>
+                    {showGoogleCal && (
+                      <a
+                        href={item.calendarUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-primary btn-sm"
+                        style={{ minWidth: '130px' }}
+                        title="Simpan ke Google Calendar"
+                      >
+                        <CalendarCheck size={14} />
+                        <span>Google Cal</span>
+                      </a>
+                    )}
 
-                  <button
-                    onClick={() => downloadIcsFile(item)}
-                    className="btn btn-primary btn-sm"
-                    style={{ minWidth: '110px' }}
-                    title="Download Apple / Outlook Calendar (.ics)"
-                  >
-                    <CalendarCheck size={14} />
-                    <span>Apple / iCal</span>
-                  </button>
+                    {showAppleCal && (
+                      <button
+                        onClick={() => downloadIcsFile(item)}
+                        className="btn btn-primary btn-sm"
+                        style={{ minWidth: '110px' }}
+                        title="Download Apple / Outlook Calendar (.ics)"
+                      >
+                        <CalendarCheck size={14} />
+                        <span>Apple / iCal</span>
+                      </button>
+                    )}
 
-                  <a
-                    href={item.mapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-primary btn-sm"
-                    style={{ minWidth: '130px' }}
-                    title="Buka rute di Google Maps"
-                  >
-                    <Navigation size={14} />
-                    <span>Google Maps</span>
-                  </a>
+                    {showGoogleMaps && (
+                      <a
+                        href={item.mapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-primary btn-sm"
+                        style={{ minWidth: '130px' }}
+                        title="Buka rute di Google Maps"
+                      >
+                        <Navigation size={14} />
+                        <span>Google Maps</span>
+                      </a>
+                    )}
 
-                  <a
-                    href={`https://waze.com/ul?q=${encodeURIComponent(item.venue + ' ' + item.address)}&navigate=yes`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-primary btn-sm"
-                    style={{ minWidth: '110px' }}
-                    title="Buka rute di Waze"
-                  >
-                    <Navigation size={14} />
-                    <span>Waze</span>
-                  </a>
-                </div>
+                    {showWaze && (
+                      <a
+                        href={`https://waze.com/ul?q=${encodeURIComponent(item.venue + ' ' + item.address)}&navigate=yes`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-primary btn-sm"
+                        style={{ minWidth: '110px' }}
+                        title="Buka rute di Waze"
+                      >
+                        <Navigation size={14} />
+                        <span>Waze</span>
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
 
               {index < schedules.length - 1 && <div className="sparator-line" />}
@@ -131,22 +151,24 @@ export const EventSchedule: React.FC<EventScheduleProps> = ({
       </div>
 
       {/* Live Streaming Subcard */}
-      <div className="card-transparant" style={{ marginTop: '32px' }}>
-        <h3 className="font-title text-primary text-size-title mb-2">Live Streaming</h3>
-        <p className="text-size-caption text-muted mb-4">
-          Acara ini akan disiarkan langsung melalui media internet. Silahkan klik tombol dibawah ini untuk membuka saluran live streaming.
-        </p>
-        <a
-          href={liveStreamUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-primary"
-          style={{ borderRadius: '24px', padding: '10px 24px' }}
-        >
-          <Radio size={16} className="animate-pulse-soft" />
-          <span>Saluran Live Streaming</span>
-        </a>
-      </div>
+      {showLiveStream && (
+        <div className="card-transparant" style={{ marginTop: '32px' }}>
+          <h3 className="font-title text-primary text-size-title mb-2">Live Streaming</h3>
+          <p className="text-size-caption text-muted mb-4">
+            Acara ini akan disiarkan langsung melalui media internet. Silahkan klik tombol dibawah ini untuk membuka saluran live streaming.
+          </p>
+          <a
+            href={liveStreamUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary"
+            style={{ borderRadius: '24px', padding: '10px 24px' }}
+          >
+            <Radio size={16} className="animate-pulse-soft" />
+            <span>Saluran Live Streaming</span>
+          </a>
+        </div>
+      )}
     </section>
   );
 };

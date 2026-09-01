@@ -1,4 +1,5 @@
 export interface FeatureFlags {
+  // 1. Seksi Utama Undangan
   showGateCover: boolean;
   showCountdown: boolean;
   showQuote: boolean;
@@ -10,6 +11,30 @@ export interface FeatureFlags {
   showGuestbook: boolean;
   showIGStoryGenerator: boolean;
   showMusic: boolean;
+
+  // 2. Tombol Aksi Jadwal & Lokasi
+  showGoogleCal?: boolean;
+  showAppleCal?: boolean;
+  showGoogleMaps?: boolean;
+  showWaze?: boolean;
+  showLiveStream?: boolean;
+
+  // 3. Info & Sosial Mempelai
+  showBrideInstagram?: boolean;
+  showGroomInstagram?: boolean;
+  showParentsInfo?: boolean;
+
+  // 4. Kado & Amplop Digital
+  showBankTransfer?: boolean;
+  showQrisCode?: boolean;
+
+  // 5. Interaksi Buku Tamu & RSVP
+  showRsvpButton?: boolean;
+  showWishLikes?: boolean;
+
+  // 6. Tampilan Mengambang & Ornamen
+  showFloatingNav?: boolean;
+  showBotanicalCorners?: boolean;
 }
 
 export interface PersonInfo {

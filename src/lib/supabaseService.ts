@@ -26,7 +26,21 @@ export const DEFAULT_SETTINGS: FullInvitationSettings = {
     showGift: true,
     showGuestbook: true,
     showIGStoryGenerator: true,
-    showMusic: true
+    showMusic: true,
+    showGoogleCal: true,
+    showAppleCal: true,
+    showGoogleMaps: true,
+    showWaze: true,
+    showLiveStream: true,
+    showBrideInstagram: true,
+    showGroomInstagram: true,
+    showParentsInfo: true,
+    showBankTransfer: true,
+    showQrisCode: true,
+    showRsvpButton: true,
+    showWishLikes: true,
+    showFloatingNav: true,
+    showBotanicalCorners: true
   }
 };
 
@@ -37,7 +51,7 @@ export async function fetchInvitationSettings(): Promise<FullInvitationSettings>
   const supabase = getSupabaseClient();
   if (!supabase) {
     const local = localStorage.getItem('wedding_settings_data');
-    return local ? JSON.parse(local) : DEFAULT_SETTINGS;
+    return local ? { ...DEFAULT_SETTINGS, ...JSON.parse(local), featureFlags: { ...DEFAULT_SETTINGS.featureFlags, ...(JSON.parse(local)?.featureFlags || {}) } } : DEFAULT_SETTINGS;
   }
 
   try {
@@ -50,7 +64,7 @@ export async function fetchInvitationSettings(): Promise<FullInvitationSettings>
     if (error || !data) {
       console.warn('Could not fetch settings from Supabase, fallback to default:', error?.message);
       const local = localStorage.getItem('wedding_settings_data');
-      return local ? JSON.parse(local) : DEFAULT_SETTINGS;
+      return local ? { ...DEFAULT_SETTINGS, ...JSON.parse(local), featureFlags: { ...DEFAULT_SETTINGS.featureFlags, ...(JSON.parse(local)?.featureFlags || {}) } } : DEFAULT_SETTINGS;
     }
 
     const settings: FullInvitationSettings = {
@@ -66,7 +80,7 @@ export async function fetchInvitationSettings(): Promise<FullInvitationSettings>
       loveStories: data.love_stories || DEFAULT_SETTINGS.loveStories,
       bankAccounts: data.bank_accounts || DEFAULT_SETTINGS.bankAccounts,
       galleryImages: data.gallery_images || DEFAULT_SETTINGS.galleryImages,
-      featureFlags: data.feature_flags || DEFAULT_SETTINGS.featureFlags,
+      featureFlags: { ...DEFAULT_SETTINGS.featureFlags, ...(data.feature_flags || {}) },
       invitationUrl: data.invitation_url || '',
       waTemplate: data.wa_template || ''
     };

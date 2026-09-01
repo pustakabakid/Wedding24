@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { MessageSquareHeart, Clock, Send, Heart, CheckCircle2, HelpCircle, XCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { GuestWish } from '../types';
+import { GuestWish, FeatureFlags } from '../types';
 import { INITIAL_WISHES } from '../data/invitationData';
 import { fetchWishes, submitWish, likeWish } from '../lib/supabaseService';
 
 interface GuestbookSectionProps {
   defaultName: string;
+  flags?: FeatureFlags;
   onShowToast: (msg: string, type?: 'success' | 'error') => void;
 }
 
 export const GuestbookSection: React.FC<GuestbookSectionProps> = ({
   defaultName,
+  flags,
   onShowToast
 }) => {
   const [wishes, setWishes] = useState<GuestWish[]>(INITIAL_WISHES);
@@ -21,6 +23,8 @@ export const GuestbookSection: React.FC<GuestbookSectionProps> = ({
   const [activeFilter, setActiveFilter] = useState<'all' | 'hadir' | 'ragu' | 'tidak'>('all');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [likedWishes, setLikedWishes] = useState<Record<string, boolean>>({});
+
+  const showWishLikes = flags ? flags.showWishLikes !== false : true;
 
   useEffect(() => {
     fetchWishes().then((data) => {
@@ -410,31 +414,33 @@ export const GuestbookSection: React.FC<GuestbookSectionProps> = ({
                   </div>
 
                   {/* Like Button */}
-                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <button
-                      onClick={() => handleLike(item.id, likes)}
-                      className="btn-clean"
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                        fontSize: '11.5px',
-                        color: isLiked ? '#ef4444' : 'var(--bs-primary-dark)',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        padding: '2px 6px',
-                        borderRadius: '12px',
-                        background: 'rgba(255, 255, 255, 0.6)'
-                      }}
-                    >
-                      <Heart
-                        size={13}
-                        fill={isLiked ? '#ef4444' : 'none'}
-                        color={isLiked ? '#ef4444' : 'currentColor'}
-                      />
-                      <span>{likes > 0 ? `${likes} Love` : 'Kirim Love'}</span>
-                    </button>
-                  </div>
+                  {showWishLikes && (
+                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <button
+                        onClick={() => handleLike(item.id, likes)}
+                        className="btn-clean"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          fontSize: '11.5px',
+                          color: isLiked ? '#ef4444' : 'var(--bs-primary-dark)',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          padding: '2px 6px',
+                          borderRadius: '12px',
+                          background: 'rgba(255, 255, 255, 0.6)'
+                        }}
+                      >
+                        <Heart
+                          size={13}
+                          fill={isLiked ? '#ef4444' : 'none'}
+                          color={isLiked ? '#ef4444' : 'currentColor'}
+                        />
+                        <span>{likes > 0 ? `${likes} Love` : 'Kirim Love'}</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })

@@ -1,15 +1,20 @@
 import React from 'react';
 import { Instagram } from 'lucide-react';
 import { INVITATION_CONFIG } from '../data/invitationData';
-import { CoupleInfo } from '../types';
+import { CoupleInfo, FeatureFlags } from '../types';
 
 interface CoupleProfileProps {
   couple?: CoupleInfo;
+  flags?: FeatureFlags;
 }
 
-export const CoupleProfile: React.FC<CoupleProfileProps> = ({ couple: customCouple }) => {
+export const CoupleProfile: React.FC<CoupleProfileProps> = ({ couple: customCouple, flags }) => {
   const couple = customCouple || INVITATION_CONFIG.couple;
   const { bride, groom } = couple;
+
+  const showBrideInstagram = flags ? flags.showBrideInstagram !== false : true;
+  const showGroomInstagram = flags ? flags.showGroomInstagram !== false : true;
+  const showParentsInfo = flags ? flags.showParentsInfo !== false : true;
 
   return (
     <section id="detail" className="card-transparant">
@@ -34,17 +39,19 @@ export const CoupleProfile: React.FC<CoupleProfileProps> = ({ couple: customCoup
           >
             {bride.name}
           </h3>
-          <p className="text-size-caption text-muted mb-3">{bride.parents}</p>
-          <a
-            href={bride.instagramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-primary btn-sm"
-            style={{ borderRadius: '20px' }}
-          >
-            <Instagram size={14} />
-            <span>@{bride.instagram}</span>
-          </a>
+          {showParentsInfo && <p className="text-size-caption text-muted mb-3">{bride.parents}</p>}
+          {showBrideInstagram && (
+            <a
+              href={bride.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary btn-sm"
+              style={{ borderRadius: '20px' }}
+            >
+              <Instagram size={14} />
+              <span>@{bride.instagram}</span>
+            </a>
+          )}
         </div>
 
         {/* Ampersand Divider */}
@@ -71,17 +78,19 @@ export const CoupleProfile: React.FC<CoupleProfileProps> = ({ couple: customCoup
           >
             {groom.name}
           </h3>
-          <p className="text-size-caption text-muted mb-3">{groom.parents}</p>
-          <a
-            href={groom.instagramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-primary btn-sm"
-            style={{ borderRadius: '20px' }}
-          >
-            <Instagram size={14} />
-            <span>@{groom.instagram}</span>
-          </a>
+          {showParentsInfo && <p className="text-size-caption text-muted mb-3">{groom.parents}</p>}
+          {showGroomInstagram && (
+            <a
+              href={groom.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary btn-sm"
+              style={{ borderRadius: '20px' }}
+            >
+              <Instagram size={14} />
+              <span>@{groom.instagram}</span>
+            </a>
+          )}
         </div>
       </div>
     </section>
