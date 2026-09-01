@@ -1,0 +1,117 @@
+/* ═══════════════════════════════════════════════════════════════════
+   WEVITATION MULTI-THEME ENGINE STYLES
+   4 Presets: classic-card, timeless-snapshot, elegant-light, photovit
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* 1. TEMA 1: CLASSIC EMERALD BOTANICAL (Default) */
+.theme-classic-card {
+  --bs-primary: #4B6B99;
+  --bs-primary-dark: #37537a;
+  --bs-primary-light: #EBF1F8;
+  --text-dark: #202b38;
+  --bg-gradient: linear-gradient(180deg, #F4F7FB 0%, #E7EEF6 100%);
+  --card-bg-translucent: rgba(255, 255, 255, 0.72);
+  --card-border: rgba(255, 255, 255, 0.85);
+  --card-shadow: 0 16px 40px rgba(75, 107, 153, 0.12);
+  --accent-badge: #4B6B99;
+}
+
+/* 2. TEMA 2: TIMELESS SNAPSHOT (Vintage Polaroid & Warm Parchment) */
+.theme-timeless-snapshot {
+  --bs-primary: #8C6D53;
+  --bs-primary-dark: #664d38;
+  --bs-primary-light: #F4ECE1;
+  --text-dark: #382E2B;
+  --bg-gradient: linear-gradient(180deg, #F8F4E8 0%, #EFE8D6 100%);
+  --card-bg-translucent: rgba(255, 252, 245, 0.85);
+  --card-border: rgba(214, 198, 175, 0.6);
+  --card-shadow: 0 16px 40px rgba(92, 69, 45, 0.14);
+  --accent-badge: #8C6D53;
+}
+
+.theme-timeless-snapshot .fixed-bg-center {
+  opacity: 0.15;
+  filter: sepia(0.6) hue-rotate(330deg);
+}
+
+.theme-timeless-snapshot .avatar-wrapper,
+.theme-timeless-snapshot .card-transparant img {
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(60, 40, 20, 0.15) !important;
+  border: 4px solid #FFFFFF;
+}
+
+.theme-timeless-snapshot .avatar-circle {
+  border-radius: 6px !important;
+}
+
+.theme-timeless-snapshot .card-transparant {
+  border-radius: 20px;
+  border: 1px solid rgba(194, 166, 141, 0.4);
+}
+
+/* 3. TEMA 3: ELEGANT LIGHT (Royal Luxury & Champagne Gold) */
+.theme-elegant-light {
+  --bs-primary: #B89047;
+  --bs-primary-dark: #8F6D30;
+  --bs-primary-light: #FBF6EB;
+  --text-dark: #1E1B18;
+  --bg-gradient: linear-gradient(180deg, #FDFBF7 0%, #F5EFE6 100%);
+  --card-bg-translucent: rgba(255, 255, 255, 0.88);
+  --card-border: rgba(212, 175, 55, 0.35);
+  --card-shadow: 0 18px 45px rgba(184, 144, 71, 0.15);
+  --accent-badge: #B89047;
+}
+
+.theme-elegant-light .font-title {
+  letter-spacing: 1px;
+}
+
+.theme-elegant-light .card-transparant {
+  border-radius: 24px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 16px 45px rgba(184, 144, 71, 0.12);
+}
+
+.theme-elegant-light .btn-primary {
+  background: linear-gradient(135deg, #C5A059 0%, #A8813B 100%) !important;
+  border: none !important;
+  box-shadow: 0 6px 20px rgba(184, 144, 71, 0.35) !important;
+}
+
+.theme-elegant-light .avatar-circle {
+  border: 3px solid #D4AF37 !important;
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.25) !important;
+}
+
+/* 4. TEMA 4: PHOTOVIT MAGAZINE (Modern Photo-Centric & Romantic Chic) */
+.theme-photovit {
+  --bs-primary: #D97768;
+  --bs-primary-dark: #B65749;
+  --bs-primary-light: #FDF1EF;
+  --text-dark: #2B2829;
+  --bg-gradient: linear-gradient(180deg, #FAF6F4 0%, #F4EAE6 100%);
+  --card-bg-translucent: rgba(255, 255, 255, 0.82);
+  --card-border: rgba(224, 173, 164, 0.45);
+  --card-shadow: 0 16px 40px rgba(217, 119, 104, 0.14);
+  --accent-badge: #D97768;
+}
+
+.theme-photovit .font-title {
+  letter-spacing: 0.5px;
+}
+
+.theme-photovit .card-transparant {
+  border-radius: 28px;
+  border: 1px solid rgba(224, 173, 164, 0.4);
+}
+
+.theme-photovit .btn-primary {
+  background: linear-gradient(135deg, #E08778 0%, #C86657 100%) !important;
+  border: none !important;
+  box-shadow: 0 8px 22px rgba(217, 119, 104, 0.3) !important;
+}
+
+.theme-photovit .avatar-circle {
+  border: 3px solid rgba(217, 119, 104, 0.4) !important;
+}

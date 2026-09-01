@@ -125,10 +125,13 @@ export interface GuestItem {
   created_at?: string;
 }
 
+export type ThemeId = 'classic-card' | 'timeless-snapshot' | 'elegant-light' | 'photovit';
+
 export interface FullInvitationSettings {
   id?: string;
   wedding_id?: string;
   invitation_type?: InvitationType;
+  theme_id?: ThemeId;
   name?: string;
   slug?: string;
   couple: CoupleInfo;

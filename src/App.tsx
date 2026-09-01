@@ -19,6 +19,7 @@ import { RSVPModal, MusicInfoModal } from './components/Modals';
 
 import { fetchInvitationSettings, DEFAULT_SETTINGS } from './lib/supabaseService';
 import { FullInvitationSettings } from './types';
+import './themes/themeStyles.css';
 
 interface ToastItem {
   id: string;
@@ -60,9 +61,16 @@ export const App: React.FC = () => {
     setInvitationId(activeKey);
     fetchInvitationSettings(activeKey).then((loaded) => {
       setSettings(loaded);
-      if (loaded.couple?.combinedTitle) {
-        document.title = `Undangan Pernikahan ${loaded.couple.combinedTitle}`;
+      
+      // Update Tab title to match both bride & groom nicknames
+      const brideNick = loaded.couple?.bride?.nickname || 'Via';
+      const groomNick = loaded.couple?.groom?.nickname || 'Andra';
+      if (activeKey === 'groom' || loaded.invitation_type === 'groom') {
+        document.title = `${groomNick} & ${brideNick}`;
+      } else {
+        document.title = `${brideNick} & ${groomNick}`;
       }
+
       if (!loaded.featureFlags.showGateCover) {
         setIsGateOpen(true);
       }
@@ -115,9 +123,10 @@ export const App: React.FC = () => {
   };
 
   const flags = settings.featureFlags;
+  const currentTheme = settings.theme_id || 'classic-card';
 
   return (
-    <div className="app-viewport">
+    <div className={`app-viewport theme-${currentTheme}`}>
       {/* Fixed Center Watermark Floral Background */}
       <div className="fixed-bg-center" />
 
